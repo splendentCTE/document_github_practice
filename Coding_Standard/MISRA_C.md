@@ -26,7 +26,9 @@
 ### Rule 1.4 (req)
 
 ### Rule 1.5 (adv)
-
+* Floating-point implementations should comply with a defined
+floating-point standard.
+* Mars TBD
 ## Language extensions
 
 ### Rule 2.1 (req)
@@ -35,3 +37,6 @@
 
 ### Rule 2.3 (req)
 
+### Rule 2.4 (adv)
+* Sections of code should not be “commented out”.
+* Mars TBD
