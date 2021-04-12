@@ -72,7 +72,7 @@
 * Sections of code should not be “commented out”.
 * 中文說明 : 程式碼區段不應該被"註釋掉"
 
-* 當程式碼不需要被編譯執行時，應該用條件編譯來完成 ( 如：#if 或 #ifdef 加上註釋 )，用 /* 跟 */ 使程式碼不執行是危險的，因為C語言的編譯器不是都支援這樣的註釋方式，存在於程式碼中的註釋內容可能會影響執行結果。
+* 當程式碼不需要被編譯執行時，應該用條件編譯來完成 ( 如：#if 或 #ifdef 加上註釋 )，用 /* 跟 */ 使程式碼不執行是危險的，因為C語言的編譯器不支援這樣的方式進行槽狀註釋( /* 遇到 */ 就會結束，故超過一層的用會失效 )，註釋失效後的於程式碼中的註釋內容可能會影響執行結果。
 
 ### Rule 3.4 (req) (by Noah)
 * All uses of the #pragma directive shall be documented and explained.
