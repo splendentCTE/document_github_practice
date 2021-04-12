@@ -29,9 +29,37 @@
 
 ## Language extensions
 
-### Rule 2.1 (req)
+### Rule 2.1 (req) (by Noah)
 
+* Assembly language shall be encapsulated and isolated in either (a) assembler functions, (b) C functions or (c) macros.
+* 中文說明：組語必需是以(a) assembler functions、(b)C functions或是(c) macros的形式被獨立包起來使用
+* 範例：
+    * 不合規定的寫法：
+        <pre><code>  void fn ( void )
+        {
+            DoSomething ( );
+            asm ( "NOP" ); // Noncompliant, asm mixed with C/C++ statements
+            DoSomething ( );
+        }
+        </code></pre>
+    * 合規定的寫法：
+        <pre><code>  void Delay ( void )
+        {
+            asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
+        }
+
+        void fn ( void )
+        {
+            DoSomething ( );
+            Delay ( ); // Compliant, Assembler is encapsulated
+            DoSomething ( );
+        }
+        </code></pre>
 ### Rule 2.2 (req)
 
 ### Rule 2.3 (req)
 
+### Rule 3.4 (req) (by Noah)
+* All uses of the #pragma directive shall be documented and explained.
+* 中文說明：所有pragma的使用都需有文件來說明他的含意
+* 範例：無
