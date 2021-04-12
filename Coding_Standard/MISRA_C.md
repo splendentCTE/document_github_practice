@@ -25,10 +25,17 @@
 
 ### Rule 1.4 (req)
 
-### Rule 1.5 (adv)
-* Floating-point implementations should comply with a defined
-floating-point standard.
-* Mars TBD
+### Rule 1.5 (adv) (by Mars)
+
+* Floating-point implementations should comply with a defined floating-point standard.
+* 中文說明 : 浮點數的實作應該要遵守浮點數定義標準
+
+* 浮點運算會帶來許多問題，其中有一些問題可以透過公認的標準來克服，ANSI/IEEE Std 754 [21] 就是一個合適的標準，規則 6.3 關於浮點數類型的定義提供了一個正在用的例子，如：
+```
+    /* IEEE 754 single precision floating point */
+    typedef float float32_t;
+```
+
 ## Language extensions
 
 ### Rule 2.1 (req) (by Noah)
@@ -61,9 +68,11 @@ floating-point standard.
 
 ### Rule 2.3 (req)
 
-### Rule 2.4 (adv)
+### Rule 2.4 (adv) (by Mars)
 * Sections of code should not be “commented out”.
-* Mars TBD
+* 中文說明 : 程式碼區段不應該被"註釋掉"
+
+* 當程式碼不需要被編譯執行時，應該用條件編譯來完成 ( 如：#if 或 #ifdef 加上註釋 )，用 /* 跟 */ 使程式碼不執行是危險的，因為C語言的編譯器不是都支援這樣的註釋方式，存在於程式碼中的註釋內容可能會影響執行結果。
 
 ### Rule 3.4 (req) (by Noah)
 * All uses of the #pragma directive shall be documented and explained.
