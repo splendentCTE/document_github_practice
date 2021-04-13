@@ -74,6 +74,21 @@
 
 * 當程式碼不需要被編譯執行時，應該用條件編譯來完成 ( 如：#if 或 #ifdef 加上註釋 )，用 /* 跟 */ 使程式碼不執行是危險的，因為C語言的編譯器不支援這樣的方式進行巢狀註釋(nested comments)，註釋失效後，程式碼中的原註釋內容可能會影響執行結果。
 
+## Documentation
+
+### Rule 3.1 (req)
+
+### Rule 3.2 (req)
+
+### Rule 3.3 (adv) (by Mars)
+* The implementation of integer division in the chosen compiler should be determined, documented and taken into account.
+* 中文說明：整數除法的實現在選擇的編譯器中，應該要被確認、記錄以及考慮到。
+
+* 當兩個帶符號的整數做除法時，ISO相容的編譯器有潛在的可能產出兩個不同結果，
+> 1. 編譯器可能會四捨五入(進位)並帶來負餘數或 (e.g. -5/3 = -1 remainder -2)
+> 2. 也可能會四捨五入(捨去)並帶來正餘數 (e.g. -5/3 = -2 remainder +1)
+* 重要的是，要確認後記錄下來並告訴程序員，編譯器在這兩種運算中屬於哪一種，尤其是第二種情況(比較少見)。
+
 ### Rule 3.4 (req) (by Noah)
 * All uses of the #pragma directive shall be documented and explained.
 * 中文說明：所有pragma的使用都需有文件來說明他的含意
