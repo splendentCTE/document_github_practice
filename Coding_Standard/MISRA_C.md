@@ -108,3 +108,28 @@
 * All uses of the #pragma directive shall be documented and explained.
 * 中文說明：所有pragma的使用都需有文件來說明他的含意
 * 範例：無
+
+### Rule 3.5 (req) (by Ray)
+
+* If it is being relied upon, the implementation defined behaviour and packing of bitfields shall be documented.
+* 中文說明：實現定義(implementation defined)的行為和位域打包(packing of bitfields)都應該被記錄。
+* 位域用於兩個主要用途：
+> 1.以較大的數據類型（結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
+> 2.允許打包旗標或其他短長度數據以節省存儲空間。
+
+* 建議特別聲明結構以保留位字段集，並且不要在同一結構內包含任何其他數據。
+* 如果編譯器有一個開關來強制位字段遵循特定的佈局，那麼這可能會有助於這種證明。
+* 範例：
+    * 合規定的寫法：
+        ```	
+            struct message /* Struct is for bit-fields only */
+            {
+                signed int little: 4; /* Note: use of basic types is required */
+                unsigned int x_set: 1;
+                unsigned int y_set: 1;
+            } message_chunk;
+        ```
+		
+* 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
+    * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
+	* 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
