@@ -21,11 +21,7 @@
 
 ### Rule 1.2 (req)
 
-### Rule 1.3 (req) (by Jackal)
-* Multiple compilers and/or languages shall only be used if there is a common defined interface standard for object code to which the languages/compilers/assemblers conform.
-* 中文說明 : 僅當存在針對語言/編譯器/彙編器所遵循的目標代碼的通用定義接口標準時，才應使用多種編譯器和/或語言。
-* 如果要使用C以外的語言來實現模塊或使用其他C編譯器進行編譯，則必須確保該模塊將與其他模塊正確集成。C語言行為的某些方面取決於編譯器，因此，對於所使用的編譯器，必須理解這些方面。
-* stack使用情況，參數傳遞以及數據值的存儲方式（長度，對齊方式，鋸齒，重疊等）
+### Rule 1.3 (req)
 
 ### Rule 1.4 (req)
 
@@ -68,7 +64,22 @@
             DoSomething ( );
         }
         </code></pre>
-### Rule 2.2 (req)
+### Rule 2.2 (req) (by Ray)
+
+* Source code shall only use /* … */ style comments.
+* 中文說明：源代碼只能使用/ *…* /樣式註釋。
+* 在C90中不允許"//"的註釋樣式，甚至在C99之前不同的編譯器的行為可能有所不同。
+* 範例：
+    * 不合規定的寫法：
+	    ```
+		    // C99 style comments and C++ style comments
+		```
+    * 合規定的寫法：
+        ```	
+            /* Original C style comment
+	                Can extend across multiple lines
+            */
+        ```
 
 ### Rule 2.3 (req)
 
@@ -80,11 +91,7 @@
 
 ## Documentation
 
-### Rule 3.1 (req) (by Jackal)
-* All usage of implementation-defined behaviour shall be documented.
-* 中文說明 : 實現定義的行為的所有用法應記錄下來。
-* 該規則要求任何依賴於實現定義的行為（未由其他規則明確解決）都應記錄在案，例如，參考編譯器文檔。
-* 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。 有關這些問題的完整列表，請參見ISO / IEC 9899：1990附錄G [2]。
+### Rule 3.1 (req)
 
 ### Rule 3.2 (req)
 
