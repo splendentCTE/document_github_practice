@@ -26,11 +26,7 @@
 
 * 該規則要求避免依賴於未定義和未指定的行為，而其他規則未專門解決該行為。 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
 
-### Rule 1.3 (req) (by Jackal)
-* Multiple compilers and/or languages shall only be used if there is a common defined interface standard for object code to which the languages/compilers/assemblers conform.
-* 中文說明 : 僅當存在針對語言/編譯器/彙編器所遵循的目標代碼的通用定義接口標準時，才應使用多種編譯器和/或語言。
-* 如果要使用C以外的語言來實現模塊或使用其他C編譯器進行編譯，則必須確保該模塊將與其他模塊正確集成。C語言行為的某些方面取決於編譯器，因此，對於所使用的編譯器，必須理解這些方面。
-* stack使用情況，參數傳遞以及數據值的存儲方式（長度，對齊方式，鋸齒，重疊等）
+### Rule 1.3 (req)
 
 ### Rule 1.4 (req)
 
@@ -73,7 +69,22 @@
             DoSomething ( );
         }
         </code></pre>
-### Rule 2.2 (req)
+### Rule 2.2 (req) (by Ray)
+
+* Source code shall only use /* … */ style comments.
+* 中文說明：源代碼只能使用/ *…* /樣式註釋。
+* 在C90中不允許"//"的註釋樣式，甚至在C99之前不同的編譯器的行為可能有所不同。
+* 範例：
+    * 不合規定的寫法：
+	    ```
+		    // C99 style comments and C++ style comments
+		```
+    * 合規定的寫法：
+        ```	
+            /* Original C style comment
+	                Can extend across multiple lines
+            */
+        ```
 
 ### Rule 2.3 (req)
 
@@ -85,11 +96,7 @@
 
 ## Documentation
 
-### Rule 3.1 (req) (by Jackal)
-* All usage of implementation-defined behaviour shall be documented.
-* 中文說明 : 實現定義的行為的所有用法應記錄下來。
-* 該規則要求任何依賴於實現定義的行為（未由其他規則明確解決）都應記錄在案，例如，參考編譯器文檔。
-* 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。 有關這些問題的完整列表，請參見ISO / IEC 9899：1990附錄G [2]。
+### Rule 3.1 (req)
 
 ### Rule 3.2 (req)
 
@@ -106,3 +113,28 @@
 * All uses of the #pragma directive shall be documented and explained.
 * 中文說明：所有pragma的使用都需有文件來說明他的含意
 * 範例：無
+
+### Rule 3.5 (req) (by Ray)
+
+* If it is being relied upon, the implementation defined behaviour and packing of bitfields shall be documented.
+* 中文說明：實現定義(implementation defined)的行為和位域打包(packing of bitfields)都應該被記錄。
+* 位域用於兩個主要用途：
+> 1.以較大的數據類型（結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
+> 2.允許打包旗標或其他短長度數據以節省存儲空間。
+
+* 建議特別聲明結構以保留位字段集，並且不要在同一結構內包含任何其他數據。
+* 如果編譯器有一個開關來強制位字段遵循特定的佈局，那麼這可能會有助於這種證明。
+* 範例：
+    * 合規定的寫法：
+        ```	
+            struct message /* Struct is for bit-fields only */
+            {
+                signed int little: 4; /* Note: use of basic types is required */
+                unsigned int x_set: 1;
+                unsigned int y_set: 1;
+            } message_chunk;
+        ```
+		
+* 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
+    * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
+	* 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
