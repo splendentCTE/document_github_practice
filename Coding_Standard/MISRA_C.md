@@ -26,9 +26,13 @@
 
 * 該規則要求避免依賴於未定義和未指定的行為，而其他規則未專門解決該行為。 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
 
-### Rule 1.3 (req)
+### Rule 1.3 (req) (by Jackal)
+* Multiple compilers and/or languages shall only be used if there is a common defined interface standard for object code to which the languages/compilers/assemblers conform.
+* 中文說明 : 僅當存在針對語言/編譯器/彙編器所遵循的目標代碼的通用定義接口標準時，才應使用多種編譯器和/或語言。
+* 如果要使用C以外的語言來實現模塊或使用其他C編譯器進行編譯，則必須確保該模塊將與其他模塊正確集成。C語言行為的某些方面取決於編譯器，因此，對於所使用的編譯器，必須理解這些方面。
+* stack使用情況，參數傳遞以及數據值的存儲方式（長度，對齊方式，鋸齒，重疊等）
 
-### Rule 1.4 (req)
+### Rule 1.4 (req) (by Weiren)
 * The compiler/linker shall be checked to ensure that 31 character significance and case sensitivity are supported for external identifiers.
 * 中文說明 : 應當檢查編譯器/鏈接器，以確保外部標識符支持31個字符的重要性和區分大小寫。
 * [未定義7; 實施5、6]
@@ -109,9 +113,13 @@
 
 ## Documentation
 
-### Rule 3.1 (req)
+### Rule 3.1 (req) (by Jackal)
+* All usage of implementation-defined behaviour shall be documented.
+* 中文說明 : 實現定義的行為的所有用法應記錄下來。
+* 該規則要求任何依賴於實現定義的行為（未由其他規則明確解決）都應記錄在案，例如，參考編譯器文檔。
+* 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。 有關這些問題的完整列表，請參見ISO / IEC 9899：1990附錄G [2]。
 
-### Rule 3.2 (req)
+### Rule 3.2 (req) (by Weiren)
 * The character set and the corresponding encoding shall be documented.
 * 中文說明 : 字符集和相應的編碼應該文檔化。
 * 例如，ISO 10646 [22]定義了字符集映射到數字值的國際標準。出於可移植性的考慮，字符常數和字串只能包含映射到已經文檔化的子集中的字符。源代碼以一個或多個字符集編寫。可選地，程序可以在第二個或多個字符集中執行。所有的源代碼和執行字符集都應映射到已經文檔化的子集中的字符
@@ -159,4 +167,3 @@
    to appropriate validation. IEC 61508 Part 3
 * 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
 * 範例:無
-
