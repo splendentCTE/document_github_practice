@@ -19,7 +19,12 @@
     * [ISO/IEC 9899/COR2](https://www.iso.org/standard/27110.html) : 勘誤 2
 * 範例 : 無
 
-### Rule 1.2 (req)
+### Rule 1.2 (req) (by U.Chen)
+* No reliance shall be placed on undefined or unspecified behaviour.
+
+* 中文說明 : 不得依賴未定義或未指定的行為
+
+* 該規則要求避免依賴於未定義和未指定的行為，而其他規則未專門解決該行為。 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
 
 ### Rule 1.3 (req) (by Jackal)
 * Multiple compilers and/or languages shall only be used if there is a common defined interface standard for object code to which the languages/compilers/assemblers conform.
@@ -72,7 +77,7 @@
 
 ### Rule 2.3 (req)
 
-### Rule 2.4 (adv) (by Mars)
+### Rule 2.4 (adv) (by U.Chen)
 * Sections of code should not be “commented out”.
 * 中文說明 : 程式碼區段不應該被"註釋掉"
 
