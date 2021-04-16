@@ -70,7 +70,16 @@
         </code></pre>
 ### Rule 2.2 (req)
 
-### Rule 2.3 (req)
+### Rule 2.3 (req)(by Liou)
+*  The character sequence /* shall not be used within a comment.
+* 中文說明 :字符序列/ *不得在註釋中使用。
+
+*
+	/* some comment, end comment marker accidentally omitted
+	<<New Page>>
+	Perform_Critical_Safety_Function (X);
+	/* this comment is not compliant */ 
+可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
 
 ### Rule 2.4 (adv) (by Mars)
 * Sections of code should not be “commented out”.
@@ -101,3 +110,12 @@
 * All uses of the #pragma directive shall be documented and explained.
 * 中文說明：所有pragma的使用都需有文件來說明他的含意
 * 範例：無
+
+
+
+### Rule 3.5(req)
+### Rule 3.6(req)(by Liou)
+*  All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject 
+   to appropriate validation. IEC 61508 Part 3
+* 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
+* 範例:無
