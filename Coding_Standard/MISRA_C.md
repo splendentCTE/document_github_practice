@@ -86,7 +86,16 @@
             */
         ```
 
-### Rule 2.3 (req)
+### Rule 2.3 (req)(by Liou)
+*  The character sequence /* shall not be used within a comment.
+* 中文說明 :字符序列/ *不得在註釋中使用。
+
+*
+	/* some comment, end comment marker accidentally omitted
+	<<New Page>>
+	Perform_Critical_Safety_Function (X);
+	/* this comment is not compliant */ 
+可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
 
 ### Rule 2.4 (adv) (by U.Chen)
 * Sections of code should not be “commented out”.
@@ -115,7 +124,6 @@
 * 範例：無
 
 ### Rule 3.5 (req) (by Ray)
-
 * If it is being relied upon, the implementation defined behaviour and packing of bitfields shall be documented.
 * 中文說明：實現定義(implementation defined)的行為和位域打包(packing of bitfields)都應該被記錄。
 * 位域用於兩個主要用途：
@@ -138,3 +146,10 @@
 * 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
     * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
 	* 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
+
+### Rule 3.6(req)(by Liou)
+*  All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject 
+   to appropriate validation. IEC 61508 Part 3
+* 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
+* 範例:無
+
