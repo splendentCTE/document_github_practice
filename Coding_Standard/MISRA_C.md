@@ -29,6 +29,10 @@
 ### Rule 1.3 (req)
 
 ### Rule 1.4 (req)
+* The compiler/linker shall be checked to ensure that 31 character significance and case sensitivity are supported for external identifiers.
+* 中文說明 : 應當檢查編譯器/鏈接器，以確保外部標識符支持31個字符的重要性和區分大小寫。
+* [未定義7; 實施5、6]
+* ISO標準要求外部標識符的前6個字符必須不同。但是，由於大多數編譯器/鏈接器至少允許31個字符有效（對於內部標識符而言），因此遵守此嚴格且無用的限制被認為是不必要的限制。必須檢查編譯器/鏈接器以確定此行為。如果編譯器/鏈接器不能夠滿足此限制，則使用編譯器的限制。
 
 ### Rule 1.5 (adv) (by Mars)
 
@@ -108,6 +112,9 @@
 ### Rule 3.1 (req)
 
 ### Rule 3.2 (req)
+* The character set and the corresponding encoding shall be documented.
+* 中文說明 : 字符集和相應的編碼應該文檔化。
+* 例如，ISO 10646 [22]定義了字符集映射到數字值的國際標準。出於可移植性的考慮，字符常數和字串只能包含映射到已經文檔化的子集中的字符。源代碼以一個或多個字符集編寫。可選地，程序可以在第二個或多個字符集中執行。所有的源代碼和執行字符集都應映射到已經文檔化的子集中的字符
 
 ### Rule 3.3 (adv) (by Mars)
 * The implementation of integer division in the chosen compiler should be determined, documented and taken into account.
