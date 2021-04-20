@@ -167,3 +167,70 @@
    to appropriate validation. IEC 61508 Part 3
 * 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
 * 範例:無
+
+## Character sets
+
+### Rule 4.1(req)
+### Rule 4.2(req)
+
+## Identifiers
+
+### Rule 5.1(req)
+### Rule 5.2(req)
+### Rule 5.3(req)(by Mars)
+* A typedef name shall be a unique identifier.
+* 中文說明：類型定義(typedef)的命名應是獨特的。
+
+* 不管是什麼目的，typedef 都不應該重複定義相同的命名。
+```
+    {
+      typedef unsigned char uint8_t;
+    }
+
+    /* Not compliant – redefinition */
+    {
+      typedef unsigned char uint8_t;
+    }
+
+    /* Not compliant – reuse of uint8_t */
+    {
+      unsigned char uint8_t;
+    }
+```
+* 除了把 typedef 放在標頭檔，被多個源碼呼叫的情況外，在程式中的任何地方 (即使是完全相同的宣告)，都不應該重複使用 typedef 的命名。
+
+### Rule 5.4(req)
+### Rule 5.5(adv)
+### Rule 5.6(adv)
+### Rule 5.7(adv)
+
+## Types
+
+### Rule 6.1(req)
+### Rule 6.2(req)
+### Rule 6.3(adv)(by Mars)
+* typedefs that indicate size and signedness should be used in place
+of the basic numerical types.
+* 中文說明：應使用標示了大小和符號的 typedefs 來取代基本的數值類型。
+
+* 除了使用特定長度的 typedefs 外，不應使用的基礎數值類型包含　char, int, short, long, float, double 及其變化 signed, unsigned，
+規則 6.3 幫助了我們了解儲存的大小，但因為不對稱行為的整型提升，這些定義無法保證可攜性 ( 6.10 章節 )，了解整數大小的實作方式仍然是一件重要的事情。
+* 程序員需要注意到 typedefs 在這些定義下的實作方式。
+* 舉例來說：下列是符合32bits的整數晶片並建議使用的範例，ISO (POSIX) typedefs 已被使用在這份文件的所有基本數值與字符型態：
+```
+    typedef char char_t;
+    typedef signed char int8_t;
+    typedef signed short int16_t;
+    typedef signed int int32_t;
+    typedef signed long int64_t;
+    typedef unsigned char uint8_t;
+    typedef unsigned short uint16_t;
+    typedef unsigned int uint32_t;
+    typedef unsigned long uint64_t;
+    typedef float float32_t;
+    typedef double float64_t;
+    typedef long double float128_t;
+```
+* typedefs 不考慮長度是 bit 的型態。
+### Rule 6.4(req)
+### Rule 6.5(req)
