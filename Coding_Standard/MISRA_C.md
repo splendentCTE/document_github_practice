@@ -22,7 +22,7 @@
 ### Rule 1.2 (req) (by U.Chen)
 * No reliance shall be placed on undefined or unspecified behaviour.
 
-* 中文說明 : 不得依賴未定義或未指定的行為
+* 中文說明 : 不得依賴[未定義或未指定的行為](https://en.cppreference.com/w/c/language/behavior)
 
 * 該規則要求避免依賴於未定義和未指定的行為，而其他規則未專門解決該行為。 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
 
