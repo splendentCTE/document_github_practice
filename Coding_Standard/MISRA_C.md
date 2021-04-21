@@ -171,8 +171,18 @@
 ## Character sets
 
 ### Rule 4.1(req)
-### Rule 4.2(req)
-
+### Rule 4.2(req)(by Jackal)
+*  Trigraphs shall not be used.
+* 中文說明：不應使用三字母組合。
+* 範例:
+```	
+	??- represents a “~” (tilde) , ??) represents a “]”
+	They can cause accidental confusion with other uses of two question marks.
+	/* For example the string */
+	"(Date should be in the form ??-??-??)"
+	/* would not behave as expected, actually being interpreted by the compiler as */
+	"(Date should be in the form ~~]"
+```
 ## Identifiers
 
 ### Rule 5.1(req)
@@ -202,8 +212,22 @@
 ### Rule 5.4(req)
 ### Rule 5.5(adv)
 ### Rule 5.6(adv)
-### Rule 5.7(adv)
-
+### Rule 5.7(adv)(by Jackal)
+* No identifier name should be reused.
+* 中文說明：不得重複使用標識符名稱。
+* 無論範圍如何，都不應在系統中的任何文件中重複使用標識符。本規則納入了規則5.2、5.3、5.4、5.5和5.6的規定。
+```
+	struct air_speed  
+	{ 
+   		uint16_t speed;   	/* knots */ 
+	} * x; 
+	struct gnd_speed  
+	{ 
+   		uint16_t speed;   	/* mph                                         */ 
+                     			/* Not Compliant - speed is in different units */ 
+	} * y;  
+	x->speed = y->speed;
+```
 ## Types
 
 ### Rule 6.1(req)
