@@ -170,7 +170,28 @@
 
 ## Character sets
 
-### Rule 4.1(req)
+### Rule 4.1(req)(by U.Chen)
+* Only those escape sequences that are defined in the ISO C standard shall be used.
+
+* 中文說明 : 只能使用 ISO C標準中定義的跳脫序列
+
+* 僅允許使用ISO / IEC 9899：1990 [3-6]第6.1.3.4節和\0中的“簡單跳脫序列”。
+禁止所有“十六進制跳脫序列”。
+規則7.1也禁止使用\0以外的“八進制跳脫序列”。
+
+* 簡單跳脫序列
+  * \a 警報聲
+  * \b Backspace
+  * \f 換頁
+  * \n 換行
+  * \r 回車
+  * \t 水平Tab
+  * \v 垂直Tab
+  * \\\ 反斜槓
+  * \\' 單引號
+  * \\" 雙引號
+  * \\? 問號
+  * \0 Null,什麼都不做 
 ### Rule 4.2(req)(by Jackal)
 *  Trigraphs shall not be used.
 * 中文說明：不應使用三字母組合。
