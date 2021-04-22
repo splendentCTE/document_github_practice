@@ -80,7 +80,7 @@
 ### Rule 2.2 (req) (by Ray)
 
 * Source code shall only use /* … */ style comments.
-* 中文說明：源代碼只能使用/ *…* /樣式註釋。
+* 中文說明：源代碼只能使用/* … */樣式註釋。
 * 在C90中不允許"//"的註釋樣式，甚至在C99之前不同的編譯器的行為可能有所不同。
 * 範例：
     * 不合規定的寫法：
@@ -246,7 +246,12 @@
 ```
 * 除了把 typedef 放在標頭檔，被多個源碼呼叫的情況外，在程式中的任何地方 (即使是完全相同的宣告)，都不應該重複使用 typedef 的命名。
 
-### Rule 5.4(req)
+### Rule 5.4 (req) (by Ray)
+
+* A tag name shall be a unique identifier.
+* 中文說明：Tag名稱應是唯一的標示符。
+
+
 ### Rule 5.5(adv)
 ### Rule 5.6(adv)
 ### Rule 5.7(adv)(by Jackal)
@@ -300,5 +305,20 @@ of the basic numerical types.
     typedef long double float128_t;
 ```
 * typedefs 不考慮長度是 bit 的型態。
-### Rule 6.4(req)
+
+### Rule 6.4 (req) (by Ray)
+
+* Bit fields shall only be defined to be of type unsigned int or signed int.
+* 中文說明：位域只能被定義為unsigned int或signed int類型。
+* 某些類型不太適合在位域中使用，因為它們的行為是實現定義(implementation defined)。
+* 範例：
+    * 不合規定的寫法：
+	    ```
+		    int b:3; /* 取值的範圍可能是0..7或-4..3。 */
+		```
+    * 合規定的寫法：
+        ```	
+            unsigned int b:3;
+        ```
+
 ### Rule 6.5(req)
