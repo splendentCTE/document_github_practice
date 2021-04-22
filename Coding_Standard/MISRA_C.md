@@ -57,15 +57,17 @@
 * 中文說明：組語必需是以(a) assembler functions、(b)C functions或是(c) macros的形式被獨立包起來使用
 * 範例：
     * 不合規定的寫法：
-        <pre><code>  void fn ( void )
+        ```c
+        void fn ( void )
         {
             DoSomething ( );
             asm ( "NOP" ); // Noncompliant, asm mixed with C/C++ statements
             DoSomething ( );
         }
-        </code></pre>
+        ```
     * 合規定的寫法：
-        <pre><code>  void Delay ( void )
+        ```c
+        void Delay ( void )
         {
             asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
         }
@@ -76,7 +78,8 @@
             Delay ( ); // Compliant, Assembler is encapsulated
             DoSomething ( );
         }
-        </code></pre>
+        ```
+
 ### Rule 2.2 (req) (by Ray)
 
 * Source code shall only use /* … */ style comments.
@@ -97,12 +100,13 @@
 ### Rule 2.3 (req)(by Liou)
 *  The character sequence /* shall not be used within a comment.
 * 中文說明 :字符序列/ *不得在註釋中使用。
-
-*
+	```c
 	/* some comment, end comment marker accidentally omitted
 	<<New Page>>
 	Perform_Critical_Safety_Function (X);
 	/* this comment is not compliant */ 
+	```
+
 可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
 
 ### Rule 2.4 (adv) (by U.Chen)
@@ -330,3 +334,4 @@ of the basic numerical types.
 - Bit fields of signed type shall be at least 2 bits long.
 - 中文說明：1 bit長度的有符號位域是無用的。
 - 範例：無。
+
