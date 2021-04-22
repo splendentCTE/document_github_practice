@@ -157,7 +157,7 @@
                 unsigned int y_set: 1;
             } message_chunk;
         ```
-		
+	
 * 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
     * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
 	* 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
@@ -251,8 +251,12 @@
 * A tag name shall be a unique identifier.
 * 中文說明：Tag名稱應是唯一的標示符。
 
+### Rule 5.5(adv)(by Liou)
 
-### Rule 5.5(adv)
+- No object or function identifier with static storage duration should be reused.
+- 中文說明：具有靜態存儲期的對像或函數標識符不能重複使用。
+- 範例：無。
+
 ### Rule 5.6(adv)
 ### Rule 5.7(adv)(by Jackal)
 * No identifier name should be reused.
@@ -321,4 +325,8 @@ of the basic numerical types.
             unsigned int b:3;
         ```
 
-### Rule 6.5(req)
+### Rule 6.5(req)(by Liou)
+
+- Bit fields of signed type shall be at least 2 bits long.
+- 中文說明：1 bit長度的有符號位域是無用的。
+- 範例：無。
