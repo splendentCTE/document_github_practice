@@ -269,7 +269,29 @@
 - 中文說明：具有靜態存儲期的對像或函數標識符不能重複使用。
 - 範例：無。
 
-### Rule 5.6(adv)
+### Rule 5.6(adv)(by U.Chen)
+* No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names.
+
+* 中文說明：一個命名空間中不應存在與另外一个命名空間中的標識符拼寫一樣的
+標示符，除了結構和聯合中的成員名字。
+
+* ISO C 定義了許多不同的命名空間。技術上，在彼此獨立的命名空間中使用相同的名字以代表完全不同的項目是可能的，然而由於會引起混淆，通常不贊成這種做法，因此即使是在獨立的命名空間中名字也不能重複使用。
+
+* 範例
+
+    不建議的用法，其中 value 在不经意中代替了 record.value：
+<pre><code>     struct { int16_t key ; int16_t value ; } record ; 
+     int16_t value; /* Rule violation – 2nd use of value */ 
+     record.key = 1; 
+     value = 0; /* should have been record.value */ </code></pre>
+    相比之下，下面的例子没有違背此規則，因為兩個成員名字不會引起混淆：
+<pre><code>     struct device_q { struct device_q *next ; /* ... */ } 
+     devices[N_DEVICES] ; 
+     struct task_q { struct task_q *next ; /* … */ } 
+     tasks[N_TASKS]; 
+     device[0].next = &devices[1]; 
+     tasks[0].next = &tasks[1]; </code></pre>
+
 ### Rule 5.7(adv)(by Jackal)
 * No identifier name should be reused.
 * 中文說明：不得重複使用標識符名稱。
