@@ -262,6 +262,21 @@
 
 * A tag name shall be a unique identifier.
 * 中文說明：Tag名稱應是唯一的標示符。
+* tag名稱不得再用於定義其他tag或在程序內用於任何其他目的。
+* ISO / IEC 9899：1990 [2]沒有定義當聚合聲明使用不同形式的類型說明符(struct或union)的tag時的行為。
+* tag的所有用途都應該在struct類型說明符中，或者所有用途都應在union類型說明符中。
+* 例如：
+```
+    struct stag { uint16_t a; uint16_t b; };
+    struct stag a1 = { 0, 0 }; /* 合規定 - 以上兼容 */
+    union stag a2 = { 0, 0 }; /* 不合規定 - 與之前聲明不兼容 */
+    void foo(void)
+    {
+        struct stag { uint16_t a; }; /* Not compliant - tag stag redefined */
+    }
+```
+* 即使定義相同，也不得在源代碼文件中的任何地方重複相同的tag定義。
+* 如果在頭文件中進行tag定義，並且該頭文件包含在多個源文件中，則不會違反此規則。
 
 ### Rule 5.5(adv)(by Liou)
 
