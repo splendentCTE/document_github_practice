@@ -88,7 +88,7 @@
 		    // C99 style comments and C++ style comments
 		```
     * 合規定的寫法：
-        ```	
+        ```
             /* Original C style comment
 	                Can extend across multiple lines
             */
@@ -102,7 +102,7 @@
 	/* some comment, end comment marker accidentally omitted
 	<<New Page>>
 	Perform_Critical_Safety_Function (X);
-	/* this comment is not compliant */ 
+	/* this comment is not compliant */
 可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
 
 ### Rule 2.4 (adv) (by U.Chen)
@@ -149,7 +149,7 @@
 * 如果編譯器有一個開關來強制位字段遵循特定的佈局，那麼這可能會有助於這種證明。
 * 範例：
     * 合規定的寫法：
-        ```	
+        ```
             struct message /* Struct is for bit-fields only */
             {
                 signed int little: 4; /* Note: use of basic types is required */
@@ -157,13 +157,13 @@
                 unsigned int y_set: 1;
             } message_chunk;
         ```
-	
+
 * 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
     * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
 	* 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
 
 ### Rule 3.6(req)(by Liou)
-*  All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject 
+*  All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject
    to appropriate validation. IEC 61508 Part 3
 * 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
 * 範例:無
@@ -191,12 +191,12 @@
   * \\' 單引號
   * \\" 雙引號
   * \\? 問號
-  * \0 Null,什麼都不做 
+  * \0 Null,什麼都不做
 ### Rule 4.2(req)(by Jackal)
 *  Trigraphs shall not be used.
 * 中文說明：不應使用三字母組合。
 * 範例:
-```	
+```
 	??- represents a “~” (tilde) , ??) represents a “]”
 	They can cause accidental confusion with other uses of two question marks.
 	/* For example the string */
@@ -207,6 +207,15 @@
 ## Identifiers
 
 ### Rule 5.1(req)
+* Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
+* 中文說明：識別項（內部和外部）不得依賴於超過31個有效字符。
+* ISO標準要求內部識別項的前31個字符必須不同，以確保代碼的可移植性。即使編譯器支持，也不應超過此限制。
+* 這條規則應適用於所有名稱空間。
+* 宏名稱也包括在內，且限制為31個字符適用於替換前後。
+* ISO標準要求外部識別項的前6個字符必須不同，以確保最佳的可移植性。但是，此限制相當嚴格並且被認為是不必要的。該規則的目的是意圖放寬ISO要求達到與現代環境相對應的程度，並應確認支持實施31個字符/大小寫的有效性。
+* 使用識別項名稱要注意的一个相關問題是發生在名稱之間只有一個字符或少數字符不同的情況，尤其是在名稱較長的情況。當名稱之間的區別是容易誤讀的字符，問題就比較明顯。比如 1(數字1)和(L的小寫)、0 和 O、2 和 Z、5 和 S，或者 n 和 h。
+* 建議名稱的區別要顯而易見
+* 在這個問題上的具體指導方針可以放在風格指南（參見4.2.2節）。
 
 ### Rule 5.2(req)(by Noah)
 * Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
@@ -216,7 +225,7 @@
   但如果第二次的識別字定義不會隱藏第一次的識別字定義，就不算違反此項規定。
 * 範例：
     * 不合規定的寫法：
-        ```  
+        ```
 	    int16_t i;
         {
             int16_t i; /* This is a different variable */
@@ -263,20 +272,22 @@
 * 中文說明：不得重複使用標識符名稱。
 * 無論範圍如何，都不應在系統中的任何文件中重複使用標識符。本規則納入了規則5.2、5.3、5.4、5.5和5.6的規定。
 ```
-	struct air_speed  
-	{ 
-   		uint16_t speed;   	/* knots */ 
-	} * x; 
-	struct gnd_speed  
-	{ 
-   		uint16_t speed;   	/* mph                                         */ 
-                     			/* Not Compliant - speed is in different units */ 
-	} * y;  
+	struct air_speed
+	{
+   		uint16_t speed;   	/* knots */
+	} * x;
+	struct gnd_speed
+	{
+   		uint16_t speed;   	/* mph                                         */
+                     			/* Not Compliant - speed is in different units */
+	} * y;
 	x->speed = y->speed;
 ```
 ## Types
 
-### Rule 6.1(req)
+### Rule 6.1(req)(by Weiren)
+* The plain char type shall be used only for the storage and use of character values.
+* 中文說明：單純的char類型應僅用於字符值的存儲和使用。
 
 ### Rule 6.2(req)(by Noah)
 
@@ -321,7 +332,7 @@ of the basic numerical types.
 		    int b:3; /* 取值的範圍可能是0..7或-4..3。 */
 		```
     * 合規定的寫法：
-        ```	
+        ```
             unsigned int b:3;
         ```
 
