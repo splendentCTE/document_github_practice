@@ -186,7 +186,23 @@
 ## Identifiers
 
 ### Rule 5.1(req)
-### Rule 5.2(req)
+
+### Rule 5.2(req)(by Noah)
+* Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
+* 中文說明：內作用範圍(inner scope)和外作用範圍(outer scope)的定義如下所述，一個識別字(identifier)的作用範圍如果是整個檔案的話(file scope)，
+  那就可以叫做是外作用範圍，如果一個識別字作用範圍是在一個區塊內的話(block scope)，就叫做是內作用範圍。
+  此項目規定內作用範圍的識別字不可和外作用範圍的識別字使用相同名稱，因為第二次的內作用範圍識別字定義會把第一次的識別字定義隱藏起來，容易造成混淆。
+  但如果第二次的識別字定義不會隱藏第一次的識別字定義，就不算違反此項規定。
+* 範例：
+    * 不合規定的寫法：
+        ```  
+	    int16_t i;
+        {
+            int16_t i; /* This is a different variable */
+                       /* This is not compliant */
+            i = 3;     /* It could be confusing as to which i this refers */
+        }
+        ```
 ### Rule 5.3(req)(by Mars)
 * A typedef name shall be a unique identifier.
 * 中文說明：類型定義(typedef)的命名應是獨特的。
@@ -231,7 +247,14 @@
 ## Types
 
 ### Rule 6.1(req)
-### Rule 6.2(req)
+
+### Rule 6.2(req)(by Noah)
+
+* signed and unsigned char type shall be used only for the storage and use of numeric values.
+* 中文說明：signed和unsigned char只能拿來做數值資料存儲使用。
+  char types有三種，char、signed char和unsigned char。char只能拿來做字符或字串存儲使用，因為不同的compiler可能會把char當做signed char或unsinged char，
+  所以不建議拿來儲存數值，要儲存數值的話需使用signed或unsigned char。
+
 ### Rule 6.3(adv)(by Mars)
 * typedefs that indicate size and signedness should be used in place
 of the basic numerical types.
