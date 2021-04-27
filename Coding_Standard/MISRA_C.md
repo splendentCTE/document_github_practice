@@ -137,8 +137,8 @@
 * If it is being relied upon, the implementation defined behaviour and packing of bitfields shall be documented.
 * 中文說明：實現定義(implementation defined)的行為和位域打包(packing of bitfields)都應該被記錄。
 * 位域用於兩個主要用途：
-    1.以較大的數據類型（結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
-    2.允許打包旗標或其他短長度數據以節省存儲空間。
+    1. 以較大的數據類型（結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
+    2. 允許打包旗標或其他短長度數據以節省存儲空間。
 * 建議特別聲明結構以保留位字段集，並且不要在同一結構內包含任何其他數據。
 * 如果編譯器有一個開關來強制位字段遵循特定的佈局，那麼這可能會有助於這種證明。
 * 範例：
