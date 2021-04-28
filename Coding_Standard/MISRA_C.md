@@ -366,3 +366,37 @@
 - 中文說明：1 bit長度的有符號位域是無用的。
 - 範例：無。
 
+## Constants
+
+### Rule 7.1 (req) (by U.Chen)
+* Octal constants (other than zero) and octal escape sequences shall not be used.
+* 中文說明：不得使用八進制常數（非零）和八進制跳脫序列。
+* 任何以“ 0”（零）開頭的整數常量都被視為八進制。 因此，存在編寫固定長度常量的危險。
+* 八進制跳脫序列可能會出現問題，因為無意間引入了十進制數字會終止八進制跳脫並引入另一個字符。
+* 範例：
+    * 以下用於三位數總線消息的數組初始化將無法按預期方式進行：
+        ```c
+        code[1] = 109;   /* equivalent to decimal 109 */
+        code[2] = 100;   /* equivalent to decimal 100 */ 
+        code[3] = 052;   /* equivalent to decimal 42  */ 
+        code[4] = 071;   /* equivalent to decimal 57  */
+        ```
+    * 第一個表達式的值是實現定義的，因為字符常量由兩個字符“\10”和“9”組成。第二個字符常量表達式包含單個字符“\100”。如果基本執行字符集中未表示字符64，則其值將由實現定義。
+        ```c
+        code[5] = '\109';   /* implementation-defined, two character constant */
+        code[6] = '\100';   /* set to 64, or implementation-defined           */
+        ```
+* 最好不要使用八進制常量或跳脫序列，並且要檢查是否出現任何情況。整數常數零（寫為一個數字）嚴格來說是一個八進制常數，但這是該規則的允許例外。另外，“\0”是唯一允許的八進制跳脫序列。
+
+## Declarations and definitions
+
+### Rule 8.1 (req)
+### Rule 8.2 (req)
+### Rule 8.3 (req)
+### Rule 8.4 (req)
+### Rule 8.5 (req)
+### Rule 8.6 (req)
+### Rule 8.7 (req) (by U.Chen)
+* Objects shall be defined at block scope if they are only accessed from within a single function.
+* 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
+* 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
