@@ -97,7 +97,7 @@
     /* some comment, end comment marker accidentally omitted
     <<New Page>>
     Perform_Critical_Safety_Function (X);
-    /* this comment is not compliant */ 
+    /* this comment is not compliant */
     ```
 
 可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
@@ -280,18 +280,18 @@
 * 範例
     不建議的用法，其中 value 在不经意中代替了 record.value：
     ```c
-    struct { int16_t key ; int16_t value ; } record ; 
-    int16_t value; /* Rule violation – 2nd use of value */ 
-    record.key = 1; 
+    struct { int16_t key ; int16_t value ; } record ;
+    int16_t value; /* Rule violation – 2nd use of value */
+    record.key = 1;
     value = 0; /* should have been record.value */
     ```
     相比之下，下面的例子没有違背此規則，因為兩個成員名字不會引起混淆：
     ```c
-    struct device_q { struct device_q *next ; /* ... */ } 
-    devices[N_DEVICES] ; 
-    struct task_q { struct task_q *next ; /* … */ } 
-    tasks[N_TASKS]; 
-    device[0].next = &devices[1]; 
+    struct device_q { struct device_q *next ; /* ... */ }
+    devices[N_DEVICES] ;
+    struct task_q { struct task_q *next ; /* … */ }
+    tasks[N_TASKS];
+    device[0].next = &devices[1];
     tasks[0].next = &tasks[1];
     ```
 
@@ -377,8 +377,8 @@
     * 以下用於三位數總線消息的數組初始化將無法按預期方式進行：
         ```c
         code[1] = 109;   /* equivalent to decimal 109 */
-        code[2] = 100;   /* equivalent to decimal 100 */ 
-        code[3] = 052;   /* equivalent to decimal 42  */ 
+        code[2] = 100;   /* equivalent to decimal 100 */
+        code[3] = 052;   /* equivalent to decimal 42  */
         code[4] = 071;   /* equivalent to decimal 57  */
         ```
     * 第一個表達式的值是實現定義的，因為字符常量由兩個字符“\10”和“9”組成。第二個字符常量表達式包含單個字符“\100”。如果基本執行字符集中未表示字符64，則其值將由實現定義。
@@ -391,7 +391,21 @@
 ## Declarations and definitions
 
 ### Rule 8.1 (req)
-### Rule 8.2 (req)
+### Rule 8.2 (req) (by Weiren)
+* Whenever an object or function is declared or defined, its type shall be explicitly stated.
+* 中文說明：每當宣告或定義一個物件或函數時，都應該明確表示其類型。
+    * 不合規定的寫法：
+        ```c
+        extern x; /* Non-compliant – implicit int type */
+        const y ; /* Non-compliant – implicit int type */
+        static foo (void) ; /* Non-compliant – implicit type */
+        ```
+    * 合規定的寫法：
+        ```c
+        extern int16_t x ; /* Compliant – explicit type */
+        const int16_t y ; /* Compliant – explicit type */
+        static int16_t foo (void) ; /* Compliant – explicit type */
+        ```
 
 ### Rule 8.3 (req) (by Mars)
 * For each function parameter the type given in the declaration and definition shall be identical, and the return types shall also be identical.
@@ -411,7 +425,11 @@
 * 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
 * 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
 ### Rule 8.8 (req)
-### Rule 8.9 (req)
+### Rule 8.9 (req)  (by Weiren)
+* An identifier with external linkage shall have exactly one external definition.
+* 中文說明：一個具有外部連結的識別項，應該具有精確的外部定義。
+* 如果使用存在多個定義的識別項（在不同的檔案），或者使用根本不存在任何定義的識別項，這屬於Undefined行為。
+* 不同文件中的多個定義是不允許的，即使它們定義是相同的。如果它們定義是不同的，或者將識別項初始化為不同的值，這顯然是很嚴重的。
 
 ### Rule 8.10 (req) (by Mars)
 * All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required.
