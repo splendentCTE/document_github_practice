@@ -392,7 +392,12 @@
 
 ### Rule 8.1 (req)
 ### Rule 8.2 (req)
-### Rule 8.3 (req)
+
+### Rule 8.3 (req) (by Mars)
+* For each function parameter the type given in the declaration and definition shall be identical, and the return types shall also be identical.
+* 中文說明：在宣告與定義中的每一個函式參數類型應該要相同，函式回傳的類型也要相同。
+* 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 typedef names 跟 qualifiers(const, volatile...)。
+
 ### Rule 8.4 (req)
 ### Rule 8.5 (req)
 ### Rule 8.6 (req)
@@ -400,3 +405,20 @@
 * Objects shall be defined at block scope if they are only accessed from within a single function.
 * 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
 * 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
+### Rule 8.8 (req)
+### Rule 8.9 (req)
+
+### Rule 8.10 (req) (by Mars)
+* All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required.
+* 中文說明：在文件的範圍內，除了有外部連結外，所有的物件與函式的宣告與定義都應有內部連結。
+* 如果變數僅使用在同一個文件內的函式，就使用 static。相同的，如果函式僅在同一個文件內被呼叫，就使用 static。使用 static 儲存標示將確保僅在宣告的文件可以被識別，且可以避免在其他文件或函示庫中相同的標示符號混淆。
+
+### Rule 8.11 (req)
+### Rule 8.12 (req)
+
+## Initialisation
+
+### Rule 9.1 (req)
+
+
+
