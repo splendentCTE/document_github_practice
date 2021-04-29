@@ -398,7 +398,43 @@
 
 ## Declarations and definitions
 
-### Rule 8.1 (req)
+### Rule 8.1 (req) (by Jackal)
+* Functions shall have prototype declarations and the prototype 
+shall be visible at both the function definition and call.
+* 中文說明：函數應具有原型聲明，並且原型在函數定義和調用處均需可見。
+```c
+	Example Code
+	#include<stdio.h>
+	main() {
+   		function(50);
+	}
+
+	void function(int x) {
+   		printf("The value of x is: %d", x);
+	}
+
+	Output
+	The value of x is: 50
+	This shows the output, but it is showing some warning like below:
+
+	[Warning] conflicting types for 'function'
+	
+	[Note] previous implicit declaration of 'function' was here
+	Now using function prototypes, it is executing without any problem.
+	#include<stdio.h>
+	void function(int); //prototype
+
+	main() {
+   		function(50);
+	}
+
+	void function(int x) {
+   		printf("The value of x is: %d", x);
+	}
+	Output
+	The value of x is: 50
+```
+
 ### Rule 8.2 (req) (by Weiren)
 * Whenever an object or function is declared or defined, its type shall be explicitly stated.
 * 中文說明：每當宣告或定義一個物件或函數時，都應該明確表示其類型。
@@ -461,7 +497,21 @@
 * Objects shall be defined at block scope if they are only accessed from within a single function.
 * 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
 * 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
-### Rule 8.8 (req)
+
+### Rule 8.8 (req) (by Jackal)
+* An external object or function shall be declared in one and only 
+one file.
+* 中文說明：外部對像或函數應在一個文件中聲明，並且只能在一個文件中聲明。
+```c
+	Example:
+	extern int16_t a;
+	在featureX.h中，然後定義：
+
+	#include <featureX.h>
+	int16_t a = 0;
+	一個項目中可能有一個頭文件，也可能有很多頭文件，但是每個外部對像或函		數只能在一個頭文件中聲明。
+```
+
 ### Rule 8.9 (req)  (by Weiren)
 * An identifier with external linkage shall have exactly one external definition.
 * 中文說明：一個具有外部連結的識別項，應該具有精確的外部定義。
