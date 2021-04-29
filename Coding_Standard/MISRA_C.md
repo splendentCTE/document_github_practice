@@ -399,7 +399,12 @@
 * 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 typedef names 跟 qualifiers(const, volatile...)。
 
 ### Rule 8.4 (req)
-### Rule 8.5 (req)
+### Rule 8.5 (req) (by Ray)
+* There shall be no definitions of objects or functions in a header file.
+* 中文說明：標頭檔中不應有Objects或functions的定義。
+* 標頭檔應用於聲明objects, functions, typedefs, and macros。
+* 標頭檔不得包含或產生佔用存儲空間的objects或functions(或fragment of functions or objects)的定義，這清楚表明只有C文件包含可執行源代碼，而標頭檔僅包含聲明。
+
 ### Rule 8.6 (req)
 ### Rule 8.7 (req) (by U.Chen)
 * Objects shall be defined at block scope if they are only accessed from within a single function.
@@ -414,7 +419,16 @@
 * 如果變數僅使用在同一個文件內的函式，就使用 static。相同的，如果函式僅在同一個文件內被呼叫，就使用 static。使用 static 儲存標示將確保僅在宣告的文件可以被識別，且可以避免在其他文件或函示庫中相同的標示符號混淆。
 
 ### Rule 8.11 (req)
-### Rule 8.12 (req)
+### Rule 8.12 (req) (by Ray)
+* When an array is declared with external linkage, its size shall be stated explicitly or defined implicitly by initialisation.
+* 中文說明：當使用外部鏈接聲明陣列時，其大小應明確聲明或通過初始化隱式定義。
+* 範例：
+	```C
+		int array1[10] ;                /* Compliant */
+		extern int array2[] ;           /* Not compliant */
+		int array2[] = { 0, 10, 15 };   /* Compliant */
+	```
+* 儘管可以聲明不完整類型的陣列並訪問其元素，但是當可以顯式確定數組的大小時，這樣做更安全。
 
 ## Initialisation
 
