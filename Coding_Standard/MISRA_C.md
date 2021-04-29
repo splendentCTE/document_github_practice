@@ -270,8 +270,16 @@
 
 ### Rule 5.5 (adv) (by Liou)
 - No object or function identifier with static storage duration should be reused.
+
 - 中文說明：具有靜態存儲期的對像或函數標識符不能重複使用。
+
 - 範例：無。
+
+- 補充說明：外部連結External,對應的關鍵字為extern 內部連結Internal，對應的關鍵字為static。
+
+  ​				   用static修飾的變量或者函數的連結屬性為其作用領域只能僅限在本文件中 ，在其他文件中就不能     				   進行調用,不同文件中的內部函數是不會相互干擾的。
+
+  ​				   Extern具有外部連結的識別項名稱所指定的函式或資料物件，會與任何其他具有外部連結的相同名     				   稱宣告所指定的函式或資料物件相同。
 
 ### Rule 5.6 (adv) (by U.Chen)
 * No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names.
@@ -413,13 +421,42 @@
 * 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 typedef names 跟 qualifiers(const, volatile...)。
 
 ### Rule 8.4 (req)
+
+
 ### Rule 8.5 (req) (by Ray)
 * There shall be no definitions of objects or functions in a header file.
+
 * 中文說明：標頭檔中不應有Objects或functions的定義。
+
 * 標頭檔應用於聲明objects, functions, typedefs, and macros。
+
 * 標頭檔不得包含或產生佔用存儲空間的objects或functions(或fragment of functions or objects)的定義，這清楚表明只有C文件包含可執行源代碼，而標頭檔僅包含聲明。
 
-### Rule 8.6 (req)
+  
+
+### Rule 8.6 (req) (by Liou)
+
+- Functions shall be declared at file scope.
+
+- 中文說明：函數應在文件範圍內聲明。
+
+- 範例：無。
+
+- 補充範例：
+
+  ```
+  class A {
+  };
+  
+  void fun() {
+    void nestedFun();  // Noncompliant; declares a function in block scope
+  
+    A a();      // Noncompliant; declares a function at block scope, not an object
+  }
+  ```
+
+
+
 ### Rule 8.7 (req) (by U.Chen)
 * Objects shall be defined at block scope if they are only accessed from within a single function.
 * 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
@@ -450,7 +487,39 @@
 
 ## Initialisation
 
-### Rule 9.1 (req)
+### Rule 9.1 (req) (by Liou)
+
+- All automatic variables shall have been assigned a value before being used.
+- 中文說明：變量應在使用前進行初始化，以避免由於垃圾值引起的意外行為。
+- 範例：無。
+
+- 補充範例：
+
+Noncompliant Code Example	
+
+```
+int function(int flag, int b) {
+  int a;
+  if (flag) {
+    a = b;
+  }
+  return a; // Noncompliant - "a" has not been initialized in all paths
+}
+```
+
+Compliant Solution
+
+```
+int function(int flag, int b) {
+  int a = 0;
+  if (flag) {
+    a = b;
+  }
+  return a;
+}
+```
+
+
 
 
 
