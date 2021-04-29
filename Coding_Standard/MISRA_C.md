@@ -60,6 +60,24 @@
         }
         ```
     * 合規定的寫法：
+	    
+		(a) assembler function:
+		```asm
+		.global
+		_Delay:
+		    nop
+			jmp
+		```
+		```c
+	   void fn ( void )
+        {
+            DoSomething ( );
+            Delay ( ); // Compliant, Assembler is encapsulated
+            DoSomething ( );
+        }
+        ```
+		
+		(b) C function:
         ```c
         void Delay ( void )
         {
@@ -73,6 +91,21 @@
             DoSomething ( );
         }
         ```
+		
+		(c) Macro:
+		```c
+        #define Delay asm ( "NOP" );
+
+        void fn ( void )
+        {
+            DoSomething ( );
+            Delay;
+            DoSomething ( );
+        }
+        ```
+	
+			
+			
 
 ### Rule 2.2 (req) (by Ray)
 * Source code shall only use /\* … \*/ style comments.
@@ -456,8 +489,9 @@ shall be visible at both the function definition and call.
 * 中文說明：在宣告與定義中的每一個函式參數類型應該要相同，函式回傳的類型也要相同。
 * 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 typedef names 跟 qualifiers(const, volatile...)。
 
-### Rule 8.4 (req)
-
+### Rule 8.4 (req) (by Noah)
+* If objects or functions are declared more than once their types shall be compatible.
+* 中文說明：如果一個物件或函式被重覆宣告，他們的形態必需是相容的。**但實際應用上應避免重覆宣告發生**。
 
 ### Rule 8.5 (req) (by Ray)
 * There shall be no definitions of objects or functions in a header file.
@@ -523,7 +557,10 @@ one file.
 * 中文說明：在文件的範圍內，除了有外部連結外，所有的物件與函式的宣告與定義都應有內部連結。
 * 如果變數僅使用在同一個文件內的函式，就使用 static。相同的，如果函式僅在同一個文件內被呼叫，就使用 static。使用 static 儲存標示將確保僅在宣告的文件可以被識別，且可以避免在其他文件或函示庫中相同的標示符號混淆。
 
-### Rule 8.11 (req)
+### Rule 8.11 (req) (by Noah)
+* The static storage class specifier shall be used in definitions and declarations of objects and functions that have internal linkage.
+* 中文說明：在宣告任何內部連結的物件或函式時，應加上static這個關鍵字。
+
 ### Rule 8.12 (req) (by Ray)
 * When an array is declared with external linkage, its size shall be stated explicitly or defined implicitly by initialisation.
 * 中文說明：當使用外部鏈接聲明陣列時，其大小應明確聲明或通過初始化隱式定義。
