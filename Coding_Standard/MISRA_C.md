@@ -606,7 +606,31 @@ int function(int flag, int b) {
 }
 ```
 
+### Rule 9.2 (req)
+### Rule 9.3 (req)
 
+## Arithmetic type conversions
 
+### Implicit type conversions
+
+### Rule 10.1 (req)
+
+### Rule 10.2 (req) (Mars)
+* The value of an expression of floating type shall not be implicitly converted to a different type if:
+* (a) it is not a conversion to a wider floating type, or
+* (b) the expression is complex, or
+* (c) the expression is a function argument, or
+* (d) the expression is a return expression Notice
+* 中文說明：下列狀況中，浮點數的表達不應有隱式轉換 ( 不同類型的數據混在一起，編譯器會自動換型態 ) 到其他型態的情況。
+* (a) 轉換不是向更大的浮點數型態轉換，或
+* (b) 表達式是複雜的，或 
+* (c) 表達式是函式參數 ，或
+* (d) 表達式有回傳通知
+
+### Explicit conversions (casts)
+
+### Rule 10.3 (req)
+### Rule 10.4 (req)
+### Rule 10.5 (req)
 
 
