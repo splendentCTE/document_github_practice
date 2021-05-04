@@ -617,15 +617,15 @@ int function(int flag, int b) {
 
 ### Rule 10.2 (req) (Mars)
 * The value of an expression of floating type shall not be implicitly converted to a different type if:
-* (a) it is not a conversion to a wider floating type, or
-* (b) the expression is complex, or
-* (c) the expression is a function argument, or
-* (d) the expression is a return expression Notice
+    1. it is not a conversion to a wider floating type, or
+    2. the expression is complex, or
+    3. the expression is a function argument, or
+    4. the expression is a return expression Notice
 * 中文說明：下列狀況中，浮點數的表達不應有隱式轉換 ( 不同類型的數據混在一起，編譯器會自動換型態 ) 到其他型態的情況。
-* (a) 轉換不是向更大的浮點數型態轉換，或
-* (b) 表達式是複雜的，或 
-* (c) 表達式是函式參數 ，或
-* (d) 表達式有回傳通知
+    1. 轉換不是向更大的浮點數型態轉換，或
+    2. 表達式是複雜的，或 
+    3. 表達式是函式參數 ，或
+    4. 表達式有回傳通知
 
 ### Explicit conversions (casts)
 
