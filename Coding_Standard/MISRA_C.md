@@ -643,7 +643,7 @@ int function(int flag, int b) {
         (uint16_t)(u16a + u16b)
 		(uint32_t)u16a + u16b
         ```
-    此限制主要的目的是想確保寫程式的人自已清楚預期的運算結果，而不是依賴Integer promotion(定義於C99 55頁)的結果。
+    此限制主要的目的是想確保寫程式的人自己清楚預期的運算結果，而不是依賴Integer promotion(定義於C99 55頁)的結果。
 	Integer promotion:If an int can represent all values of the original type, the value is converted to an int; otherwise, it is converted to an unsigned int.
 	像以下範例，如果依賴Integer promotion的話，在不同compiler就可能會有不同結果。
 	```c
