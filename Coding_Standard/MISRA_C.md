@@ -653,6 +653,40 @@ int function(int flag, int b) {
     u32x = u16a + u16b; // u32x = 70000 or 4464?
 	```
 	
-### Rule 10.4 (req)
+### Rule 10.4 (req) (by Ray)
+* The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
+* 中文說明：浮點型複雜表達式的值只能轉換為更窄或相同大小的浮點型。
+* 如果要在任何復雜表達式上使用強制類型轉換，則可以應用的強制類型將受到嚴格限制。
+* 複雜表達式的轉換經常是混淆的來源，範例：
+	```C
+	s8a + s8b
+	~u16a
+	u16a >> 2
+	foo (2) + u8a
+	*ppc + 1
+	++u8a
+	```
+* Rule 10.3與10.4範例：
+	```C
+	... (float32_t)(f64a + f64b)           /* compliant */
+	... (float64_t)(f32a + f32b)           /* not compliant */
+	... (float64_t)f32a                    /* compliant */
+	... (float64_t)(s32a / s32b)           /* not compliant */
+	... (float64_t)(s32a > s32b)           /* not compliant */
+	... (float64_t)s32a / (float32_t)s32b  /* compliant */
+	... (uint32_t)(u16a + u16b)            /* not compliant */
+	... (uint32_t)u16a + u16b              /* compliant */
+	... (uint32_t)u16a + (uint32_t)u16b    /* compliant */
+	... (int16_t)(s32a - 12345)            /* compliant */
+	... (uint8_t)(u16a * u16b)             /* compliant */
+	... (uint16_t)(u8a * u8b)              /* not compliant */
+	... (int16_t)(s32a * s32b)             /* compliant */
+	... (int32_t)(s16a * s16b)             /* not compliant */
+	... (uint16_t)(f64a + f64b)            /* not compliant */
+	... (float32_t)(u16a + u16b)           /* not compliant */
+	... (float64_t)foo1(u16a + u16b)       /* compliant */
+	... (int32_t)buf16a[u16a + u16b]       /* compliant */
+	```
+
 ### Rule 10.5 (req)
 
