@@ -627,10 +627,32 @@ int function(int flag, int b) {
     3. 表達式是函式參數 ，或
     4. 表達式有回傳通知
 
-### Explicit conversions (casts)
+### Explicit conversions (casts)明確類型轉換
 
-### Rule 10.3 (req)
+### Rule 10.3 (req) (by Noah)
+
+* The value of a complex expression of integer type shall only be cast to a type of the same signedness that is no wider than the underlying type of the expression.
+* 中文說明：對任何複雜運算(複雜運算定義如MISRA-C 47頁所述)的結果做類型轉換時，只能轉換成同符號而且不能比預期運算結果還寬的類型。
+* 範例：
+    * 不合規定的寫法：
+        ```c
+        (uint32_t)(u16a + u16b)
+        ```
+    * 合規定的寫法：
+        ```c
+        (uint16_t)(u16a + u16b)
+		(uint32_t)u16a + u16b
+        ```
+    此限制主要的目的是想確保寫程式的人自已清楚預期的運算結果，而不是依賴Integer promotion(定義於C99 55頁)的結果。
+	Integer promotion:If an int can represent all values of the original type, the value is converted to an int; otherwise, it is converted to an unsigned int.
+	像以下範例，如果依賴Integer promotion的話，在不同compiler就可能會有不同結果。
+	```c
+    uint16_t u16a = 40000; // unsigned short / unsigned int? 
+    uint16_t u16b = 30000; // unsigned short / unsigned int? 
+    uint32_t u32x; // unsigned int / unsigned long? 
+    u32x = u16a + u16b; // u32x = 70000 or 4464?
+	```
+	
 ### Rule 10.4 (req)
 ### Rule 10.5 (req)
-
 
