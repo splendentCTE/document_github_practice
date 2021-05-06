@@ -60,7 +60,7 @@
         }
         ```
     * 合規定的寫法：
-	    
+
 		(a) assembler function:
 		```asm
 		.global
@@ -76,7 +76,7 @@
             DoSomething ( );
         }
         ```
-		
+
 		(b) C function:
         ```c
         void Delay ( void )
@@ -91,7 +91,7 @@
             DoSomething ( );
         }
         ```
-		
+
 		(c) Macro:
 		```c
         #define Delay asm ( "NOP" );
@@ -103,9 +103,9 @@
             DoSomething ( );
         }
         ```
-	
-			
-			
+
+
+
 
 ### Rule 2.2 (req) (by Ray)
 * Source code shall only use /\* … \*/ style comments.
@@ -432,7 +432,7 @@
 ## Declarations and definitions
 
 ### Rule 8.1 (req) (by Jackal)
-* Functions shall have prototype declarations and the prototype 
+* Functions shall have prototype declarations and the prototype
 shall be visible at both the function definition and call.
 * 中文說明：函數應具有原型聲明，並且原型在函數定義和調用處均需可見。
 ```c
@@ -451,7 +451,7 @@ shall be visible at both the function definition and call.
 	This shows the output, but it is showing some warning like below:
 
 	[Warning] conflicting types for 'function'
-	
+
 	[Note] previous implicit declaration of 'function' was here
 	Now using function prototypes, it is executing without any problem.
 	#include<stdio.h>
@@ -502,7 +502,7 @@ shall be visible at both the function definition and call.
 
 * 標頭檔不得包含或產生佔用存儲空間的objects或functions(或fragment of functions or objects)的定義，這清楚表明只有C文件包含可執行源代碼，而標頭檔僅包含聲明。
 
-  
+
 
 ### Rule 8.6 (req) (by Liou)
 
@@ -517,10 +517,10 @@ shall be visible at both the function definition and call.
   ```
   class A {
   };
-  
+
   void fun() {
     void nestedFun();  // Noncompliant; declares a function in block scope
-  
+
     A a();      // Noncompliant; declares a function at block scope, not an object
   }
   ```
@@ -533,7 +533,7 @@ shall be visible at both the function definition and call.
 * 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
 
 ### Rule 8.8 (req) (by Jackal)
-* An external object or function shall be declared in one and only 
+* An external object or function shall be declared in one and only
 one file.
 * 中文說明：外部對像或函數應在一個文件中聲明，並且只能在一個文件中聲明。
 ```c
@@ -582,7 +582,7 @@ one file.
 
 - 補充範例：
 
-Noncompliant Code Example	
+Noncompliant Code Example
 
 ```
 int function(int flag, int b) {
@@ -623,7 +623,35 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 
 ### Implicit type conversions
 
-### Rule 10.1 (req)
+### Rule 10.1 (req) (by Weiren)
+* The value of an expression of integer type shall not be implicitly converted to a different underlying type if:
+    1. it is not a conversion to a wider integer type of the same signedness, or
+    2. the expression is complex, or
+    3. the expression is not constant and is a function argument, or
+    4. the expression is not constant and is a return expression
+* 中文說明：在下列情況下，整數類型的表達式的不得隱式轉換為其他基礎類型：
+    1. 轉換不是向更寬的相同符號整數類型的轉換，或
+    2. 表達式是複雜表達式，或
+    3. 表達式不是常數，而是函數參數，或
+    4. 表達式不是常數，而是一個回傳表達式
+    ```C
+        /* 1.*/
+        u8a = u16a;  /*不合規，不是向更寬整數類型不得隱式轉換*/
+        s8b = u8a;   /*不合規，不同符號的整數不得隱式轉換*/
+
+        /* 2.*/
+        s8a + u8a;  /*不合規，複雜表達式不得隱式轉換*/
+
+        /* 3.*/
+        void foo1(uint8_t x);
+        foo1(s8a);  /*不合規，函數參數不得隱式轉換*/
+
+        /* 4.*/
+        int16_t t1(void)
+        {
+            return (u16a); /*不合規，回傳表示式不得隱式轉換*/
+        }
+    ```
 
 ### Rule 10.2 (req) (Mars)
 * The value of an expression of floating type shall not be implicitly converted to a different type if:
@@ -633,7 +661,7 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
     4. the expression is a return expression Notice
 * 中文說明：下列狀況中，浮點數的表達不應有隱式轉換 ( 不同類型的數據混在一起，編譯器會自動換型態 ) 到其他型態的情況。
     1. 轉換不是向更大的浮點數型態轉換，或
-    2. 表達式是複雜的，或 
+    2. 表達式是複雜的，或
     3. 表達式是函式參數 ，或
     4. 表達式有回傳通知
 
@@ -657,12 +685,12 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 	Integer promotion:If an int can represent all values of the original type, the value is converted to an int; otherwise, it is converted to an unsigned int.
 	像以下範例，如果依賴Integer promotion的話，在不同compiler就可能會有不同結果。
 	```c
-    uint16_t u16a = 40000; // unsigned short / unsigned int? 
-    uint16_t u16b = 30000; // unsigned short / unsigned int? 
-    uint32_t u32x; // unsigned int / unsigned long? 
+    uint16_t u16a = 40000; // unsigned short / unsigned int?
+    uint16_t u16b = 30000; // unsigned short / unsigned int?
+    uint32_t u32x; // unsigned int / unsigned long?
     u32x = u16a + u16b; // u32x = 70000 or 4464?
 	```
-	
+
 ### Rule 10.4 (req) (by Ray)
 * The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
 * 中文說明：浮點型複雜表達式的值只能轉換為更窄或相同大小的浮點型。
