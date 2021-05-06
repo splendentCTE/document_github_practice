@@ -606,7 +606,21 @@ int function(int flag, int b) {
 }
 ```
 
-### Rule 9.2 (req)
+### Rule 9.2 (req) (by U.Chen)
+* Braces shall be used to indicate and match the structure in the non-zero initialisation of arrays and structures.
+* 中文說明：應該使用大括號以指示和匹配陣列和結構的非零初始化構造。
+* ISO C 要求陣列、結構和聯合的初始化列表要以一對大括號括起来（盡管不這樣做的行為
+是未定義的）。本規則更進一步地要求，使用附加的大括號来指示嵌套的结构。
+* 範例：
+    二维陣列初始化的有效（在 ISO C 中）形式，但第一個與本規則相違背：
+    ```c
+    int16_t y[3][2] = { 1, 2, 3, 4, 5, 6 }; /* not compliant */ 
+    int16_t y[3][2] = { { 1, 2 }, { 3, 4 }, { 5, 6 } } ; /* compliant */
+    ```
+* 在結構中以及在結構、陣列及其他類型的嵌套组合中，規則類似。
+* 還要注意的是，陣列或結構的元素可以通過只初始化其首元素的方式初始化（为 0 或
+NULL）。如果選擇了這樣的初始化方法，那麼首元素應该被初始化為 0（或 NULL），此時不
+需要使用嵌套的大括號。
 ### Rule 9.3 (req) (by Jackal)
 * In an enumerator list, the “=” construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
 * 中文說明：在枚舉數列表中，除非所有項目均已明確初始化，否則不得使用“ =”結構來明確初始化除第一個成員以外的成員。
