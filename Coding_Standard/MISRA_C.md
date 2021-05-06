@@ -607,7 +607,17 @@ int function(int flag, int b) {
 ```
 
 ### Rule 9.2 (req)
-### Rule 9.3 (req)
+### Rule 9.3 (req) (by Jackal)
+* In an enumerator list, the “=” construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
+* 中文說明：在枚舉數列表中，除非所有項目均已明確初始化，否則不得使用“ =”結構來明確初始化除第一個成員以外的成員。
+
+```
+enum colour { red=3, blue, green, yellow=5 };        /* non compliant */ 
+   /* green and yellow represent the same value - this is duplication */
+enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */ 
+   /* green and yellow represent the same value - this is duplication */
+
+```
 
 ## Arithmetic type conversions
 
