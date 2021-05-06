@@ -1,0 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.{c,h}]
+curly_bracket_next_line = true
+spaces_around_operators = true
+spaces_around_brackets = true
+indent_brace_style = K&R
