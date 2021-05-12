@@ -1,3 +1,5 @@
+
+
 # MISRA C
 
 ## Introduction
@@ -75,7 +77,7 @@
             Delay ( ); // Compliant, Assembler is encapsulated
             DoSomething ( );
         }
-        ```
+      ```
 
 		(b) C function:
         ```c
@@ -102,7 +104,7 @@
             Delay;
             DoSomething ( );
         }
-        ```
+      ```
 
 
 
@@ -740,5 +742,52 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 	... (int32_t)buf16a[u16a + u16b]       /* compliant */
 	```
 
-### Rule 10.5 (req)
+### Rule 10.5 (req) (by Liou)
+
+- If the bitwise operators ~ and << are applied to an operand of underlying type unsigned char or unsigned short, the result shall be immediately cast to the underlying type of the operand.
+- 中文說明：如果位運算符 ~ 和 << 應用在基本類型為 unsigned char 或 unsigned short 的操作數，結果應該立即強制轉換為操作數的基本類型。
+- 範例：
+
+```
+uint8_t port = 0x5aU; 
+uint8_t result_8; 
+uint16_t result_16; 
+uint16_t mode;
+result_8 = (~port) >> 4;  
+// Noncompliant;'~port' is 0xFFA5 on a 16-bit machine but 0xFFFFFFA5 on a 32-bit machine. Result is 0xFA for both, but 0x0A may have been expected.
+```
+
+這樣的危險可以通過如下所示的強制轉換來避免：
+
+```
+result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */ 
+result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
+```
+
+### Rule 12.1(adv) (by Liou)
+
+-  Limited dependence should be placed on C’s operator precedence rules in expressions.
+
+- 中文說明：有限的依存關係應放在運算符優先級上。
+
+  運算符優先級的規則很複雜，可能導致錯誤。 因此，在復雜的陳述中應使用括號來進行說明。 但是，這並不意味著應該在每次操作前後都加括號。
+
+- 範例：
+
+  Compliant Solution
+
+```
+x = a + b;
+x = a * -1;
+x = a + b + c;
+x = f ( a + b, c );
+
+x = ( a == b ) ? a : ( a - b );
+x = ( a + b ) - ( c + d );
+x = ( a * 3 ) + c + d;
+
+if ( (a = f(b,c)) == true) { ... }
+(x - b) ? a : c; // Compliant
+(s << 5) == 1; // Compliant
+```
 
