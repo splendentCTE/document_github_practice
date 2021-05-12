@@ -764,6 +764,18 @@ result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */
 result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ```
 
+### Rule 11.4 (adv) (by Noah)
+
+* A cast should not be performed between a pointer to object type and a different pointer to object type.
+* 中文說明：不同指標類型之間不應該做型別轉換，因為如果新的指標類型是需要強制對齊的話，轉換可能會失效。
+* 範例：
+    * 不合規定的寫法：
+        ```c
+        uint8_t * p1; /* for example, p1 = 0x03(奇數記憶體位址) */
+        uint32_t * p2;
+        p2 = (uint32_t *)p1; /* Incompatible alignment */
+        ```
+
 ### Rule 12.1(adv) (by Liou)
 
 -  Limited dependence should be placed on C’s operator precedence rules in expressions.
