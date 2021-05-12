@@ -616,7 +616,7 @@ int function(int flag, int b) {
 * 範例：
     二维陣列初始化的有效（在 ISO C 中）形式，但第一個與本規則相違背：
     ```c
-    int16_t y[3][2] = { 1, 2, 3, 4, 5, 6 }; /* not compliant */ 
+    int16_t y[3][2] = { 1, 2, 3, 4, 5, 6 }; /* not compliant */
     int16_t y[3][2] = { { 1, 2 }, { 3, 4 }, { 5, 6 } } ; /* compliant */
     ```
 * 在結構中以及在結構、陣列及其他類型的嵌套组合中，規則類似。
@@ -628,9 +628,9 @@ NULL）。如果選擇了這樣的初始化方法，那麼首元素應该被初�
 * 中文說明：在枚舉數列表中，除非所有項目均已明確初始化，否則不得使用“ =”結構來明確初始化除第一個成員以外的成員。
 
 ```
-enum colour { red=3, blue, green, yellow=5 };        /* non compliant */ 
+enum colour { red=3, blue, green, yellow=5 };        /* non compliant */
    /* green and yellow represent the same value - this is duplication */
-enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */ 
+enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
    /* green and yellow represent the same value - this is duplication */
 
 ```
@@ -748,21 +748,30 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 - 中文說明：如果位運算符 ~ 和 << 應用在基本類型為 unsigned char 或 unsigned short 的操作數，結果應該立即強制轉換為操作數的基本類型。
 - 範例：
 
-```
-uint8_t port = 0x5aU; 
-uint8_t result_8; 
-uint16_t result_16; 
+```C
+uint8_t port = 0x5aU;
+uint8_t result_8;
+uint16_t result_16;
 uint16_t mode;
-result_8 = (~port) >> 4;  
+result_8 = (~port) >> 4;
 // Noncompliant;'~port' is 0xFFA5 on a 16-bit machine but 0xFFFFFFA5 on a 32-bit machine. Result is 0xFA for both, but 0x0A may have been expected.
 ```
 
 這樣的危險可以通過如下所示的強制轉換來避免：
 
-```
-result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */ 
+```C
+result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */
 result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ```
+### Rule 11.2(req) (by Weiren)
+* Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
+* 中文說明：不得在指向對象的指標和任何其他類型之間進行轉換，除了整數類型、另一個指向對象的指標、或指向void的指標。
+
+* 此類轉換是未定義行為。
+* 此規則意味著可以將指向對象的指標轉換為：
+    1. 一個整數類型
+    2. 另一個指向對象的指標
+    3. 指向void的指標
 
 ### Rule 10.6 (req) (by U.Chen)
 * A “U” suffix shall be applied to all constants of unsigned type.
@@ -853,7 +862,7 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 
   Compliant Solution
 
-```
+```C
 x = a + b;
 x = a * -1;
 x = a + b + c;
