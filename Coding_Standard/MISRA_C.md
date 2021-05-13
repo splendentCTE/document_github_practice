@@ -763,7 +763,16 @@ result_8 = (~port) >> 4;
 result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */ 
 result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ```
-
+### Rule 11.3 (adv)
+* A cast should not be performed between a pointer type and an integral type.
+* 中文說明：指標與整數型態之間，不應該執行轉換。
+* 當指針轉換到整數時，整數的記憶體大小是由實作來決定。盡可能避免在指針和整數類型之間進行強制轉換，但也許在記憶體位置對應暫存器或是在其他硬體的具體功能是無法避免的。
+    ```c
+    char *p ="abcd";
+    int a = (int)p;
+    func((char *)a);
+    ```
+	
 ### Rule 11.4 (adv) (by Noah)
 
 * A cast should not be performed between a pointer to object type and a different pointer to object type.
