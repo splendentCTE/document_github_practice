@@ -781,6 +781,21 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     * 大於或等於 $2^{31}$的無後綴十進制值可能是帶符號或無符號類型
 * 常數的符號應該明確。符號的一致性是建構良好形式的表達式的重要原則。如果一個常数是unsigned類型，為其加上“U”後綴將有助于避免混淆。當用在較大數值上時，後缀也许是多餘的；然而後缀的存在對程式的清晰性是種有價值的幫助。
 
+
+### Rule 11.1 (req) (by jackal)
+*Conversions shall not be performed between a pointer to a function and any type other than an integral type.
+* 中文說明：不得在指向函數的指針與除整數類型以外的任何類型之間進行轉換
+* 將函數指針轉換為其他類型的指針會導致未定義的行為。這意味著可以將函數指針轉換為整數類型或從整數類型轉換。不允許進行涉及函數指針的其他轉換。
+
+將函數指針轉換為其他類型的指針會導致未定義的行為。例如，這意味著無法將指向函數的指針轉換為指向不同類型的函數的指針。
+
+    ```c
+	int f（int a）
+	{
+  		float（* p）（float）=（float（*）（float））＆f; //不符合規定
+	}
+     ```	
+
 ### Rule 11.3 (adv)
 * A cast should not be performed between a pointer type and an integral type.
 * 中文說明：指標與整數型態之間，不應該執行轉換。
@@ -790,6 +805,8 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     int a = (int)p;
     func((char *)a);
     ```
+
+
 	
 ### Rule 11.4 (adv) (by Noah)
 
