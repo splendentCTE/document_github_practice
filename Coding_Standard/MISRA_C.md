@@ -785,6 +785,29 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
         p2 = (uint32_t *)p1; /* Incompatible alignment */
         ```
 
+### Rule 11.5 (req) (by Ray)
+* A cast shall not be performed that removes any const or volatile qualification from the type addressed by a pointer.
+* 中文說明：如果指標所指向的類型帶有const或volatile限定符，那麼刪除限定符的強制轉換是不允許的。
+* 通過強制轉換刪除類型限定符的任何嘗試都是違反了類型限定的原理。
+* 範例：
+	```C
+	uint16_t              x;
+	uint16_t * const      cpi = &x;    /* const pointer */
+	uint16_t * const      * pcpi;      /* pointer to const pointer */
+	const uint16_t *      * ppci;      /* pointer to pointer to const */
+	uint16_t *            * ppi;
+	const uint16_t        * pci;       /* pointer to const */
+	volatile uint16_t     * pvi;       /* pointer to volatile */
+	uint16_t * pi;
+	...
+	pi = cpi;                          /* Compliant - no conversion
+	                                                  no cast required */
+	pi = (uint16_t *)pci;              /* Not compliant */
+	pi = (uint16_t *)pvi;              /* Not compliant */
+	ppi = (uint16_t * *)pcpi;          /* Not compliant */
+	ppi = (uint16_t * *)ppci;          /* Not compliant */
+	```
+
 ### Rule 12.1(adv) (by Liou)
 
 -  Limited dependence should be placed on C’s operator precedence rules in expressions.
