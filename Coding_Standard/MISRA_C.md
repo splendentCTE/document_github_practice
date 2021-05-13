@@ -763,6 +763,24 @@ result_8 = (~port) >> 4;
 result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */ 
 result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ```
+
+### Rule 10.6 (req) (by U.Chen)
+* A “U” suffix shall be applied to all constants of unsigned type.
+* 中文說明：所有的unsigned類型都應該有後綴"U"
+* 整數常量的類型是造成混淆的潛在原因，因為它取決於多種因素的複雜組合，其中包括
+  * 常數的大小
+  * 整數類型的實現大小
+  * 存在任何後綴
+  * 表示值的數字基數（即十進制，八進製或十六進制）
+* 例如，整數常量“40000”在32位元的環境中為int類型，而在16位元的環境中為long類型。 值0x8000在16位元的環境中類型為unsigned int，但在32位元的環境中類型為（signed）int。
+* 請注意以下幾點：
+    * 任何帶有“U”後綴的值都是無符號類型
+    * 小於 $2^{31}$的無後綴十進制值是帶符號類型
+* 但是：
+    * 大於或等於 $2^{15}$的不帶後綴的十六進制值可能是帶符號的或無符號的類型
+    * 大於或等於 $2^{31}$的無後綴十進制值可能是帶符號或無符號類型
+* 常數的符號應該明確。符號的一致性是建構良好形式的表達式的重要原則。如果一個常数是unsigned類型，為其加上“U”後綴將有助于避免混淆。當用在較大數值上時，後缀也许是多餘的；然而後缀的存在對程式的清晰性是種有價值的幫助。
+
 ### Rule 11.3 (adv)
 * A cast should not be performed between a pointer type and an integral type.
 * 中文說明：指標與整數型態之間，不應該執行轉換。
