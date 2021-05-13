@@ -763,15 +763,6 @@ result_8 = (~port) >> 4;
 result_8 = ((uint8_t)(~port)) >> 4 ; /*compliant */
 result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ```
-### Rule 11.2(req) (by Weiren)
-* Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
-* 中文說明：不得在指向對象的指標和任何其他類型之間進行轉換，除了整數類型、另一個指向對象的指標、或指向void的指標。
-
-* 此類轉換是未定義行為。
-* 此規則意味著可以將指向對象的指標轉換為：
-    1. 一個整數類型
-    2. 另一個指向對象的指標
-    3. 指向void的指標
 
 ### Rule 10.6 (req) (by U.Chen)
 * A “U” suffix shall be applied to all constants of unsigned type.
