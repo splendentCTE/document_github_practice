@@ -895,5 +895,9 @@ if ( (a = f(b,c)) == true) { ... }
 
 ### Rule 12.5(req)
 ### Rule 12.6(adv)
-### Rule 12.7(req)
+### Rule 12.7(req) (by Ray)
+* Bitwise operators shall not be applied to operands whose underlying type is signed.
+* 中文說明：位運算符不能用於基本類型(underlying type)是有符號的。
+* 位運算符（〜，<<，<< =，>>，>> =，＆，＆=，^，^ =，|和| =）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
+
 ### Rule 12.8(req)
