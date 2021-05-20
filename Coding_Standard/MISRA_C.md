@@ -804,7 +804,7 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     2. 另一個指向對象的指標
     3. 指向void的指標
 
-### Rule 11.3 (adv)
+### Rule 11.3 (adv) (by Mars)
 * A cast should not be performed between a pointer type and an integral type.
 * 中文說明：指標與整數型態之間，不應該執行轉換。
 * 當指針轉換到整數時，整數的記憶體大小是由實作來決定。盡可能避免在指針和整數類型之間進行強制轉換，但也許在記憶體位置對應暫存器或是在其他硬體的具體功能是無法避免的。
@@ -893,7 +893,31 @@ if ( (a = f(b,c)) == true) { ... }
     ```
 * 在ISO / IEC 9899：1990 [2]的5.1.2.3節中將導致副作用的操作描述為訪問 volatile 的對像、修改對像、修改文件，或者是調用任何會執行這些操作的函數，函數所執行的這些操作可以導致函數所運行的環境狀態發生改變。
 
-### Rule 12.5(req)
+### Rule 12.5(req) (by Mars)
+* The operands of a logical && or || shall be primary-expressions.
+* 中文說明：邏輯運算符號 && 跟 || 應是主要運算式
+* 主要運算式 ( Primary expressions ) 定義在 ISO/IEC 9899:1990 [2] 的 6.3.1 節。
+* 本質上，他們可以是單一的識別字、常數或括起來的表達式。
+* 這個規則主要是用在，當不只一個識別字或常數被運算，就必須要括起來。
+* 括號在這種情況下，對於可讀性以及確保程式的預期行為來說非常重要。
+* 如果表達式只有使用邏輯 && 或 || 其中一種，就不需要使用括號。
+* 示例：
+    ```C
+    if ( ( x == 0 ) && ishigh ) /* make x == 0 primary */
+    if ( x || y || z ) /* exception allowed,
+    if x, y and z are Boolean */
+    if ( x || ( y && z ) ) /* make y && z primary */
+    if ( x && ( !y ) ) /* make !y primary */
+    if ( ( is_odd (y) ) && x ) /* make call primary */
+    ```
+* 如果表達式只有使用邏輯 && 或 || 的情況：
+    ```C
+    if ( ( x > c1) && (y > c2) && (z > c3) ) /* Compliant */
+    if ( ( x > c1) && (y > c2) || (z > c3) ) /* not compliant */
+    if ( ( x > c1) && ((y > c2) || (z > c3)) ) /* Compliant extra () used */
+    ```
+* 註記: Rule 12.5 對 Rule 12.1 來說是個特例
+
 ### Rule 12.6(adv)
 ### Rule 12.7(req) (by Ray)
 * Bitwise operators shall not be applied to operands whose underlying type is signed.
