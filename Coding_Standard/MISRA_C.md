@@ -783,14 +783,14 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 
 
 ### Rule 11.1 (req) (by jackal)
-*Conversions shall not be performed between a pointer to a function and any type other than an integral type.
+* Conversions shall not be performed between a pointer to a function and any type other than an integral type.
 * 中文說明：不得在指向函數的指針與除整數類型以外的任何類型之間進行轉換
 * 將函數指針轉換為其他類型的指針會導致未定義的行為。這意味著可以將函數指針轉換為整數類型或從整數類型轉換。不允許進行涉及函數指針的其他轉換。
 
     ```c
 	int f（int a）
 	{
-  		float（* p）（float）=（float（*）（float））＆f; //不符合規定
+  		float（* p）（float）=（float（*）（float））&f; //不符合規定
 	}
      ```
 
@@ -851,15 +851,9 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
 ## Expressions
 
 ### Rule 12.1(adv) (by Liou)
-
--  Limited dependence should be placed on C’s operator precedence rules in expressions.
-
-- 中文說明：有限的依存關係應放在運算符優先級上。
-
-  運算符優先級的規則很複雜，可能導致錯誤。 因此，在複雜的陳述中應使用括號來進行說明。 但是，這並不意味著應該在每次操作前後都加括號。
-
+- Limited dependence should be placed on C’s operator precedence rules in expressions.
+- 中文說明：有限的依存關係應放在運算符優先級上。運算符優先級的規則很複雜，可能導致錯誤。因此，在複雜的陳述中應使用括號來進行說明。但是，這並不意味著應該在每次操作前後都加括號。
 - 範例：
-
   Compliant Solution
 
 ```C
@@ -888,10 +882,10 @@ if ( (a = f(b,c)) == true) { ... }
       ```c
       x = b[i] + i++;
       ```
-    根據 b[i] 的運算是先于還是後於 i ++ 的運算，表達式會產生不同的结果。把增值運算做為單獨的語句，可以避免這個问题。那麼：
+    根據 b[i] 的運算是先于還是後於 i++ 的運算，表達式會產生不同的结果。把增值運算做為單獨的語句，可以避免這個问题。那麼：
       ```c
       x = b[i] + i;
-      i ++;
+      i++;
       ```
   * 函數參數\
     函數參數的運算次序是未指定的。
@@ -953,12 +947,11 @@ if ( (a = f(b,c)) == true) { ... }
 ### Rule 12.4(req) (by weiren)
 * The right-hand operand of a logical && or || operator shall not contain side effects.
 * 中文說明：邏輯運算符 && 或 || 的右側操作數不得含有副作用。
-
 * 在C代碼中，有些情況下表達式的某些部分可能不會求值。如果這些子表達式包含副作用，這些副作用不一定會發生，這取決於其他的子表達式的值。
-* 可能導致此問題的運算符是 && ， || 。 和 ？：。對於前兩個（邏輯運算符），對右側操作數的求值取決於左側操作數的值。
-* 對於？：運算符，將對第二個或第三個操作數求值，但不會對兩者都求值。
+* 可能導致此問題的運算符是 && ， || ，和 ?:。對於前兩個（邏輯運算符），對右側操作數的求值取決於左側操作數的值。
+* 對於 ?: 運算符，將對第二個或第三個操作數求值，但不會對兩者都求值。
 * 如果程式設計師依賴於副作用，在兩種邏輯運算符其中之一的右操作數作條件求值很容易發生問題。
-* ？：運算符是在兩個子表達式之間進行選擇，因此不太可能發生錯誤。
+* ?: 運算符是在兩個子表達式之間進行選擇，因此不太可能發生錯誤。
 * 範例：
     ```C
     if ( ishigh && ( x == i++ ) )  /* 不合規 */
@@ -990,6 +983,6 @@ if ( (a = f(b,c)) == true) { ... }
 ### Rule 12.7(req) (by Ray)
 * Bitwise operators shall not be applied to operands whose underlying type is signed.
 * 中文說明：位運算符不能用於基本類型(underlying type)是有符號的。
-* 位運算符（〜，<<，<< =，>>，>> =，＆，＆=，^，^ =，|和| =）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
+* 位運算符（〜，<<，<< =，>>，>> =，&，&=，^，^ =，|和|=）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
 
 ### Rule 12.8(req)
