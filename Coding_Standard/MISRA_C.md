@@ -85,7 +85,7 @@
         {
             asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
         }
-
+      
         void fn ( void )
         {
             DoSomething ( );
@@ -97,7 +97,7 @@
 		(c) Macro:
 		```c
         #define Delay asm ( "NOP" );
-
+      
         void fn ( void )
         {
             DoSomething ( );
@@ -269,12 +269,12 @@
     {
       typedef unsigned char uint8_t;
     }
-
+    
     /* Not compliant – redefinition */
     {
       typedef unsigned char uint8_t;
     }
-
+    
     /* Not compliant – reuse of uint8_t */
     {
       unsigned char uint8_t;
@@ -519,10 +519,10 @@ shall be visible at both the function definition and call.
   ```
   class A {
   };
-
+  
   void fun() {
     void nestedFun();  // Noncompliant; declares a function in block scope
-
+  
     A a();      // Noncompliant; declares a function at block scope, not an object
   }
   ```
@@ -654,14 +654,14 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
         /* 1.*/
         u8a = u16a;  /*不合規，不是向更寬整數類型不得隱式轉換*/
         s8b = u8a;   /*不合規，不同符號的整數不得隱式轉換*/
-
+    
         /* 2.*/
         s8a + u8a;  /*不合規，複雜表達式不得隱式轉換*/
-
+    
         /* 3.*/
         void foo1(uint8_t x);
         foo1(s8a);  /*不合規，函數參數不得隱式轉換*/
-
+    
         /* 4.*/
         int16_t t1(void)
         {
@@ -697,9 +697,9 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
         (uint16_t)(u16a + u16b)
 		(uint32_t)u16a + u16b
         ```
-    此限制主要的目的是想確保寫程式的人自己清楚預期的運算結果，而不是依賴Integer promotion(定義於C99 55頁)的結果。
-	Integer promotion:If an int can represent all values of the original type, the value is converted to an int; otherwise, it is converted to an unsigned int.
-	像以下範例，如果依賴Integer promotion的話，在不同compiler就可能會有不同結果。
+        此限制主要的目的是想確保寫程式的人自己清楚預期的運算結果，而不是依賴Integer promotion(定義於C99 55頁)的結果。
+	    Integer promotion:If an int can represent all values of the original type, the value is converted to an int; otherwise, it is converted to an unsigned int.
+	    像以下範例，如果依賴Integer promotion的話，在不同compiler就可能會有不同結果。
 	```c
     uint16_t u16a = 40000; // unsigned short / unsigned int?
     uint16_t u16b = 30000; // unsigned short / unsigned int?
@@ -790,9 +790,9 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     ```c
 	int f（int a）
 	{
-  		float（* p）（float）=（float（*）（float））＆f; //不符合規定
+    		float（* p）（float）=（float（*）（float））＆f; //不符合規定
 	}
-     ```
+    ```
 
 ### Rule 11.2(req) (by Weiren)
 * Conversions shall not be performed between a pointer to object and any type other than an integral type, another pointer to object type or a pointer to void.
@@ -876,7 +876,6 @@ if ( (a = f(b,c)) == true) { ... }
 (x - b) ? a : c; // Compliant
 (s << 5) == 1; // Compliant
 ```
-
 ### Rule 12.2 (req) (by U.Chen)
 * The value of an expression shall be the same under any order of evaluation that the standard permits.
 * 中文說明：在標准允許的任何運算次序下，表達式的值應相同。
@@ -986,7 +985,29 @@ if ( (a = f(b,c)) == true) { ... }
     ```
 * 註記: Rule 12.5 對 Rule 12.1 來說是特例。
 
-### Rule 12.6(adv)
+### Rule 12.6(adv) (by Noah)
+
+* The operands of logical operators (&&, || and !) should be effectively Boolean.
+  Expressions that are effectively Boolean should not be used as operands to operators other than
+  (&&, ||, !,=, ==, != and ?:).
+
+* 中文說明：一個邏輯運算式必需是有效的布林運算式(MISRA C 114頁)，
+  不可和(&&, ||, !,=, ==, != and ?:)以外的運算元組合成一個運算式。
+
+* 範例：
+
+  * 不合規定的寫法：
+
+    ```c
+    a = ((b == c) + 5);
+    ```
+
+  * 合規定的寫法：
+
+    ```c
+    a = ((b == c) && d);
+    ```
+
 ### Rule 12.7(req) (by Ray)
 * Bitwise operators shall not be applied to operands whose underlying type is signed.
 * 中文說明：位運算符不能用於基本類型(underlying type)是有符號的。
