@@ -895,17 +895,12 @@ if ( (a = f(b,c)) == true) { ... }
 
 ### Rule 12.5(req) (by Mars)
 * The operands of a logical && or || shall be primary-expressions.
-* 中文說明：邏輯運算符號 && 跟 || 應是主要運算式
-* 主要運算式 ( Primary expressions ) 定義在 ISO/IEC 9899:1990 [2] 的 6.3.1 節。
-* 本質上，他們可以是單一的識別字、常數或括起來的表達式。
-* 這個規則主要是用在，當不只一個識別字或常數被運算，就必須要括起來。
-* 括號在這種情況下，對於可讀性以及確保程式的預期行為來說非常重要。
-* 如果表達式只有使用邏輯 && 或 || 其中一種，就不需要使用括號。
+* 中文說明：邏輯運算符號 && 跟 || 應是主要運算式。
+* 主要運算式 ( Primary expressions ) 定義在 ISO/IEC 9899:1990 [2] 的 6.3.1 節。本質上，他們可以是單一的識別字、常數或括起來的表達式。這個規則主要是用在，當不只一個識別字或常數被運算，就必須要括起來。括號在這種情況下，對於可讀性以及確保程式的預期行為來說非常重要。如果表達式只有使用邏輯 && 或 || 其中一種，就不需要使用括號。
 * 示例：
     ```C
     if ( ( x == 0 ) && ishigh ) /* make x == 0 primary */
-    if ( x || y || z ) /* exception allowed,
-    if x, y and z are Boolean */
+    if ( x || y || z ) /* exception allowed, if x, y and z are Boolean */
     if ( x || ( y && z ) ) /* make y && z primary */
     if ( x && ( !y ) ) /* make !y primary */
     if ( ( is_odd (y) ) && x ) /* make call primary */
@@ -916,7 +911,7 @@ if ( (a = f(b,c)) == true) { ... }
     if ( ( x > c1) && (y > c2) || (z > c3) ) /* not compliant */
     if ( ( x > c1) && ((y > c2) || (z > c3)) ) /* Compliant extra () used */
     ```
-* 註記: Rule 12.5 對 Rule 12.1 來說是個特例
+* 註記: Rule 12.5 對 Rule 12.1 來說是特例。
 
 ### Rule 12.6(adv)
 ### Rule 12.7(req) (by Ray)
