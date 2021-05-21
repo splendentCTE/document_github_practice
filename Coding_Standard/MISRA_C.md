@@ -942,7 +942,19 @@ if ( (a = f(b,c)) == true) { ... }
     加法運算的次序由括號的位置决定，至少表面如此。即，首先 F4 的值加上 F5 然后加上F3，给出 f1 的值。假定 F3、F4 和 F5 沒有副作用，那麼它們的值獨立於它們被計算的次序。\
     然而，賦给 f1 和 f2 的值不能保證是相同的，因為浮點的四舍五入后緊接加法的運算將依賴於被加的值。
 
-### Rule 12.3(req)
+### Rule 12.3(req) (by Jackal)
+* The sizeof operator shall not be used on expressions that contain side effects.
+
+* 中文說明：sizeof運算符不得用於包含副作用的表達式。
+    ```C
+	int32_t i; 
+	int32_t j; 
+	j = sizeof(i = 1234); 
+              /* j is set to the sizeof the type of i which is an int */ 
+              /* i is not set to 1234.                                */
+    ```
+
+
 ### Rule 12.4(req) (by weiren)
 * The right-hand operand of a logical && or || operator shall not contain side effects.
 * 中文說明：邏輯運算符 && 或 || 的右側操作數不得含有副作用。
