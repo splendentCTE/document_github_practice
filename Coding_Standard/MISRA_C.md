@@ -1062,6 +1062,33 @@ if ( (a = f(b,c)) == true) { ... }
     u8c--;
     ```
 
+## Rule 13.1 (req) (by Ray)
+* Assignment operators shall not be used in expressions that yield a Boolean value.
+* 中文說明：賦值運算符不得用於產生布爾值的表達式中。
+* 在任何被認為具有布爾值的表達式中都不允許賦值。這排除了在布爾值表達式的操作數中同時使用簡單賦值運算符和復合賦值運算符。 但是，這並不排除將布爾值分配給變量。
+* 如果布爾值表達式的操作數中需要賦值，則必須在這些操作數之外分別執行賦值。 這有助於避免混淆“ = ”和“ == ”，並有助於靜態檢測錯誤。
+
+* 範例：
+	```C
+	x = y;
+	if ( x != 0 )
+	{
+		foo();
+	}
+	
+	不能寫成：
+	if ( ( x = y ) != 0 ) /* Boolean by context */
+	{
+		foo();
+	}
+	
+	甚至更糟：
+	if ( x = y ) 
+	{
+		foo();
+	}
+	```
+
 ### Rule 13.2(adv) (by Liou)
 
 - Tests of a value against zero should be made explicit, unless the 
