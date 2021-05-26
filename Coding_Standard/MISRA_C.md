@@ -1032,8 +1032,6 @@ if ( (a = f(b,c)) == true) { ... }
    u16a = (uint16_t) ( (uint16_t) u8a << 9 ); /* compliant */ 
   ```
 
-  
-
 ### Rule 12.9(req)
 
 ### Rule 12.10(req) (by Jackal)
@@ -1047,8 +1045,21 @@ if ( (a = f(b,c)) == true) { ... }
 	a[1, 2] = 3; 		// Noncompliant: 1 is ignored. This is not an access to a multidimensional array.
 
 	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
+    ```
 
-    ​```c
+### Rule 12.13(adv) (by Noah)
+* The increment (++) and decrement (--) operators should not be mixed with other operators in an expression.
+* 中文說明：++和--不應該和其他運算元同時在一條運算式中使用，因為這樣程式可讀性比較差，也可能出現不是原本所預期的運算結果。
+* 範例：
+  * 不合規定的寫法：
+    ```c
+    u8a = ++u8b + u8c--;
+    ```
+  * 合規定的寫法：
+    ```c
+    ++u8b;
+    u8a = u8b + u8c;
+    u8c--;
     ```
 
 ### Rule 13.2(adv) (by Liou)
@@ -1067,5 +1078,3 @@ if ( (a = f(b,c)) == true) { ... }
   if ( y )       /* Not compliant, unless y is effectively Boolean data 
                     (e.g. a flag)          
   ```
-
-  
