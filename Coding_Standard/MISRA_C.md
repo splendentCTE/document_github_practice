@@ -790,7 +790,7 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     ```c
 	int f（int a）
 	{
-  		float（* p）（float）=（float（*）（float））&f; //不符合規定
+    		float（* p）（float）=（float（*）（float））&f; //不符合規定
 	}
     ```
 
@@ -942,7 +942,19 @@ if ( (a = f(b,c)) == true) { ... }
     加法運算的次序由括號的位置决定，至少表面如此。即，首先 F4 的值加上 F5 然后加上F3，给出 f1 的值。假定 F3、F4 和 F5 沒有副作用，那麼它們的值獨立於它們被計算的次序。\
     然而，賦给 f1 和 f2 的值不能保證是相同的，因為浮點的四舍五入后緊接加法的運算將依賴於被加的值。
 
-### Rule 12.3(req)
+### Rule 12.3(req) (by Jackal)
+* The sizeof operator shall not be used on expressions that contain side effects.
+
+* 中文說明：sizeof運算符不得用於包含副作用的表達式。
+    ```C
+	int32_t i; 
+	int32_t j; 
+	j = sizeof(i = 1234); 
+              /* j is set to the sizeof the type of i which is an int */ 
+              /* i is not set to 1234.                                */
+    ```
+
+
 ### Rule 12.4(req) (by weiren)
 * The right-hand operand of a logical && or || operator shall not contain side effects.
 * 中文說明：邏輯運算符 && 或 || 的右側操作數不得含有副作用。
@@ -1006,4 +1018,54 @@ if ( (a = f(b,c)) == true) { ... }
 * 中文說明：位運算符不能用於基本類型(underlying type)是有符號的。
 * 位運算符（〜，<<，<< =，>>，>> =，&，&=，^，^ =，|和|=）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
 
-### Rule 12.8(req)
+### Rule 12.8(req) (by Liou)
+
+- The right-hand operand of a shift operator shall lie between zero and one less than the width in bits of the underlying type of the left-hand operand.
+
+- 中文說明：移位運算符的右手操作數應該位於零和某數之間，這個數要小於左手操作數的基本類型的位寬。
+
+- 範例：
+
+  ```c
+  u8a = (uint8_t) (u8a << 7); /* compliant */
+   u8a = (uint8_t) (u8a << 9); /* not compliant */
+   u16a = (uint16_t) ( (uint16_t) u8a << 9 ); /* compliant */ 
+  ```
+
+  
+
+### Rule 12.9(req)
+
+### Rule 12.10(req) (by Jackal)
+* The comma operator shall not be used.
+* 中文說明:The comma operator shall not be used.
+* 逗號運算符的使用通常不利於代碼的可讀性，並且可以通過其他方式實現相同的效果。
+
+    ```c
+	i = a += 2, a + b;  	// Noncompliant. What's the value of i ?
+
+	a[1, 2] = 3; 		// Noncompliant: 1 is ignored. This is not an access to a multidimensional array.
+
+	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
+
+    ​```c
+    ```
+
+### Rule 13.2(adv) (by Liou)
+
+- Tests of a value against zero should be made explicit, unless the 
+  operand is effectively Boolean.
+
+- 中文說明：非布林值對零的測試應該是明確的
+
+- 範例：
+
+  此規則是為了清楚起見，並明確了整數和邏輯值之間的區別。
+
+  ```c
+  if ( x != 0 )  /* Correct way of testing x is non-zero                */ 
+  if ( y )       /* Not compliant, unless y is effectively Boolean data 
+                    (e.g. a flag)          
+  ```
+
+  
