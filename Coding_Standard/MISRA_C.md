@@ -1019,3 +1019,19 @@ if ( (a = f(b,c)) == true) { ... }
 * 位運算符（〜，<<，<< =，>>，>> =，&，&=，^，^ =，|和|=）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
 
 ### Rule 12.8(req)
+
+### Rule 12.9(req)
+
+### Rule 12.10(req) (by Jackal)
+* The comma operator shall not be used.
+* 中文說明:The comma operator shall not be used.
+* 逗號運算符的使用通常不利於代碼的可讀性，並且可以通過其他方式實現相同的效果。
+
+    ```c
+	i = a += 2, a + b;  	// Noncompliant. What's the value of i ?
+
+	a[1, 2] = 3; 		// Noncompliant: 1 is ignored. This is not an access to a multidimensional array.
+
+	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
+
+    ```c
