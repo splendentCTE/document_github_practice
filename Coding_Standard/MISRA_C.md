@@ -790,7 +790,7 @@ result_16 = ((uint16_t)(~(uint16_t)port)) >> 4 /* *compliant */
     ```c
 	int f（int a）
 	{
-  		float（* p）（float）=（float（*）（float））&f; //不符合規定
+    		float（* p）（float）=（float（*）（float））&f; //不符合規定
 	}
     ```
 
@@ -1018,7 +1018,21 @@ if ( (a = f(b,c)) == true) { ... }
 * 中文說明：位運算符不能用於基本類型(underlying type)是有符號的。
 * 位運算符（〜，<<，<< =，>>，>> =，&，&=，^，^ =，|和|=）通常對有符號整數沒有意義。 例如，如果右移將符號位移至數字中，或者左移將數字位移至符號位，則可能會出現問題。
 
-### Rule 12.8(req)
+### Rule 12.8(req) (by Liou)
+
+- The right-hand operand of a shift operator shall lie between zero and one less than the width in bits of the underlying type of the left-hand operand.
+
+- 中文說明：移位運算符的右手操作數應該位於零和某數之間，這個數要小於左手操作數的基本類型的位寬。
+
+- 範例：
+
+  ```c
+  u8a = (uint8_t) (u8a << 7); /* compliant */
+   u8a = (uint8_t) (u8a << 9); /* not compliant */
+   u16a = (uint16_t) ( (uint16_t) u8a << 9 ); /* compliant */ 
+  ```
+
+  
 
 ### Rule 12.9(req)
 
@@ -1034,4 +1048,24 @@ if ( (a = f(b,c)) == true) { ... }
 
 	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
 
-    ```c
+    ​```c
+    ```
+
+### Rule 13.2(adv) (by Liou)
+
+- Tests of a value against zero should be made explicit, unless the 
+  operand is effectively Boolean.
+
+- 中文說明：非布林值對零的測試應該是明確的
+
+- 範例：
+
+  此規則是為了清楚起見，並明確了整數和邏輯值之間的區別。
+
+  ```c
+  if ( x != 0 )  /* Correct way of testing x is non-zero                */ 
+  if ( y )       /* Not compliant, unless y is effectively Boolean data 
+                    (e.g. a flag)          
+  ```
+
+  
