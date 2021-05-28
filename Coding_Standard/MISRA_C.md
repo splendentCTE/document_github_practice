@@ -1047,6 +1047,12 @@ if ( (a = f(b,c)) == true) { ... }
 	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
     ```
 
+### Rule 12.12(req) (by Mars)
+*The underlying bit representations of floating-point values shall not be used.
+* 中文說明：浮點數不應使用的基本位元表示。
+* 不應進行任何直接依賴於存儲方式的浮點操作，因為浮點數的存儲方式在不同的編譯器有可能不一樣。
+* 應使用內建的運算元或函式進行浮點操作，因為這兩個方式的存儲細節都隱藏了存儲細節。
+
 ### Rule 12.13(adv) (by Noah)
 * The increment (++) and decrement (--) operators should not be mixed with other operators in an expression.
 * 中文說明：++和--不應該和其他運算元同時在一條運算式中使用，因為這樣程式可讀性比較差，也可能出現不是原本所預期的運算結果。
