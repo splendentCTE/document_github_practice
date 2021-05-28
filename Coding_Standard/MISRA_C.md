@@ -1146,3 +1146,30 @@ if ( (a = f(b,c)) == true) { ... }
   if ( y )       /* Not compliant, unless y is effectively Boolean data
                     (e.g. a flag)
   ```
+
+### Rule 13.3 (req)
+
+### Rule 13.4 (req) (by Jackal)  
+* The controlling expression of a for statement shall not contain 
+any objects of floating type.
+
+* 中文說明：for語句的控製表達式不得包含任何浮點型對象。
+* 控製表達式可以包括循環計數器，該循環計數器的值經過測試以確定循環的終止。
+
+浮點變量不得用於此目的。
+
+舍入和截斷錯誤可能會在循環的迭代過程中傳播，從而導致循環變量出現嚴重不正確，並且在執行測試時可能會產生意外結果。
+
+例如，執行循環的次數可能因一種實現方式而異，並且可能是不可預測的。 另見規則13.3。
+
+   ```c
+	Noncompliant Code Example
+	for (float counter = 0.0f; counter < 1.0f; counter += 0.001f) {
+  	...
+	}
+
+	Compliant Solution
+	for (int counter = 0; counter < 1000; ++counter) {
+  	...
+	}
+   ```c
