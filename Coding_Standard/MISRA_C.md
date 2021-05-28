@@ -1173,3 +1173,33 @@ any objects of floating type.
   	...
 	}
    ```c
+   ```
+
+
+
+### Rule 14.2 (req) (by Liou)
+
+- All non-null statements shall either:
+  (a) have at least one side-effect however executed, or
+  (b) cause control flow to change.
+
+- 中文說明：
+
+  所有非空語句（non-null statement）應該：
+
+  a) 不管怎樣執行都至少有一個副作用（side-effect），或者
+
+  b) 可以引起控制流的轉移
+
+- 範例：
+
+  ```c
+  /* assume uint16_t x; 
+     and uint16_t i; */ 
+  ... 
+  x >= 3u;   /* not compliant: x is compared to 3, 
+                and the answer is discarded */
+  ```
+
+Note that “null statement” and “side effect” are defined in ISO/IEC 9899:1990 [2] sections 6.6.3 
+and 5.1.2.3 respectively.
