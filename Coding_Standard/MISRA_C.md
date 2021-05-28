@@ -85,7 +85,7 @@
         {
             asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
         }
-      
+
         void fn ( void )
         {
             DoSomething ( );
@@ -97,7 +97,7 @@
 		(c) Macro:
 		```c
         #define Delay asm ( "NOP" );
-      
+
         void fn ( void )
         {
             DoSomething ( );
@@ -269,12 +269,12 @@
     {
       typedef unsigned char uint8_t;
     }
-    
+
     /* Not compliant – redefinition */
     {
       typedef unsigned char uint8_t;
     }
-    
+
     /* Not compliant – reuse of uint8_t */
     {
       unsigned char uint8_t;
@@ -519,10 +519,10 @@ shall be visible at both the function definition and call.
   ```
   class A {
   };
-  
+
   void fun() {
     void nestedFun();  // Noncompliant; declares a function in block scope
-  
+
     A a();      // Noncompliant; declares a function at block scope, not an object
   }
   ```
@@ -654,14 +654,14 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
         /* 1.*/
         u8a = u16a;  /*不合規，不是向更寬整數類型不得隱式轉換*/
         s8b = u8a;   /*不合規，不同符號的整數不得隱式轉換*/
-    
+
         /* 2.*/
         s8a + u8a;  /*不合規，複雜表達式不得隱式轉換*/
-    
+
         /* 3.*/
         void foo1(uint8_t x);
         foo1(s8a);  /*不合規，函數參數不得隱式轉換*/
-    
+
         /* 4.*/
         int16_t t1(void)
         {
@@ -947,10 +947,10 @@ if ( (a = f(b,c)) == true) { ... }
 
 * 中文說明：sizeof運算符不得用於包含副作用的表達式。
     ```C
-	int32_t i; 
-	int32_t j; 
-	j = sizeof(i = 1234); 
-              /* j is set to the sizeof the type of i which is an int */ 
+	int32_t i;
+	int32_t j;
+	j = sizeof(i = 1234);
+              /* j is set to the sizeof the type of i which is an int */
               /* i is not set to 1234.                                */
     ```
 
@@ -1029,14 +1029,17 @@ if ( (a = f(b,c)) == true) { ... }
   ```c
   u8a = (uint8_t) (u8a << 7); /* compliant */
    u8a = (uint8_t) (u8a << 9); /* not compliant */
-   u16a = (uint16_t) ( (uint16_t) u8a << 9 ); /* compliant */ 
+   u16a = (uint16_t) ( (uint16_t) u8a << 9 ); /* compliant */
   ```
 
-### Rule 12.9(req)
+### Rule 12.9 (req) (by U.Chen)
+* The unary minus operator shall not be applied to an expression whose underlying type is unsigned.
+* 中文說明:一元減運算符不能用在基本類型無符號的表達式上。
+* 把一元減運算符用在基本類型為 unsigned int 或 unsigned long 的表達式上時，會分别產生類型為 unsigned int 或 unsigned long 的结果，這是無意義的操作。把一元減運算符用在無符號短整型的操作數上，根據整數提升的作用它可以產生有意義的有符號结果，但這不是好的方法。
 
 ### Rule 12.10(req) (by Jackal)
 * The comma operator shall not be used.
-* 中文說明:The comma operator shall not be used.
+* 中文說明:不得使用逗號運算符。
 * 逗號運算符的使用通常不利於代碼的可讀性，並且可以通過其他方式實現相同的效果。
 
     ```c
@@ -1081,15 +1084,15 @@ if ( (a = f(b,c)) == true) { ... }
 	{
 		foo();
 	}
-	
+
 	不能寫成：
 	if ( ( x = y ) != 0 ) /* Boolean by context */
 	{
 		foo();
 	}
-	
+
 	甚至更糟：
-	if ( x = y ) 
+	if ( x = y )
 	{
 		foo();
 	}
@@ -1097,7 +1100,7 @@ if ( (a = f(b,c)) == true) { ... }
 
 ### Rule 13.2(adv) (by Liou)
 
-- Tests of a value against zero should be made explicit, unless the 
+- Tests of a value against zero should be made explicit, unless the
   operand is effectively Boolean.
 
 - 中文說明：非布林值對零的測試應該是明確的
@@ -1107,7 +1110,7 @@ if ( (a = f(b,c)) == true) { ... }
   此規則是為了清楚起見，並明確了整數和邏輯值之間的區別。
 
   ```c
-  if ( x != 0 )  /* Correct way of testing x is non-zero                */ 
-  if ( y )       /* Not compliant, unless y is effectively Boolean data 
-                    (e.g. a flag)          
+  if ( x != 0 )  /* Correct way of testing x is non-zero                */
+  if ( y )       /* Not compliant, unless y is effectively Boolean data
+                    (e.g. a flag)
   ```
