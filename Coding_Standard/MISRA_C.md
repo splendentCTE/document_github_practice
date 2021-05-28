@@ -1050,6 +1050,38 @@ if ( (a = f(b,c)) == true) { ... }
 	x = a[i++, j = i + 1, j*2]; // Noncompliant. What index is used for a?
     ```
 
+### Rule 12.11(adv) (by Weiren)
+* Evaluation of constant unsigned integer expressions should not lead to wrap-around.
+* 中文說明：無符號整數常數表達式的計算不應導致回繞(wrap-around)。
+* 因為無符號整數表達式不會有真的溢位，但是會以 mod 的方式回繞，所以編譯器不會檢測到任何實際上是"溢位" 的無符號整數常數運算式。
+* 儘管在運行時(run-ime)可能有充分的理由依賴於無符號整數類型提供的 mod 計算方式，但在編譯時(compile-time)使用它來作常量表達式計算的原因卻不太明顯。因此，任何環繞的無符號整數常數運算式實例都可能表示程式設計錯誤。
+* 該規則同樣適用於翻譯過程的所有階段。
+* 編譯器選擇在編譯時求值的常數運算式應確保結果與通過對目標求值獲得的結果相同，除了那些出現在條件預處理指令中的指令。
+* 對於這樣的指令，可以使用常見的算術運算法則（見 ISO 9899:1990 [2]中 6.4 節），但是 int 和 unsigned int 類型的行為就好像它們分別是long和unsigned long一樣。
+* 例如，在 int 類型為 16 位、long 類型為 32 位的機器上：
+    ```c
+        #define START 0x8000
+        #define END 0xFFFF
+        #define LEN 0x8000
+
+        #if ((START + LEN) > END)
+        #error Buffer Overrun
+        /* OK because START and LEN are unsigned long */
+        #endif
+
+        #if (((END - START) - LEN) < 0)
+        #error Buffer Overrun
+        /* Not OK: subtraction result wraps around to 0xFFFFFFFF */
+        #endif
+
+        /* contrast the above START + LEN with the following */
+        if ((START + LEN) > END)
+        {
+            error ("Buffer overrun");
+            /* Not OK: START + LEN wraps around to 0x0000 due to unsigned int arithmetic */
+        }
+    ```
+
 ### Rule 12.12(req) (by Mars)
 *The underlying bit representations of floating-point values shall not be used.
 * 中文說明：浮點數不應使用的基本位元表示。
