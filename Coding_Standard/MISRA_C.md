@@ -1175,7 +1175,28 @@ any objects of floating type.
    ```c
    ```
 
-
+## Rule 14.1 (req) (by Ray)
+* There shall be no unreachable code.
+* 中文說明：不應有無法訪問的代碼。
+* 這條規則指的是在任何情況下都無法到達的代碼，並且可以在編譯時識別出這樣的代碼。
+* 可以訪問但可能永遠不會執行的代碼從規則中排除（例如防禦性編程代碼）。
+* 如果從相關入口點到該代碼之間不存在控制流路徑，則部分代碼將無法訪問。
+* 範例，無法訪問無條件控制轉移後的未標記代碼：
+	```C
+	switch (event)
+	{
+		case E_wakeup:
+			do_wakeup ();
+			break;          /* unconditional control transfer */
+			do_more ();     /* Not compliant – unreachable code */
+			/* … */
+		default:
+			/* … */
+			break;
+	}
+ 	```
+* 如果沒有可以調用的方法，則整個函數將無法訪問。
+* 預處理器指令排除的代碼在預處理後不存在，因此不受此規則的約束。
 
 ### Rule 14.2 (req) (by Liou)
 
