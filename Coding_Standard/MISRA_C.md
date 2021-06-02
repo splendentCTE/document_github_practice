@@ -1172,8 +1172,18 @@ any objects of floating type.
 	for (int counter = 0; counter < 1000; ++counter) {
   	...
 	}
-   ```c
    ```
+
+### Rule 13.7(req) (by Noah)
+* Boolean operations whose results are invariant shall not be permitted.
+* 中文說明：一個布林運算式的結果如果是永遠為True或False的話，是不被允許的，因為有很高的可能性是寫錯了。
+* 範例：
+  * 不合規定的寫法：
+    ```c
+    if (u16a <= 0xffff) /* Not compliant - always true */
+	
+	if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
+    ```
 
 ## Rule 14.1 (req) (by Ray)
 * There shall be no unreachable code.
