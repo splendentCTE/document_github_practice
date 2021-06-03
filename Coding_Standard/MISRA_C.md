@@ -1143,7 +1143,7 @@ if ( (a = f(b,c)) == true) { ... }
 
   ```c
   if ( x != 0 )  /* Correct way of testing x is non-zero                */
-  if ( y )       /* Not compliant, unless y is effectively Boolean data
+  if ( y )       /* Not compliant, unless y is effectively Boolean data */
                     (e.g. a flag)
   ```
 
@@ -1173,6 +1173,20 @@ any objects of floating type.
   	...
 	}
    ```
+
+### Rule 13.6(req) (by Mars)
+* Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.
+* 中文說明：for迴圈用來疊代計數的變數數值不應該在本體內修改。
+* 迴圈中用來疊代的變數數值不應該在本體內修改，但可以在循環中修改其他代表邏輯值的控制變數。比如說，一個表示已經完成的旗標。
+* 範例：
+    ```c
+    flag = 1;
+    for ( i = 0; (i < 5) && (flag == 1); i++ ){
+        /* ... */
+        flag = 0;  /* Compliant - allows early termination of loop */
+        i = i + 3; /* Not compliant - altering the loop counter */
+    }
+    ```
 
 ### Rule 13.7(req) (by Noah)
 * Boolean operations whose results are invariant shall not be permitted.
