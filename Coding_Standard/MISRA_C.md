@@ -1147,7 +1147,25 @@ if ( (a = f(b,c)) == true) { ... }
                     (e.g. a flag)
   ```
 
-### Rule 13.3 (req)
+### Rule 13.3 (req) (by U.Chen)
+* Floating-point expressions shall not be tested for equality or inequality.
+* 中文說明：浮點數不能做相等或不等的檢測。
+* 這是浮點類型的固有特性，等值比較通常不會計算為 true，即使期望如此。而且，這種比較行為不能在執行前做出預測，它會隨著編譯器而不同。
+* 範例
+  下面程式碼的測試结果就是不可預期的：
+    ```C
+    float32_t x, y;
+    /* some calculations in here */
+    if ( x == y) /* not compliant */
+        { /* … */ }
+    if (x == 0.0f) /* not compliant */
+    ```
+  間接的檢測同樣是有問題的，在本規則内也是禁止的。
+    ```c
+    if ( ( x <= y ) && ( x >= y ) )
+        { /* … */ }
+    ```
+* 為了獲得確定的浮點比较，建議寫一個實現比較運算的庫。這個庫應該考慮浮點的粒度以及參與比較的數的量級。見規則 13.4 和規則 20.3。
 
 ### Rule 13.4 (req) (by Jackal)
 * The controlling expression of a for statement shall not contain
