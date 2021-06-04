@@ -1054,7 +1054,7 @@ if ( (a = f(b,c)) == true) { ... }
 * Evaluation of constant unsigned integer expressions should not lead to wrap-around.
 * 中文說明：無符號整數常數表達式的計算不應導致回繞(wrap-around)。
 * 因為無符號整數表達式不會有真的溢位，但是會以 mod 的方式回繞，所以編譯器不會檢測到任何實際上是"溢位" 的無符號整數常數運算式。
-* 儘管在運行時(run-ime)可能有充分的理由依賴於無符號整數類型提供的 mod 計算方式，但在編譯時(compile-time)使用它來作常量表達式計算的原因卻不太明顯。因此，任何環繞的無符號整數常數運算式實例都可能表示程式設計錯誤。
+* 儘管在運行時(run-time)可能有充分的理由依賴於無符號整數類型提供的 mod 計算方式，但在編譯時(compile-time)使用它來作常量表達式計算的原因卻不太明顯。因此，任何環繞的無符號整 數常數運算式實例都可能表示程式設計錯誤。
 * 該規則同樣適用於翻譯過程的所有階段。
 * 編譯器選擇在編譯時求值的常數運算式應確保結果與通過對目標求值獲得的結果相同，除了那些出現在條件預處理指令中的指令。
 * 對於這樣的指令，可以使用常見的算術運算法則（見 ISO 9899:1990 [2]中 6.4 節），但是 int 和 unsigned int 類型的行為就好像它們分別是long和unsigned long一樣。
@@ -1149,8 +1149,8 @@ if ( (a = f(b,c)) == true) { ... }
 
 ### Rule 13.3 (req)
 
-### Rule 13.4 (req) (by Jackal)  
-* The controlling expression of a for statement shall not contain 
+### Rule 13.4 (req) (by Jackal)
+* The controlling expression of a for statement shall not contain
 any objects of floating type.
 
 * 中文說明：for語句的控製表達式不得包含任何浮點型對象。
@@ -1174,6 +1174,21 @@ any objects of floating type.
 	}
    ```
 
+### Rule 13.5(req) (by Weiren)
+* The three expressions of a for statement shall be concerned only with loop control.
+* 中文說明：for 語句的三個表達式只與循環控制有關。
+* for 語句的三個表達式只能用於以下目的：
+    * 第一個表達式:初始化循環計數器(下列範例中的 i)。
+    * 第二個表達式:應包括測試循環計數器(i)，以及可選的其他循環控制變數（旗標）。
+    * 第三個表達式:循環計數器(i)的遞增或遞減。
+    ```c
+        flag = 1;
+        for ( i = 0; (i < 5) && (flag == 1); i++ )
+        {
+            /* ... */
+        }
+    ```
+
 ### Rule 13.6(req) (by Mars)
 * Numeric variables being used within a for loop for iteration counting shall not be modified in the body of the loop.
 * 中文說明：for迴圈用來疊代計數的變數數值不應該在本體內修改。
@@ -1195,7 +1210,7 @@ any objects of floating type.
   * 不合規定的寫法：
     ```c
     if (u16a <= 0xffff) /* Not compliant - always true */
-	
+
 	if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
     ```
 
@@ -1239,12 +1254,12 @@ any objects of floating type.
 - 範例：
 
   ```c
-  /* assume uint16_t x; 
-     and uint16_t i; */ 
-  ... 
-  x >= 3u;   /* not compliant: x is compared to 3, 
+  /* assume uint16_t x;
+     and uint16_t i; */
+  ...
+  x >= 3u;   /* not compliant: x is compared to 3,
                 and the answer is discarded */
   ```
 
-Note that “null statement” and “side effect” are defined in ISO/IEC 9899:1990 [2] sections 6.6.3 
+Note that “null statement” and “side effect” are defined in ISO/IEC 9899:1990 [2] sections 6.6.3
 and 5.1.2.3 respectively.
