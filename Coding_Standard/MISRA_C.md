@@ -1281,3 +1281,13 @@ any objects of floating type.
 
 Note that “null statement” and “side effect” are defined in ISO/IEC 9899:1990 [2] sections 6.6.3
 and 5.1.2.3 respectively.
+
+### Rule 14.3 (req)
+
+
+### Rule 14.4 (req) (by Jackal)
+*  The goto statement shall not be used.
+
+* 中文說明：不應使用 goto 語句。
+* goto 是一個非結構化的控制流語句。 它使代碼的可讀性和可維護性降低。 應該使用結構化的控制流語句，例如 if、for、while、continue 或 break。
+
