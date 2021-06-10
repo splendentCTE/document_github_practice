@@ -1296,3 +1296,7 @@ and 5.1.2.3 respectively.
 * 中文說明：對於任何疊代的語句，最多只能有一個 break 去結束循環。
 * 這些規則都是為了讓程式有更好的結構。只允許一個 break 的語句在迴圈中，是因為可以有雙重結果的產生或程式碼的優化。
 
+### Rule 14.7 (req) (by Noah)
+* A function shall have a single point of exit at the end of the function(IEC 61508 Part3).
+* 中文說明：一個function結束的時候應該只有單一個離開點，這是由IEC 61508 Part3來的規範，是一個比較好的programming style。
+
