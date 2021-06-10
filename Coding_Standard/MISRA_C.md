@@ -1291,6 +1291,34 @@ and 5.1.2.3 respectively.
 * 中文說明：不應使用 goto 語句。
 * goto 是一個非結構化的控制流語句。 它使代碼的可讀性和可維護性降低。 應該使用結構化的控制流語句，例如 if、for、while、continue 或 break。
 
+### Rule 14.5(req) (by Weiren)
+* The continue statement shall not be used.
+* 中文說明：不應該使用 continue 語句。
+* 範例：
+    * 不合規定的寫法：
+    ```C
+        int i;
+        for (i = 0; i < 10; i++)
+        {
+            if (i == 5)
+            {
+                continue;
+            }
+            printf("i = %d\n", i);
+        }
+    ```
+    * 合規定的寫法：
+    ```C
+        int i;
+        for (i = 0; i < 10; i++)
+        {
+            if (i != 5)
+            {
+                printf("i = %d\n", i);
+            }
+        }
+    ```
+
 ### Rule 14.6 (req) (by Mars)
 * For any iteration statement there shall be at most one break statement used for loop termination.
 * 中文說明：對於任何疊代的語句，最多只能有一個 break 去結束循環。
@@ -1310,7 +1338,7 @@ and 5.1.2.3 respectively.
 	{
 		buffer[i] = 0;			/* Even a single statement must be in braces */
 	}
-	
+
 	while ( new_data_available )
 		process_data ();		/* Incorrectly not enclosed in braces */
 		service_watchdog ();	/* Added later but, despite the appearance (from the indent) it is actually not part of the body of the while statement, and is executed only after the loop has terminated */
