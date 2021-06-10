@@ -1300,3 +1300,18 @@ and 5.1.2.3 respectively.
 * A function shall have a single point of exit at the end of the function(IEC 61508 Part3).
 * 中文說明：一個function結束的時候應該只有單一個離開點，這是由IEC 61508 Part3來的規範，是一個比較好的programming style。
 
+### Rule 14.8 (req) (by Ray)
+* The statement forming the body of a switch, while, do … while or for statement shall be a compound statement.
+* 中文說明：構成 switch、while、do...while 或 for 語句主體的語句應是複合語句。
+* 構成 switch 語句或 while、do...while 或 for 循環主體的語句應是複合語句（括在大括號內），即使該複合語句包含單個語句。
+* 範例：
+	```C
+	for (i = 0; i < N_ELEMENTS; ++i)
+	{
+		buffer[i] = 0;			/* Even a single statement must be in braces */
+	}
+	
+	while ( new_data_available )
+		process_data ();		/* Incorrectly not enclosed in braces */
+		service_watchdog ();	/* Added later but, despite the appearance (from the indent) it is actually not part of the body of the while statement, and is executed only after the loop has terminated */
+	```
