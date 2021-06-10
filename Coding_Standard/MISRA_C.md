@@ -1282,8 +1282,19 @@ any objects of floating type.
 Note that “null statement” and “side effect” are defined in ISO/IEC 9899:1990 [2] sections 6.6.3
 and 5.1.2.3 respectively.
 
-### Rule 14.3 (req)
-
+### Rule 14.3 (req) (by U.Chen)
+* Before preprocessing, a null statement shall only occur on a line by itself; it may be followed by a comment provided that the first character following the null statement is a white-space character.
+* 中文說明：在預處理之前，空語句只能出現在一行上；其後可以跟有註釋，前提是緊跟空語句的第一個字符是空格。
+* 通常不會故意包含空語句，但是在使用它們的地方，它们應該出現在它們本身的行上。空語句前面可以有空格以保持縮進的格式。如果一條註釋跟在空語句的后面，那麼至少要有一個空格把空語句和註釋分隔開来。需要這樣起分隔作用的空格是因為它给讀者提供了重要的視覺信息。遵循本規則使得靜態檢查工具能夠為與其他文本出現在一行上的空語句提出警告，因為這樣的情形通常表示编程錯誤。
+* 範例：
+    ```c
+    while ( ( port & 0x80 ) == 0 )
+    {
+        ; /* wait for pin – Compliant */
+        /* wait for pin */ ; /* Not compliant, comment before ; */
+        ;/* wait for pin – Not compliant, no white-space char after ; */
+    }
+    ```
 
 ### Rule 14.4 (req) (by Jackal)
 *  The goto statement shall not be used.
