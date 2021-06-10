@@ -1291,3 +1291,7 @@ and 5.1.2.3 respectively.
 * 中文說明：不應使用 goto 語句。
 * goto 是一個非結構化的控制流語句。 它使代碼的可讀性和可維護性降低。 應該使用結構化的控制流語句，例如 if、for、while、continue 或 break。
 
+
+### Rule 14.7 (req) (by Noah)
+* A function shall have a single point of exit at the end of the function(IEC 61508 Part3).
+* 中文說明：一個function結束的時候應該只有單一個離開點，這是由IEC 61508 Part3來的規範，是一個比較好的programming style。
