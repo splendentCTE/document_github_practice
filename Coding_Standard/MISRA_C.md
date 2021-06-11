@@ -1228,8 +1228,12 @@ any objects of floating type.
   * 不合規定的寫法：
     ```c
     if (u16a <= 0xffff) /* Not compliant - always true */
-
-	if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
+  ```
+	
+  if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
+  
+    ```
+  
     ```
 
 ## Rule 14.1 (req) (by Ray)
@@ -1251,6 +1255,8 @@ any objects of floating type.
 			/* … */
 			break;
 	}
+	```
+
  	```
 * 如果沒有可以調用的方法，則整個函數將無法訪問。
 * 預處理器指令排除的代碼在預處理後不存在，因此不受此規則的約束。
@@ -1354,3 +1360,74 @@ and 5.1.2.3 respectively.
 		process_data ();		/* Incorrectly not enclosed in braces */
 		service_watchdog ();	/* Added later but, despite the appearance (from the indent) it is actually not part of the body of the while statement, and is executed only after the loop has terminated */
 	```
+
+### Rule 14.9(req) (by Liou)
+
+- An if (expression) construct shall be followed by a compound statement. The else keyword shall be followed by either a compound statement, or another if statement.
+
+- 中文說明：if（表達式）結構應該跟隨有復合語句。 else 關鍵字應該跟隨有復合語句或者另外的 if 語句。
+
+- 範例：
+
+  ```c
+  if ( test1 ) 
+  { 
+   x = 1;              /* Even a single statement must be in braces     */ 
+  } 
+  else if ( test2 )    /* No need for braces in else if                 */ 
+  { 
+   x = 0;              /* Single statement must be in braces            */ 
+  } 
+  else 
+      x = 3;           /* This was (incorrectly) not enclosed in braces */ 
+      y = 2;           
+  /* This line was added later but, despite the appearance (from the indent), it is actually not part of the else, and is executed unconditionally   */
+  ```
+
+  
+
+### Rule 15.5(req) (by Liou)
+
+- Every switch statement shall have at least one case clause.
+
+- 中文說明：每個switch語句應至少包含一個case子句。
+
+- 範例：
+
+  ```c
+  switch (x) 
+  { 
+     uint8_t var;           
+          /* not compliant - decl before 1st case     */ 
+  case 0: 
+     a = b; 
+     break;                 
+          /* break is required here                   */ 
+  case 1:                   
+          /* empty clause, break not required         */ 
+  case 2: 
+     a = c;                 
+          /* executed if x is 1 or 2                  */ 
+     if ( a == b ) 
+     { 
+        case 3:             
+         /* Not compliant - case is not allowed here */ 
+     } 
+     break;                 
+          /* break is required here                   */ 
+  case 4: 
+     a = b;                 
+          /* Not compliant - non empty drop through   */ 
+  case 5: 
+     a = c; 
+     break; 
+  default:                 
+          /* default clause is required               */ 
+     errorflag = 1;  
+          /* should be non-empty if possible          */ 
+     break;                 
+          /* break is required here, in case a future 	              modification turns this into a case clause */ 
+  }
+  ```
+
+  
