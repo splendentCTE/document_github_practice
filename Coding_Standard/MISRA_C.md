@@ -1229,11 +1229,11 @@ any objects of floating type.
     ```c
     if (u16a <= 0xffff) /* Not compliant - always true */
   ```
-	
+
   if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
-  
+
     ```
-  
+
     ```
 
 ## Rule 14.1 (req) (by Ray)
@@ -1370,22 +1370,46 @@ and 5.1.2.3 respectively.
 - 範例：
 
   ```c
-  if ( test1 ) 
-  { 
-   x = 1;              /* Even a single statement must be in braces     */ 
-  } 
-  else if ( test2 )    /* No need for braces in else if                 */ 
-  { 
-   x = 0;              /* Single statement must be in braces            */ 
-  } 
-  else 
-      x = 3;           /* This was (incorrectly) not enclosed in braces */ 
-      y = 2;           
+  if ( test1 )
+  {
+   x = 1;              /* Even a single statement must be in braces     */
+  }
+  else if ( test2 )    /* No need for braces in else if                 */
+  {
+   x = 0;              /* Single statement must be in braces            */
+  }
+  else
+      x = 3;           /* This was (incorrectly) not enclosed in braces */
+      y = 2;
   /* This line was added later but, despite the appearance (from the indent), it is actually not part of the else, and is executed unconditionally   */
   ```
-
-  
-
+### Rule 14.10(req)
+### Rule 15.0(req)
+### Rule 15.1(req) (by Weiren)
+* A switch label shall only be used when the most closely-enclosing compound statement is the body of a switch statement.
+* 中文說明：switch label 只能在最封閉的複合語句是switch語句的主體時使用。
+* 範例：
+    * 不合規定的寫法：
+    ```C
+        void f (void)
+        {
+            switch (0)
+            case 0: S;
+        }
+    ```
+    * 合規定的寫法：
+    ```C
+        void f (void)
+        {
+            switch (1)
+            {
+                case 0: S;
+            }
+        }
+    ```
+### Rule 15.2(req)
+### Rule 15.3(req)
+### Rule 15.4(req)
 ### Rule 15.5(req) (by Liou)
 
 - Every switch statement shall have at least one case clause.
@@ -1395,39 +1419,38 @@ and 5.1.2.3 respectively.
 - 範例：
 
   ```c
-  switch (x) 
-  { 
-     uint8_t var;           
-          /* not compliant - decl before 1st case     */ 
-  case 0: 
-     a = b; 
-     break;                 
-          /* break is required here                   */ 
-  case 1:                   
-          /* empty clause, break not required         */ 
-  case 2: 
-     a = c;                 
-          /* executed if x is 1 or 2                  */ 
-     if ( a == b ) 
-     { 
-        case 3:             
-         /* Not compliant - case is not allowed here */ 
-     } 
-     break;                 
-          /* break is required here                   */ 
-  case 4: 
-     a = b;                 
-          /* Not compliant - non empty drop through   */ 
-  case 5: 
-     a = c; 
-     break; 
-  default:                 
-          /* default clause is required               */ 
-     errorflag = 1;  
-          /* should be non-empty if possible          */ 
-     break;                 
-          /* break is required here, in case a future 	              modification turns this into a case clause */ 
+  switch (x)
+  {
+     uint8_t var;
+          /* not compliant - decl before 1st case     */
+  case 0:
+     a = b;
+     break;
+          /* break is required here                   */
+  case 1:
+          /* empty clause, break not required         */
+  case 2:
+     a = c;
+          /* executed if x is 1 or 2                  */
+     if ( a == b )
+     {
+        case 3:
+         /* Not compliant - case is not allowed here */
+     }
+     break;
+          /* break is required here                   */
+  case 4:
+     a = b;
+          /* Not compliant - non empty drop through   */
+  case 5:
+     a = c;
+     break;
+  default:
+          /* default clause is required               */
+     errorflag = 1;
+          /* should be non-empty if possible          */
+     break;
+          /* break is required here, in case a future 	              modification turns this into a case clause */
   }
   ```
 
-  
