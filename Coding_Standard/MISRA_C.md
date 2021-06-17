@@ -1409,7 +1409,17 @@ and 5.1.2.3 respectively.
     ```
 ### Rule 15.2(req)
 ### Rule 15.3(req)
-### Rule 15.4(req)
+
+### Rule 15.4 (req) (by Ray)
+* A switch expression shall not represent a value that is effectively Boolean.
+* 中文說明：switch 表達式不應表示一個有效的布爾值。
+* 範例：
+	```C
+	switch (x == 0) /* not compliant - effectively Boolean */
+	{
+		...
+	```
+
 ### Rule 15.5(req) (by Liou)
 
 - Every switch statement shall have at least one case clause.
