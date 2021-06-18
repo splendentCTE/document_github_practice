@@ -1383,7 +1383,35 @@ and 5.1.2.3 respectively.
       y = 2;
   /* This line was added later but, despite the appearance (from the indent), it is actually not part of the else, and is executed unconditionally   */
   ```
-### Rule 14.10(req)
+### Rule 14.10 (req) (by U.Chen)
+* All if … else if constructs shall be terminated with an else clause.
+* 中文說明：所有 if ... else if 結構都應該以 else 子句終止。
+* 當一個 if 語句後跟一個或多個 else if 語句時，此規則適用； 最後的 else if 後面應該跟一個 else 語句。 如果是簡單的 if 語句，則 else不需要包括聲明。最後一個 else 語句的要求是防禦性編程。 else 語句要麼採取適當的行動，要麼包含關於為什麼不採取行動的適當註解。 這與在 switch 語句 (規則15.3) 中具有最終默認子句的要求一致。
+* 範例：
+    * 簡單的 if 語句：
+    ```c
+        if ( x > 0)
+        {
+            log_error (3) ;
+            x = 0 ;
+        }             /* else not needed */
+    ```
+    * 包含了 if ... else if 的語句：
+    ```c
+        if ( x < 0 )
+        {
+            log_error(3);
+            x = 0;
+        }
+        else if ( y < 0 )
+        {
+            x = 3;
+        }
+        else                 /* this else clause is required, even if the     */
+        {                    /* programmer expects this will never be reached */
+           /* no change in value of x */
+        }
+    ```
 ### Rule 15.0(req)
 ### Rule 15.1(req) (by Weiren)
 * A switch label shall only be used when the most closely-enclosing compound statement is the body of a switch statement.
