@@ -1457,7 +1457,12 @@ and 5.1.2.3 respectively.
             }
         }
     ```
-### Rule 15.2(req)
+
+### Rule 15.2(req) (by Mars)
+* An unconditional break statement shall terminate every non-empty switch clause.
+* 中文說明：每一個有內容的 switch 語法，都應該加上一個無條件的 break 來結束。
+* 每個 switch 語法的最後一個語句應該是 break，或者如果 switch 語法是複合式的語句，在複合式語句的最後也應該要是 break。
+
 ### Rule 15.3(req)
 
 ### Rule 15.4 (req) (by Ray)
