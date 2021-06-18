@@ -1412,7 +1412,29 @@ and 5.1.2.3 respectively.
            /* no change in value of x */
         }
     ```
-### Rule 15.0(req)
+### Rule 15.0(req) (by Jackal)
+* The MISRA C switch syntax shall be used.
+* 中文說明：應使用 MISRA C 開關語法。
+* C++ 中switch語句的語法很弱，允許複雜的、非結構化的行為。前面的文本描述了 MISRA C++ 定義的switch語句的語法。這和相關的規則對switch語句強加了一個簡單且一致的結構。
+
+	```c
+	switch ( x )
+	{
+		case 0:
+   		...
+   		break;  	// break is required here
+
+		case 1:    	// empty clause, break not required
+
+		case 2:
+   		break;  	// break is required here
+
+		default:   	// default clause is required
+   		break;  	// break is required here, in case a future
+           			// modification turns this into a case clause
+	}
+	```c
+
 ### Rule 15.1(req) (by Weiren)
 * A switch label shall only be used when the most closely-enclosing compound statement is the body of a switch statement.
 * 中文說明：switch label 只能在最封閉的複合語句是switch語句的主體時使用。
