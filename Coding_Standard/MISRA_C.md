@@ -706,6 +706,11 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
     uint32_t u32x; // unsigned int / unsigned long?
     u32x = u16a + u16b; // u32x = 70000 or 4464?
 	```
+	20210621新增不合規定範例：
+	YAMAHA BEE機種F-TRIP顯示不良問題，TRIPFUELKM為uint16變數，乘以1000後會造成overflow。
+	```c
+	DisplayBuffer = ((uint32_t)(TRIPFUELKM * 1000U)/ 1609);	
+	```
 
 ### Rule 10.4 (req) (by Ray)
 * The value of a complex expression of floating type shall only be cast to a floating type that is narrower or of the same size.
@@ -1228,15 +1233,11 @@ any objects of floating type.
   * 不合規定的寫法：
     ```c
     if (u16a <= 0xffff) /* Not compliant - always true */
-  ```
 
-  if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
-
+    if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
     ```
-
-    ```
-
-## Rule 14.1 (req) (by Ray)
+	
+### Rule 14.1 (req) (by Ray)
 * There shall be no unreachable code.
 * 中文說明：不應有無法訪問的代碼。
 * 這條規則指的是在任何情況下都無法到達的代碼，並且可以在編譯時識別出這樣的代碼。
@@ -1257,7 +1258,6 @@ any objects of floating type.
 	}
 	```
 
- 	```
 * 如果沒有可以調用的方法，則整個函數將無法訪問。
 * 預處理器指令排除的代碼在預處理後不存在，因此不受此規則的約束。
 
@@ -1463,7 +1463,9 @@ and 5.1.2.3 respectively.
 * 中文說明：每一個有內容的 switch 語法，都應該加上一個無條件的 break 來結束。
 * 每個 switch 語法的最後一個語句應該是 break，或者如果 switch 語法是複合式的語句，在複合式語句的最後也應該要是 break。
 
-### Rule 15.3(req)
+### Rule 15.3 (req) (by Noah)
+* The final clause of a switch statement shall be the default clause.
+* 中文說明：為了防禦性編程，switch語法的最後都應該以default case來做結束。
 
 ### Rule 15.4 (req) (by Ray)
 * A switch expression shall not represent a value that is effectively Boolean.
@@ -1519,3 +1521,10 @@ and 5.1.2.3 respectively.
   }
   ```
 
+### Rule 16.5 (req) (by Noah)
+* Functions with no parameters shall be declared and defined with the parameter list void.
+* 中文說明：如果一個function沒有return任何data，或是不需傳入任何參數，需宣告為void。
+* 範例：
+	```C
+	void myfunc (void);
+	```
