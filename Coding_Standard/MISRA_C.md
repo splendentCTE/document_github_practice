@@ -706,10 +706,15 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
     uint32_t u32x; // unsigned int / unsigned long?
     u32x = u16a + u16b; // u32x = 70000 or 4464?
 	```
-	20210621新增不合規定範例：
+	* 20210621新增範例：
 	YAMAHA BEE機種F-TRIP顯示不良問題，TRIPFUELKM為uint16變數，乘以1000後會造成overflow。
 	```c
-	DisplayBuffer = ((uint32_t)(TRIPFUELKM * 1000U)/ 1609);	
+	uint32_t DisplayBuffer;
+	uint16_t TRIPFUELKM;
+	
+	DisplayBuffer = ((uint32_t)(TRIPFUELKM * 1000U)/ 1609);	// Noncompliant;
+	
+	DisplayBuffer = (uint32_t)TRIPFUELKM * 1000U/ 1609;	// Compliant;
 	```
 
 ### Rule 10.4 (req) (by Ray)
