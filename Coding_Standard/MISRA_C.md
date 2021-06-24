@@ -1438,7 +1438,8 @@ and 5.1.2.3 respectively.
    		break;  	// break is required here, in case a future
            			// modification turns this into a case clause
 	}
-	```c
+	​```c
+	```
 
 ### Rule 15.1(req) (by Weiren)
 * A switch label shall only be used when the most closely-enclosing compound statement is the body of a switch statement.
@@ -1533,3 +1534,26 @@ and 5.1.2.3 respectively.
 	```C
 	void myfunc (void);
 	```
+
+### Rule 16.7(adv) (by Liou)
+
+- A pointer parameter in a function prototype should be declared as pointer to const if the pointer is not used to modify the addressed object.
+
+- 中文說明：如果不使用該函數原型中的指針參數來修改所尋址的對象，則該指針參數應聲明為const指針。
+
+- 範例：
+
+  ```c
+  void myfunc( int16_t * param1, const int16_t * param2, int16_t * param3) 
+  /* param1: Addresses an object which is modified - no const  
+     param2: Addresses an object which is not modified - const required 
+     param3: Addresses an object which is not modified - const missing */ 
+  { 
+     *param1 = *param2 + *param3; 
+     return; 
+  } 
+  /* data at address param3 has not been changed,  
+     but this is not const therefore not compliant */
+  ```
+
+  
