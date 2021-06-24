@@ -1535,6 +1535,11 @@ and 5.1.2.3 respectively.
 	void myfunc (void);
 	```
 
+### Rule 16.6 (req) (by Ray)
+* The number of arguments passed to a function shall match the number of parameters.
+* 中文說明：傳遞給函數的參數數量應與聲明的參數數量相匹配。
+* 使用函數原型可以完全避免這個問題——參見規則8.1。 保留此規則是因為編譯器可能不會標記此約束錯誤。
+
 ### Rule 16.7(adv) (by Liou)
 
 - A pointer parameter in a function prototype should be declared as pointer to const if the pointer is not used to modify the addressed object.
