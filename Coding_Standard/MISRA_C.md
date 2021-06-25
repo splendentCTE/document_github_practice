@@ -1543,7 +1543,17 @@ prototype declaration.
         void divide (int numerator, int denominator);
     ```
 
-### Rule 16.4 (req)
+### Rule 16.4 (req) (by Mars)
+* The identifiers used in the declaration and definition of a function shall be identical.
+* 中文說明：函式中，識別字用於宣告與定義，都應該一致。
+* 範例：
+    ```C
+    int myfunc(void){       /* declaration */
+        int data=0;         /* definition */
+        return data;
+    }
+    ```
+
 ### Rule 16.5 (req) (by Noah)
 * Functions with no parameters shall be declared and defined with the parameter list void.
 * 中文說明：如果一個function沒有return任何data，或是不需傳入任何參數，需宣告為void。
