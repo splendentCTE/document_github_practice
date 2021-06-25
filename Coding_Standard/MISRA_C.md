@@ -1527,7 +1527,36 @@ and 5.1.2.3 respectively.
   }
   ```
 ### Rule 16.1(req)
-### Rule 16.2(req)
+### Rule 16.2(req) (by Jackal)
+* Functions shall not call themselves, either directly or indirectly.
+* 中文說明： 函數不得直接或間接調用自己。
+* 這意味著不能在安全相關係統中使用遞歸函數調用。
+* 遞歸帶有超出可用堆棧空間的危險，這可能是一個嚴重的錯誤。
+* 除非遞歸受到非常嚴格的控制，否則無法在執行之前確定最壞情況下的堆棧使用情況。
+* 範例：
+    * 不合規定的寫法：
+    ```C
+        int pow(int num, int exponent) {
+  		if (exponent > 1) {
+    			num = num * pow(num, exponent-1);  // Noncompliant; direct recursion
+  		}
+  		return num;
+	}
+    ```
+    * 合規定的寫法：
+    ```C
+        int pow(int num, int exponent) {
+  		int val = num;
+  		while (exponent > 0) {
+    		val *= num;
+    		--exponent;
+  		}
+  		return val;
+	}
+    ```
+
+
+
 ### Rule 16.3(req) (by Weiren)
 * Identifiers shall be given for all of the parameters in a function
 prototype declaration.
