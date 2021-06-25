@@ -1526,7 +1526,10 @@ and 5.1.2.3 respectively.
           /* break is required here, in case a future 	              modification turns this into a case clause */
   }
   ```
-### Rule 16.1(req)
+### Rule 16.1 (req) (by U.Chen)
+* Functions shall not be defined with a variable number of arguments.
+* 中文說明：函數定義不得帶有可變數量的參數
+* 本特性存在許多潛在的問題。使用者不應該編寫使用可變數量參數的附加函數。這排除了stdarg.h、va_arg、va_start 和 va_end 的使用。
 ### Rule 16.2(req) (by Jackal)
 * Functions shall not call themselves, either directly or indirectly.
 * 中文說明： 函數不得直接或間接調用自己。
