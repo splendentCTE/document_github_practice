@@ -711,9 +711,9 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 	```c
 	uint32_t DisplayBuffer;
 	uint16_t TRIPFUELKM;
-	
+
 	DisplayBuffer = ((uint32_t)(TRIPFUELKM * 1000U)/ 1609);	// Noncompliant;
-	
+
 	DisplayBuffer = (uint32_t)TRIPFUELKM * 1000U/ 1609;	// Compliant;
 	```
 
@@ -1241,7 +1241,7 @@ any objects of floating type.
 
     if ((s8a < 10) && (s8a > 20)) /* Not compliant - always false */
     ```
-	
+
 ### Rule 14.1 (req) (by Ray)
 * There shall be no unreachable code.
 * 中文說明：不應有無法訪問的代碼。
@@ -1526,7 +1526,24 @@ and 5.1.2.3 respectively.
           /* break is required here, in case a future 	              modification turns this into a case clause */
   }
   ```
+### Rule 16.1(req)
+### Rule 16.2(req)
+### Rule 16.3(req) (by Weiren)
+* Identifiers shall be given for all of the parameters in a function
+prototype declaration.
+* 中文說明： 應該為函數原型聲明中的所有參數提供標識符。
+* 出於兼容性、清晰性和可維護性的原因，應該為函數聲明中的所有參數指定名稱。
+* 範例：
+    * 不合規定的寫法：
+    ```C
+        void divide (int, int);
+    ```
+    * 合規定的寫法：
+    ```C
+        void divide (int numerator, int denominator);
+    ```
 
+### Rule 16.4 (req)
 ### Rule 16.5 (req) (by Noah)
 * Functions with no parameters shall be declared and defined with the parameter list void.
 * 中文說明：如果一個function沒有return任何data，或是不需傳入任何參數，需宣告為void。
@@ -1549,16 +1566,15 @@ and 5.1.2.3 respectively.
 - 範例：
 
   ```c
-  void myfunc( int16_t * param1, const int16_t * param2, int16_t * param3) 
-  /* param1: Addresses an object which is modified - no const  
-     param2: Addresses an object which is not modified - const required 
-     param3: Addresses an object which is not modified - const missing */ 
-  { 
-     *param1 = *param2 + *param3; 
-     return; 
-  } 
-  /* data at address param3 has not been changed,  
+  void myfunc( int16_t * param1, const int16_t * param2, int16_t * param3)
+  /* param1: Addresses an object which is modified - no const
+     param2: Addresses an object which is not modified - const required
+     param3: Addresses an object which is not modified - const missing */
+  {
+     *param1 = *param2 + *param3;
+     return;
+  }
+  /* data at address param3 has not been changed,
      but this is not const therefore not compliant */
   ```
 
-  
