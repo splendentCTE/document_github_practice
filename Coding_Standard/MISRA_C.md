@@ -1620,3 +1620,7 @@ prototype declaration.
      but this is not const therefore not compliant */
   ```
 
+### Rule 16.8 (req) (by U.Chen)
+* All exit paths from a function with non-void return type shall have an explicit return statement with an expression.
+* 中文說明： 帶有 non-void 返回類型的函數其所有退出路徑都應具有顯式的帶表達式的 return 語句。
+* 表達式给出了函數的返回值。如果 return 語句不帶表達式，將導致未定義的行為（而且編譯器不會給出錯誤）。
