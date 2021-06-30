@@ -1540,21 +1540,21 @@ and 5.1.2.3 respectively.
     * 不合規定的寫法：
     ```C
         int pow(int num, int exponent) {
-  		if (exponent > 1) {
+    		if (exponent > 1) {
     			num = num * pow(num, exponent-1);  // Noncompliant; direct recursion
-  		}
-  		return num;
+    		}
+    		return num;
 	}
     ```
     * 合規定的寫法：
     ```C
         int pow(int num, int exponent) {
-  		int val = num;
-  		while (exponent > 0) {
+    		int val = num;
+    		while (exponent > 0) {
     		val *= num;
     		--exponent;
-  		}
-  		return val;
+    		}
+    		return val;
 	}
     ```
 
@@ -1657,3 +1657,41 @@ prototype declaration.
 * 中文說明：>、>=、<、<= 不應應用於指針類型，除非它們指向相同的數組。
 * 如果兩個指針不指向同一個對象，則嘗試在指針之間進行比較將產生未定義的行為。
 * 注意：允許對數組末尾之外的下一個元素進行尋址，但不允許訪問該元素。
+
+### Rule 17.4(req) (by Liou)
+
+- Array indexing shall be the only allowed form of pointer arithmetic.
+
+- 中文說明：數組索引應是唯一允許的指針算術形式。
+
+- 範例：
+
+  ```c
+  void my_fn(uint8_t * p1, uint8_t p2[]) 
+  { 
+     uint8_t index = 0U; 
+     uint8_t * p3; 
+     uint8_t * p4;
+     *p1 = 0U; 
+     p1 ++;          /* not compliant - pointer increment               */ 
+     p1 = p1 + 5;    /* not compliant - pointer increment               */ 
+     p1[5] = 0U;     /* not compliant - p1 was not declared as an array */ 
+     p3 = &p1[5];    /* not compliant - p1 was not declared as an array */ 
+     p2[0] = 0U; 
+     index ++; 
+     index = index + 5U; 
+     p2[index] = 0U; /* compliant                                       */ 
+     p4 = &p2[5];    /* compliant                                       */ 
+  }
+  uint8_t a1[16]; 
+  uint8_t a2[16];
+  my_fn(a1, a2);
+  my_fn(&a1[4], &a2[4]);
+  uint8_t a[10]; 
+  uint8_t * p;
+  p = a; 
+  *(p+5) = 0U;       /* not compliant                                   */ 
+  p[5] = 0U;         /* not compliant                                   */
+  ```
+
+  
