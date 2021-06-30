@@ -1651,3 +1651,9 @@ prototype declaration.
   		// ...
 	}
 	```
+
+### Rule 17.3 (req) (by Ray)
+* >, >=, <, <= shall not be applied to pointer types except where they point to the same array.
+* 中文說明：>、>=、<、<= 不應應用於指針類型，除非它們指向相同的數組。
+* 如果兩個指針不指向同一個對象，則嘗試在指針之間進行比較將產生未定義的行為。
+* 注意：允許對數組末尾之外的下一個元素進行尋址，但不允許訪問該元素。
