@@ -1438,7 +1438,6 @@ and 5.1.2.3 respectively.
    		break;  	// break is required here, in case a future
            			// modification turns this into a case clause
 	}
-	​```c
 	```
 
 ### Rule 15.1(req) (by Weiren)
@@ -1558,8 +1557,6 @@ and 5.1.2.3 respectively.
 	}
     ```
 
-
-
 ### Rule 16.3(req) (by Weiren)
 * Identifiers shall be given for all of the parameters in a function
 prototype declaration.
@@ -1652,6 +1649,23 @@ prototype declaration.
 	}
 	```
 
+### Rule 17.2 (req) (by Noah)
+* Pointer subtraction shall only be applied to pointers that address elements of the same array.
+* 中文說明：指標相減只能應用在當這些指標是指到相同陣列時。
+* 範例：
+	```C
+	int array_1[10],array_2[10];
+	int* p1,p2;
+	
+	p1 = &array_1[5];
+	p2 = &array_1[3];
+	p1 = p1 - p2;   /* compliant - p1和p2指向相同陣列 */
+	
+	p1 = &array_1[5];
+	p2 = &array_2[3];
+	p1 = p1 - p2;   /* not compliant - p1和p2指向不同陣列 */
+	```
+	
 ### Rule 17.3 (req) (by Ray)
 * >, >=, <, <= shall not be applied to pointer types except where they point to the same array.
 * 中文說明：>、>=、<、<= 不應應用於指針類型，除非它們指向相同的數組。
