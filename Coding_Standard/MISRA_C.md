@@ -1624,3 +1624,30 @@ prototype declaration.
 * All exit paths from a function with non-void return type shall have an explicit return statement with an expression.
 * 中文說明： 帶有 non-void 返回類型的函數其所有退出路徑都應具有顯式的帶表達式的 return 語句。
 * 表達式给出了函數的返回值。如果 return 語句不帶表達式，將導致未定義的行為（而且編譯器不會給出錯誤）。
+
+### Rule 16.9 (req) (by Jackal)
+*  A function identifier shall only be used with either a preceding &, or with a parenthesised parameter list, which may be empty.
+* 中文說明： 函數標識符只能與前面的 & 一起使用，或帶有括號的參數列表，該列表可能為空。
+* 範例：
+	```C
+	Noncompliant Code Example :
+	int func(void) {
+  	// ...
+	}
+
+	void f2(int a, int b) {
+  		// ...
+  		if (func) {  // Noncompliant - tests that the memory address of func() is non-null
+    		//...
+  		}
+  		// ...
+	}
+	Compliant Solution
+	void f2(int a, int b) {
+  		// ...
+  		if (func()) {  // tests that the return value of func() > 0
+    		//...
+  		}
+  		// ...
+	}
+	```
