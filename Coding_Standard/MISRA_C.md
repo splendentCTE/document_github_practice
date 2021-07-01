@@ -1648,6 +1648,11 @@ prototype declaration.
   		// ...
 	}
 	```
+### Rule 16.10(req) (by Weiren)
+* If a function returns error information, then that error
+information shall be tested.
+* 中文說明：如果函數返回錯誤信息，則應該對錯誤信息做測試。
+* 一個函數（無論它是標準庫的一部分、第三方庫還是用戶定義的函數）可以提供一些指示錯誤發生的方法，這可能是通過一個錯誤標誌、一些特殊的返回值或一些其他方式。每當函數提供這種機制時，調用程序應在函數返回後立即檢查錯誤指示。但是，請注意，與在函數完成後嘗試檢測錯誤相比，檢查函數的輸入值被認為是一種更可靠的錯誤預防方法（參見Rule 20.3）。另請注意，使用 errno（從函數返回錯誤信息）是笨拙的，應該小心使用（見Rule 20.5）。
 
 ## Pointers and arrays
 
@@ -1663,16 +1668,16 @@ prototype declaration.
 	```C
 	int array_1[10],array_2[10];
 	int* p1,p2;
-	
+
 	p1 = &array_1[5];
 	p2 = &array_1[3];
 	p1 = p1 - p2;   /* compliant - p1和p2指向相同陣列 */
-	
+
 	p1 = &array_1[5];
 	p2 = &array_2[3];
 	p1 = p1 - p2;   /* not compliant - p1和p2指向不同陣列 */
 	```
-	
+
 ### Rule 17.3 (req) (by Ray)
 * &gt;, >=, <, <= shall not be applied to pointer types except where they point to the same array.
 * 中文說明：>、>=、<、<= 不應應用於指針類型，除非它們指向相同的數組。
@@ -1688,31 +1693,30 @@ prototype declaration.
 - 範例：
 
   ```c
-  void my_fn(uint8_t * p1, uint8_t p2[]) 
-  { 
-     uint8_t index = 0U; 
-     uint8_t * p3; 
+  void my_fn(uint8_t * p1, uint8_t p2[])
+  {
+     uint8_t index = 0U;
+     uint8_t * p3;
      uint8_t * p4;
-     *p1 = 0U; 
-     p1 ++;          /* not compliant - pointer increment               */ 
-     p1 = p1 + 5;    /* not compliant - pointer increment               */ 
-     p1[5] = 0U;     /* not compliant - p1 was not declared as an array */ 
-     p3 = &p1[5];    /* not compliant - p1 was not declared as an array */ 
-     p2[0] = 0U; 
-     index ++; 
-     index = index + 5U; 
-     p2[index] = 0U; /* compliant                                       */ 
-     p4 = &p2[5];    /* compliant                                       */ 
+     *p1 = 0U;
+     p1 ++;          /* not compliant - pointer increment               */
+     p1 = p1 + 5;    /* not compliant - pointer increment               */
+     p1[5] = 0U;     /* not compliant - p1 was not declared as an array */
+     p3 = &p1[5];    /* not compliant - p1 was not declared as an array */
+     p2[0] = 0U;
+     index ++;
+     index = index + 5U;
+     p2[index] = 0U; /* compliant                                       */
+     p4 = &p2[5];    /* compliant                                       */
   }
-  uint8_t a1[16]; 
+  uint8_t a1[16];
   uint8_t a2[16];
   my_fn(a1, a2);
   my_fn(&a1[4], &a2[4]);
-  uint8_t a[10]; 
+  uint8_t a[10];
   uint8_t * p;
-  p = a; 
-  *(p+5) = 0U;       /* not compliant                                   */ 
+  p = a;
+  *(p+5) = 0U;       /* not compliant                                   */
   p[5] = 0U;         /* not compliant                                   */
   ```
 
-  
