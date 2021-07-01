@@ -1649,6 +1649,13 @@ prototype declaration.
 	}
 	```
 
+## Pointers and arrays
+
+### Rule 17.1 (req) (by Mars)
+* Pointer arithmetic shall only be applied to pointers that address an array or array element.
+* 中文說明：指標的運算應僅應用於陣列或陣列的成員中。
+* 對於並非指向陣列或陣列成員中的指標做整數的加減運算(包含增、減值)會導致為定義的行為，
+
 ### Rule 17.2 (req) (by Noah)
 * Pointer subtraction shall only be applied to pointers that address elements of the same array.
 * 中文說明：指標相減只能應用在當這些指標是指到相同陣列時。
