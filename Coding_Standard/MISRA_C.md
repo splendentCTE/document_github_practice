@@ -1666,16 +1666,16 @@ information shall be tested.
 * 中文說明：指標相減只能應用在當這些指標是指到相同陣列時。
 * 範例：
 	```C
-	int array_1[10],array_2[10];
-	int* p1,p2;
+	int array_1[10],array_2[10],p3;
+	int* p1,*p2;
 
 	p1 = &array_1[5];
 	p2 = &array_1[3];
-	p1 = p1 - p2;   /* compliant - p1和p2指向相同陣列 */
+	p3 = p1 - p2;   /* compliant - p1和p2指向相同陣列 */
 
 	p1 = &array_1[5];
 	p2 = &array_2[3];
-	p1 = p1 - p2;   /* not compliant - p1和p2指向不同陣列 */
+	p3 = p1 - p2;   /* not compliant - p1和p2指向不同陣列 */
 	```
 
 ### Rule 17.3 (req) (by Ray)
@@ -1720,3 +1720,8 @@ information shall be tested.
   p[5] = 0U;         /* not compliant                                   */
   ```
 
+### Rule 18.3 (req) (by Noah)
+* An area of memory shall not be reused for unrelated purposes.
+* 中文說明：一個記憶體區塊不應該為了不相關的目的而重覆使用。
+* 這項規定不允許你使用一塊記憶體儲存A資料，然後在不需要A資料的時段裡又用同一塊記憶體來儲存一個不相關的B資料，
+但有時候這樣共用記憶體的方式在空間使用上是比較有效率的，例如union的使用，不過這樣的使用需要有文件紀錄(如18.4所述)。
