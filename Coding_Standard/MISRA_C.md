@@ -1720,6 +1720,21 @@ information shall be tested.
   p[5] = 0U;         /* not compliant                                   */
   ```
 
+### Rule 17.6 (req) (by Jackal)
+* The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist.
+* 中文說明：自動存儲對象的地址不得分配給另一個對象,這可能會在第一個對像不復存在後持續存在。
+* 如果一個自動對象的地址被分配給另一個更大範圍的自動對象，或者
+一個靜態對象，或從函數返回，那麼包含地址的對象可能會在原始對象停止存在（並且其地址無效）的時間之後存在。
+* 範例：
+	```C
+	int8_t * foobar(void) 
+	{ 
+   		int8_t local_auto; 
+   		return (&local_auto);   /* not compliant */ 
+	}
+	```
+
+
 ### Rule 18.3 (req) (by Noah)
 * An area of memory shall not be reused for unrelated purposes.
 * 中文說明：一個記憶體區塊不應該為了不相關的目的而重覆使用。
