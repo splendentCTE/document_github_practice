@@ -1727,13 +1727,34 @@ information shall be tested.
 一個靜態對象，或從函數返回，那麼包含地址的對象可能會在原始對象停止存在（並且其地址無效）的時間之後存在。
 * 範例：
 	```C
-	int8_t * foobar(void) 
-	{ 
-   		int8_t local_auto; 
-   		return (&local_auto);   /* not compliant */ 
+	int8_t * foobar(void)
+	{
+   		int8_t local_auto;
+   		return (&local_auto);   /* not compliant */
 	}
 	```
 
+### Rule 18.1(req) (by Weiren)
+* All structure and union types shall be complete at the end of a translation unit.
+* 中文說明： 所有 struct 和 union 類型應在翻譯單元的末尾完成。
+* struct 和 union 的完整聲明應包含在讀取或寫入該結構的任何翻譯單元中。
+* 指向不完整類型的指標本身是完整的並且是允許的，因此允許使用不透明指標。
+* 有關不完整類型的完整描述，請參見 ISO 9899:1990 [2] 的第 6.1.2.5 節。
+* 範例：
+    * 不合規定的寫法：
+    ```C
+        struct tnode * pt; /* tnode 不完整 */
+    ```
+    * 合規定的寫法：
+    ```C
+        struct tnode * pt; /* tnode 在這一點上是不完整的 */
+        struct tnode
+        {
+            int count;
+            struct tnode * left;
+            struct tnode * right;
+        }; /* type tnode 現在已完整 */
+    ```
 
 ### Rule 18.3 (req) (by Noah)
 * An area of memory shall not be reused for unrelated purposes.
@@ -1764,6 +1785,6 @@ information shall be tested.
   ```c
   #include <h1.h>
   #include <f2.h>
-  
+
   int32_t i;
   ```
