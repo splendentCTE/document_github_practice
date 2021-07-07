@@ -1740,3 +1740,30 @@ information shall be tested.
 * 中文說明：一個記憶體區塊不應該為了不相關的目的而重覆使用。
 * 這項規定不允許你使用一塊記憶體儲存A資料，然後在不需要A資料的時段裡又用同一塊記憶體來儲存一個不相關的B資料，
 但有時候這樣共用記憶體的方式在空間使用上是比較有效率的，例如union的使用，不過這樣的使用需要有文件紀錄(如18.4所述)。
+
+### Rule 19.1(adv) (by Liou)
+
+- #include statements in a file should only be preceded by other preprocessor directives or comments.
+
+- 中文說明：文件中的#include語句僅應在其他預處理器指令或註釋之前。
+
+- 範例：無。
+
+- 補充說明：
+
+  Noncompliant Code Example
+
+  ```c
+  #include <h1.h> /* Compliant */
+  int32_t i;
+  #include <f2.h> /* Noncompliant */
+  ```
+
+  Compliant Solution
+
+  ```c
+  #include <h1.h>
+  #include <f2.h>
+  
+  int32_t i;
+  ```
