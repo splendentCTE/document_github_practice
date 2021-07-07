@@ -1720,6 +1720,52 @@ information shall be tested.
   p[5] = 0U;         /* not compliant                                   */
   ```
 
+### Rule 17.5 (adv) (by U.Chen)
+* The declaration of objects should contain no more than 2 levels of pointer indirection.
+* 中文說明：對象聲明所包含的間接指針不得多於 2 級
+* 多於 2 級的間接指針會嚴重減弱對程式碼行為的理解，因此應該避免。
+* 範例：
+    ```c
+    typedef int8_t * INTPTR;
+    struct s {
+       int8_t *   s1;                             /* compliant     */
+       int8_t **  s2;                             /* compliant     */
+       int8_t *** s3;                             /* not compliant */
+    };
+    struct s *   ps1;                             /* compliant     */
+    struct s **  ps2;                             /* compliant     */
+    struct s *** ps3;                             /* not compliant */
+    int8_t **  (  *pfunc1)();                     /* compliant     */
+    int8_t **  ( **pfunc2)();                     /* compliant     */
+    int8_t **  (***pfunc3)();                     /* not compliant */
+    int8_t *** ( **pfunc4)();                     /* not compliant */
+    void function( int8_t *   par1,
+                   int8_t **  par2,
+                   int8_t *** par3,               /* not compliant */
+                   INTPTR *   par4,
+                   INTPTR *   const * const par5, /* not compliant */
+                   int8_t *   par6[],
+                   int8_t **  par7[])             /* not compliant */
+    {
+       int8_t *   ptr1;
+       int8_t **  ptr2;
+       int8_t *** ptr3;                           /* not compliant */
+       INTPTR *   ptr4;
+       INTPTR *   const * const ptr5;             /* not compliant */
+       int8_t *   ptr6[10];
+       int8_t **  ptr7[10];
+    }
+    ```
+* 類型解釋：
+    * par1 和 ptr1 是指向 int8_t 的指針。
+    * par2 和 ptr2 是指向 int8_t 的指針的指針。
+    * par3 和 ptr3 是指向 int8_t 的指針的指針的指針。這是三級，因此不合適。
+    * par4 和 ptr4 擴展開是指向 int8_t 的指針的指針。
+    * par5 和 ptr5 擴展開是指向 int8_t 的指針的 const 指針的 const 指針。這是三級，因此不合適。
+    * par6 是指向 int8_t 的指針的指針，因為陣列被轉化成指向陣列初始元素的指針。
+    * ptr6 是 int8_t 類型的指針陣列。
+    * par7 是指向 int8_t 的指針的指針的指針，因為陣列被轉化成指向陣列初始元素的指針。這是三級，因此不合適。
+    * ptr7 是指向 int8_t 的指針的指針陣列。這是合適的。
 ### Rule 17.6 (req) (by Jackal)
 * The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist.
 * 中文說明：自動存儲對象的地址不得分配給另一個對象,這可能會在第一個對像不復存在後持續存在。
