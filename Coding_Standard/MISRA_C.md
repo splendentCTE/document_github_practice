@@ -1808,6 +1808,121 @@ information shall be tested.
 * 這項規定不允許你使用一塊記憶體儲存A資料，然後在不需要A資料的時段裡又用同一塊記憶體來儲存一個不相關的B資料，
 但有時候這樣共用記憶體的方式在空間使用上是比較有效率的，例如union的使用，不過這樣的使用需要有文件紀錄(如18.4所述)。
 
+### Rule 18.4 (req) (by Ray)
+* Unions shall not be used.
+* 中文說明：不得使用聯合。
+* 規則 18.3 禁止將內存區域重用於無關目的。然而，即使內存被重用用於相關目的，仍然存在數據可能被誤解的風險。因此，該規則禁止出於任何目的使用聯合。
+* 只要記錄了所有相關的實現定義的行為，對本規則的偏差就被認為是可以接受的。這可以通過參考設計文檔中編譯器手冊的實現部分在實踐中實現。
+* 可能相關的實現行為類型有：
+    * 填充 - 在聯合的末尾插入了多少填充
+    * 對齊 - 聯合內任何結構的成員如何對齊
+    * 字節序 — 是存儲在最低或最高內存地址的字的最高有效字節
+    * 位序 - 字節內的位如何編號以及位如何分配給位域
+* 如下情況是可以接受的：
+    * (a)數據的打包和解包(Packing and unpacking data)，例如在發送和接收消息時
+    * (b)實施變體記錄(Variant records)，前提是變體通過公共字段進行區分。沒有區分符(differentiator)的變體記錄被認為不適合在任何情況下使用。
+
+* 數據的打包和解包(Packing and unpacking data)
+* 在此示例中，聯合用於訪問32位字的字節，以便首先存儲通過網絡接收的字節最高有效字節。
+* 此特定實現所依賴的假設是：
+    * uint32_t 類型占用 32 位
+    * uint8_t 類型占用 8 位
+    * 實現將最高有效字節存儲在最低內存地址的字
+* 實現字節接收和打包的代碼可以是：
+	```C
+	typedef union {
+		uint32_t word;
+		uint8_t bytes[4];
+	} word_msg_t;
+	
+	uint32_t read_word_big_endian (void)
+	{
+		word_msg_t tmp;
+		tmp.bytes[0] = read_byte();
+		tmp.bytes[1] = read_byte();
+		tmp.bytes[2] = read_byte();
+		tmp.bytes[3] = read_byte();
+		return (tmp.word);
+	}
+	```
+
+	值得注意的是，上面的主體可以以可移植的方式編寫如下：
+	```C
+	uint32_t read_word_big_endian (void)
+	{
+		uint32_t word;
+		word = ((uint32_t)read_byte()) << 24;
+		word = word | (((uint32_t)read_byte()) << 16);
+		word = word | (((uint32_t)read_byte()) << 8);
+		word = word | ((uint32_t)read_byte());
+		return (word);
+	}
+	```
+	不幸的是，大多數編譯器在面對可移植實現時生成的代碼效率要低得多。
+	當高執行速度或低程序內存使用比可移植性更重要時，使用聯合的實現可能是首選。
+
+* 變體記錄(Variant records)
+* 聯合通常用於實現變體記錄。 每個變體共享公共字段並具有特定於變體的附加字段。
+* 此範例基於CAN校準協議(CCP)，其中發送到CCP客戶端的每個CAN消息共享兩個公共字段，每個字段為一個字節。最多可以跟隨6個附加字節，其解釋取決於存儲在第一個字節中的消息類型。
+* 此特定實現所依賴的假設是：
+    * uint16_t 類型占用 16 位
+    * uint8_t 類型占用 8 位
+    * 對齊和打包規則使得結構的 uint8_t 和 uint16_t 成員之間沒有間隙
+
+* 為簡潔起見，此範例中僅考慮兩種消息類型。此處提供的代碼不完整，應僅用於說明變體記錄的目的，而不應視為CCP的模型實現。
+	```C
+	/* 所有CCP消息共有的字段(The fields common to all CCP messages) */
+	typedef struct {
+		uint8_t msg_type;
+		uint8_t sequence_no;
+	} ccp_common_t;
+	
+	/* CCP connect message */
+	typedef struct {
+		ccp_common_t common_part;
+		uint16_t station_to_connect;
+	} ccp_connect_t;
+	
+	/* CCP disconnect message */
+	typedef struct {
+		ccp_common_t common_part;
+		uint8_t disconnect_command;
+		uint8_t pad;
+		uint16_t station_to_disconnect;
+	} ccp_disconnect_t;
+	
+	/* The variant */
+	typedef union {
+		ccp_common_t common;
+		ccp_connect_t connect;
+		ccp_disconnect_t disconnect;
+	} ccp_message_t;
+	
+	void process_ccp_message (ccp_message_t *msg)
+	{
+		switch (msg->common.msg_type)
+		{
+		case Ccp_connect:
+			if (MY_STATION == msg->connect.station_to_connect)
+			{
+				ccp_connect ();
+			}
+			break;
+		case Ccp_disconnect:
+			if (MY_STATION == msg->disconnect.station_to_disconnect)
+			{
+				if (PERM_DISCONNECT == msg->disconnect.disconnect_command)
+				{
+					ccp_disconnect ();
+				}
+			}
+			break;
+		default:
+			break; /* ignore unknown commands */
+		}
+	}
+	```
+
 ### Rule 19.1(adv) (by Liou)
 
 - #include statements in a file should only be preceded by other preprocessor directives or comments.
