@@ -1659,7 +1659,7 @@ information shall be tested.
 ### Rule 17.1 (req) (by Mars)
 * Pointer arithmetic shall only be applied to pointers that address an array or array element.
 * 中文說明：指標的運算應僅應用於陣列或陣列的成員中。
-* 對於並非指向陣列或陣列成員中的指標做整數的加減運算(包含增、減值)會導致為定義的行為，
+* 對於並非指向陣列或陣列成員中的指標做整數的加減運算(包含增、減值)會導致未定義的行為，
 
 ### Rule 17.2 (req) (by Noah)
 * Pointer subtraction shall only be applied to pointers that address elements of the same array.
@@ -1780,6 +1780,8 @@ information shall be tested.
 	}
 	```
 
+## Structures and unions
+
 ### Rule 18.1(req) (by Weiren)
 * All structure and union types shall be complete at the end of a translation unit.
 * 中文說明： 所有 struct 和 union 類型應在翻譯單元的末尾完成。
@@ -1801,6 +1803,11 @@ information shall be tested.
             struct tnode * right;
         }; /* type tnode 現在已完整 */
     ```
+
+### Rule 18.2(req) (by Mars)
+* An object shall not be assigned to an overlapping object.
+* 中文說明：一個物件不應該被指定到重疊分配的物件。
+* 當兩個物件被創立並有重疊的記憶體位置且其中一個被複製成另外一個，這樣的行為是為定義的。
 
 ### Rule 18.3 (req) (by Noah)
 * An area of memory shall not be reused for unrelated purposes.
