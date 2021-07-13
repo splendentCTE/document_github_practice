@@ -1956,3 +1956,34 @@ information shall be tested.
 
   int32_t i;
   ```
+
+### Rule 19.7 (adv) (by Ray)
+* A function should be used in preference to a function-like macro.
+* 中文說明：應該優先使用函數而不是類似函數的宏。
+* 雖然宏可以提供優於函數的速度優勢，但函數提供了更安全和更健壯的機制。
+* 對於參數的類型檢查以及類似函數的宏可能多次評估參數的問題尤其如此。
+* Noncompliant Code Example:
+    ```c
+    #define CUBE (X) ((X) * (X) * (X)) // Noncompliant
+
+    void func(void)
+    {
+        int i = 2;
+        int a = CUBE(++i); /* Noncompliant. Expands to: int a = ((++i) * (++i) * (++i)) */
+        ...
+    }
+    ```
+* Compliant Solution:
+    ```c
+    inline int cube(int i)
+    {
+        return i * i * i;
+    }
+
+    void func(void)
+    {
+        int i = 2;
+        int a = cube(++i); // yields 27
+        ...
+    }
+    ```
