@@ -1957,6 +1957,10 @@ information shall be tested.
   int32_t i;
   ```
 
+### Rule 19.6 (req) (by Noah)
+* #undef shall not be used.
+* 中文說明：#undef不應該使用，它會容易造成混淆。
+
 ### Rule 19.7 (adv) (by Ray)
 * A function should be used in preference to a function-like macro.
 * 中文說明：應該優先使用函數而不是類似函數的宏。
