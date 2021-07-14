@@ -1841,7 +1841,7 @@ information shall be tested.
 		uint32_t word;
 		uint8_t bytes[4];
 	} word_msg_t;
-	
+
 	uint32_t read_word_big_endian (void)
 	{
 		word_msg_t tmp;
@@ -1883,13 +1883,13 @@ information shall be tested.
 		uint8_t msg_type;
 		uint8_t sequence_no;
 	} ccp_common_t;
-	
+
 	/* CCP connect message */
 	typedef struct {
 		ccp_common_t common_part;
 		uint16_t station_to_connect;
 	} ccp_connect_t;
-	
+
 	/* CCP disconnect message */
 	typedef struct {
 		ccp_common_t common_part;
@@ -1897,14 +1897,14 @@ information shall be tested.
 		uint8_t pad;
 		uint16_t station_to_disconnect;
 	} ccp_disconnect_t;
-	
+
 	/* The variant */
 	typedef union {
 		ccp_common_t common;
 		ccp_connect_t connect;
 		ccp_disconnect_t disconnect;
 	} ccp_message_t;
-	
+
 	void process_ccp_message (ccp_message_t *msg)
 	{
 		switch (msg->common.msg_type)
@@ -1956,6 +1956,12 @@ information shall be tested.
 
   int32_t i;
   ```
+
+### Rule 19.2 (adv) (by U.Chen)
+* Non-standard characters should not occur in header file names in #include directives.
+* 中文說明：#include 指令中的標頭檔檔名中不應出現非標準字符。
+* 在標頭檔檔名預處理標記的 < 和 > 限定符或 ” 和 ” 限定符之間使用了 ‘ ，\ ，或 /* 字符，該行為是未定義的。
+* 不過如果開發環境的主機操作系統需要，則允許在文件名路徑中使用 \ 字符。
 
 ### Rule 19.6 (req) (by Noah)
 * #undef shall not be used.
