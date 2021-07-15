@@ -1963,6 +1963,43 @@ information shall be tested.
 * 在標頭檔檔名預處理標記的 < 和 > 限定符或 ” 和 ” 限定符之間使用了 ‘ ，\ ，或 /* 字符，該行為是未定義的。
 * 不過如果開發環境的主機操作系統需要，則允許在文件名路徑中使用 \ 字符。
 
+### Rule 19.4(req) (by Weiren)
+* C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
+中文說明：C 的Macors 應只能擴展 括弧初始化程序，常數，字符串文字，帶括號的表達式，類型修飾符，存儲類別說明符，或 do-while-zero 構造。
+* Macors 只能允許這些用途。存儲類別說明符 和 類型修飾符 包括關鍵字，例如 extern、static 和 const。
+* #define 的任何其他使用都可能導致在進行替換時出現意外行為，或者導致非常難以閱讀的代碼。
+* 特別是，除了使用 do-while 結構外，Macor 不得用於定義語句或語句的一部分。
+* Macor 也不應該重新定義語言的語法。
+* Macor 替換列表中的任何類型 ( ) { } [ ] 的所有括號都應平衡。
+* do-while-zero 構造（見下面的例子）是唯一允許在Macor 中包含完整語句的機制。
+* do-while-zero 構造用於包裝一系列一個或多個語句並確保正確的行為。
+* 注意：Macor 末尾的分號必須省略。
+
+    * 不合規定的寫法：
+    ```C
+        #define int32_t long /* 改用 typedef */
+        #define STARTIF if(  /* 括弧()不平衡而且語言重新定義 */
+        #define CAT PI       /* 無括號表達式 */
+    ```
+    * 合規定的寫法：
+    ```C
+        #define PI 3.14159F                 /* 常數 */
+        #define XSTAL 10000000              /* 常數 */
+        #define CLOCK (XSTAL/16)            /* 常數表達式 */
+        #define PLUS2(X) ((X) + 2)          /* Macro 擴展表達式 */
+        #define STOR extern                 /* 存儲類別說明符 */
+        #define INIT(value){ (value), 0, 0} /* 括弧初始化程序 */
+        #define CAT (PI)                    /* 括號表達式 */
+        #define FILE_A "filename.h"         /* 字符串文字 */
+        #define READ_TIME_32() \
+        do { \
+        DISABLE_INTERRUPTS (); \
+        time_now = (uint32_t)TIMER_HI << 16; \
+        time_now = time_now | (uint32_t)TIMER_LO; \
+        ENABLE_INTERRUPTS (); \
+        } while (0)                         /* do-while-zero的例子 */
+    ```
+
 ### Rule 19.6 (req) (by Noah)
 * #undef shall not be used.
 * 中文說明：#undef不應該使用，它會容易造成混淆。
