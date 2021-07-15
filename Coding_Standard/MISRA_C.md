@@ -1807,7 +1807,7 @@ information shall be tested.
 ### Rule 18.2(req) (by Mars)
 * An object shall not be assigned to an overlapping object.
 * 中文說明：一個物件不應該被指定到重疊分配的物件。
-* 當兩個物件被創立並有重疊的記憶體位置且其中一個被複製成另外一個，這樣的行為是為定義的。
+* 當兩個物件被創立並有重疊的記憶體位置且其中一個被複製成另外一個，這樣的行為是未定義的。
 
 ### Rule 18.3 (req) (by Noah)
 * An area of memory shall not be reused for unrelated purposes.
@@ -1999,6 +1999,13 @@ information shall be tested.
         ENABLE_INTERRUPTS (); \
         } while (0)                         /* do-while-zero的例子 */
     ```
+
+### Rule 19.5 (req) (by Mars)
+* #Macros shall not be #define’d or #undef’d within a block.
+* 中文說明：巨集內不應使用 #define 跟 #undef。
+* 在C語言中的任何地方直接放上 #define 跟 #undef都是合法的，但如果把它們將它們放在塊中會產生誤導，因為這意味著範圍僅限於該區塊，但事實並非如此。
+* 一般來說，#define 指令將放置在文件開頭附近，在第一個函數定義之前。
+* 一般來說，#undef 指令不要用，請參考規則19.6。
 
 ### Rule 19.6 (req) (by Noah)
 * #undef shall not be used.
