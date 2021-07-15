@@ -1963,6 +1963,17 @@ information shall be tested.
 * 在標頭檔檔名預處理標記的 < 和 > 限定符或 ” 和 ” 限定符之間使用了 ‘ ，\ ，或 /* 字符，該行為是未定義的。
 * 不過如果開發環境的主機操作系統需要，則允許在文件名路徑中使用 \ 字符。
 
+### Rule 19.3 (req) (by Jackal)
+* The #include directive shall be followed by either a <filename> or "filename" sequence.
+* 中文說明："#include" 指令後面應該是 <filename> 或 "filename" 序列
+	```c
+	For example, the following are allowed.
+	#include "filename.h" 
+	#include <filename.h> 
+	#define FILE_A "filename.h" 
+	#include FILE_A
+	```c
+
 ### Rule 19.4(req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
 中文說明：C 的Macors 應只能擴展 括弧初始化程序，常數，字符串文字，帶括號的表達式，類型修飾符，存儲類別說明符，或 do-while-zero 構造。
