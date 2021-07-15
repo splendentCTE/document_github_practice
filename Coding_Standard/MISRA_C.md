@@ -1997,3 +1997,11 @@ information shall be tested.
         ...
     }
     ```
+
+### Rule 19.8 (req) (by Liou)
+
+-  A function-like macro shall not be invoked without all of its arguments.
+
+-  中文說明：不能在沒有所有參數的情況下調用類似函數的macro 。
+
+-  範例：無。
