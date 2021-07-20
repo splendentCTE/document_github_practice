@@ -1968,9 +1968,9 @@ information shall be tested.
 * 中文說明："#include" 指令後面應該是 <filename> 或 "filename" 序列
 	```c
 	For example, the following are allowed.
-	#include "filename.h" 
-	#include <filename.h> 
-	#define FILE_A "filename.h" 
+	#include "filename.h"
+	#include <filename.h>
+	#define FILE_A "filename.h"
 	#include FILE_A
 	```c
 
@@ -2060,3 +2060,23 @@ information shall be tested.
 -  中文說明：不能在沒有所有參數的情況下調用類似函數的macro 。
 
 -  範例：無。
+
+### Rule 19.14 (req) (by Ray)
+* The defined preprocessor operator shall only be used in one of the two standard forms.
+* 中文說明：定義的預處理器運算符只能以兩種標準形式之一使用。
+* 定義的預處理器運算符僅有的兩種允許形式是：
+    * defined ( identifier )
+    * defined identifier
+
+* 任何其他形式都會導致未定義的行為，例如：
+    ```c
+    #if defined(X > Y)  /* 不符合 - 未定義的行為 */
+
+    #if defined X && defined Y && X > Y  /* 符合 */
+    ```
+
+* 在 #if 或 #elif 預處理指令擴展期間定義的令牌的生成也會導致未定義的行為，應避免，例如：
+    ```c
+    #define DEFINED defined
+    #if DEFINED(X) /* not compliant - undefined behaviour */
+    ```
