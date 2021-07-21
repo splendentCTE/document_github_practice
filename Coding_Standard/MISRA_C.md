@@ -2061,6 +2061,36 @@ information shall be tested.
 
 -  範例：無。
 
+### Rule 19.9 (req) (by U.Chen)
+* Arguments to a function-like macro shall not contain tokens that look like preprocessing directives.
+* 中文說明： 傳遞給類函數巨集的參數不能包含看似預處理指令的標記。
+* 如果任何參數的行為類似預處理指令，使用巨集替代函數時的行為將是不可預期的。
+* 範例：
+    ```c
+        #define SUM(A,B,C) ((A) + (B) + (C))
+
+        void mc2_1909 ( void )
+        {
+           int16_t mc2_1909_s16a;
+           int16_t mc2_1909_s16b = get_int16 ( );
+           int16_t mc2_1909_s16c = get_int16 ( );
+
+           mc2_1909_s16a = SUM( 5,
+        #ifdef SW                               /* Noncompliant */
+                                mc2_1909_s16b,
+        #else
+                                mc2_1909_s16c,
+        #endif
+                                0 );
+
+           use_int16 ( mc2_1909_s16a );
+           use_int16 ( mc2_1909_s16b );
+           use_int16 ( mc2_1909_s16c );
+
+        }
+    ```
+
+
 ### Rule 19.14 (req) (by Ray)
 * The defined preprocessor operator shall only be used in one of the two standard forms.
 * 中文說明：定義的預處理器運算符只能以兩種標準形式之一使用。
