@@ -1972,7 +1972,8 @@ information shall be tested.
 	#include <filename.h>
 	#define FILE_A "filename.h"
 	#include FILE_A
-	```c
+	​```c
+	```
 
 ### Rule 19.4(req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
@@ -2110,3 +2111,11 @@ information shall be tested.
     #define DEFINED defined
     #if DEFINED(X) /* not compliant - undefined behaviour */
     ```
+
+### Rule 19.15(req) (by Liou)
+
+- Precautions shall be taken in order to prevent the contents of a header file being included twice.
+
+- 中文說明：應採取預防措施以防止頭文件的內容被包含兩次。
+
+- 範例：無。
