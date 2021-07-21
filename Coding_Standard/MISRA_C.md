@@ -1977,15 +1977,15 @@ information shall be tested.
 
 ### Rule 19.4(req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
-中文說明：C 的Macors 應只能擴展 括弧初始化程序，常數，字符串文字，帶括號的表達式，類型修飾符，存儲類別說明符，或 do-while-zero 構造。
-* Macors 只能允許這些用途。存儲類別說明符 和 類型修飾符 包括關鍵字，例如 extern、static 和 const。
+中文說明：C 的macros 應只能擴展 括弧初始化程序，常數，字符串文字，帶括號的表達式，類型修飾符，存儲類別說明符，或 do-while-zero 構造。
+* Macros 只能允許這些用途。存儲類別說明符 和 類型修飾符 包括關鍵字，例如 extern、static 和 const。
 * #define 的任何其他使用都可能導致在進行替換時出現意外行為，或者導致非常難以閱讀的代碼。
-* 特別是，除了使用 do-while 結構外，Macor 不得用於定義語句或語句的一部分。
-* Macor 也不應該重新定義語言的語法。
-* Macor 替換列表中的任何類型 ( ) { } [ ] 的所有括號都應平衡。
-* do-while-zero 構造（見下面的例子）是唯一允許在Macor 中包含完整語句的機制。
+* 特別是，除了使用 do-while 結構外，Macro 不得用於定義語句或語句的一部分。
+* Macro 也不應該重新定義語言的語法。
+* Macro 替換列表中的任何類型 ( ) { } [ ] 的所有括號都應平衡。
+* do-while-zero 構造（見下面的例子）是唯一允許在Macro 中包含完整語句的機制。
 * do-while-zero 構造用於包裝一系列一個或多個語句並確保正確的行為。
-* 注意：Macor 末尾的分號必須省略。
+* 注意：Macro 末尾的分號必須省略。
 
     * 不合規定的寫法：
     ```C
@@ -2091,6 +2091,31 @@ information shall be tested.
         }
     ```
 
+### Rule 19.11(req) (by Weiren)
+* All macro identifiers in preprocessor directives shall be defined before use, except in #ifdef and #ifndef preprocessor directives and the defined() operator.
+* 中文說明： 預處理器指令中的所有 macro 標識符都應在使用前定義，#ifdef 和 #ifndef 預處理器指令和 defined() 運算符除外。
+* 如果嘗試在預處理器指令中使用標識符，而該標識符尚未定義，則預處理器有時不會發出任何警告，但會假定值為零。
+* #ifdef、#ifndef 和defined() 用於測試 macro 是否存在，因此被排除在外。
+* 在使用標識符之前，應考慮使用 #ifdef 測試。
+* 請注意，預處理標識符可以通過使用 #define 指令或在編譯器調用時指定的選項來定義。但是，首選使用 #define 指令。
+    * 不合規定的寫法：
+    ```C
+        #if x > 0 /* 如果未定義 x 假定為零 */
+        #include SOMETHING_IMPORTANT
+        #endif
+    ```
+    * 合規定的寫法：
+    ```C
+        #define x 10
+        ...
+        #if x > 0
+        #include SOMETHING_IMPORTANT
+        #endif
+
+        #if defined ( y ) && ( y > 0 )
+        ...
+        #endif
+    ```
 
 ### Rule 19.14 (req) (by Ray)
 * The defined preprocessor operator shall only be used in one of the two standard forms.
