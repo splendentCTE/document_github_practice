@@ -1972,7 +1972,7 @@ information shall be tested.
 	#include <filename.h>
 	#define FILE_A "filename.h"
 	#include FILE_A
-  	```
+  ```
 
 ### Rule 19.4(req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
@@ -2204,4 +2204,11 @@ information shall be tested.
 
 - 中文說明：應採取預防措施以防止頭文件的內容被包含兩次。
 
-- 範例：無。
+- 範例：
+
+  ```c
+  #ifndef LCD_MODULE_H 
+  #define LCD_MODULE_H
+  ```
+
+  
