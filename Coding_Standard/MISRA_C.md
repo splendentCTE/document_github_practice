@@ -2105,6 +2105,43 @@ Rule 19.10 (req) (by Jackal)
 	giving:
 	z = ((a - b >= 0) ? a - b : -a - b);
 	```
+* 補充說明： #與## 的操作數
+
+	```c
+	宏中的#的功能是将其后面的宏参数进行字符串化操作（Stringizing operator），
+	简单说就是在它引用的宏变量的左右各加上一个双引号。
+
+	如定义好#define STRING(x) #x之后，下面二条语句就等价。
+
+        char *pChar = "hello";
+
+        char *pChar = STRING(hello);
+
+	还有一个#@是加单引号（Charizing Operator）
+
+	#define makechar(x)  #@x
+
+        char ch = makechar(b);与char ch = 'b';等价。
+
+	
+	再讲下##的功能，它可以拼接符号（Token-pasting operator）。
+
+	MSDN上有个例子：
+
+	#define paster( n ) printf( "token"#n" = %d\n", token##n )
+
+	int token9 = 100;
+
+	再调用  paster(9);宏展开后token##n直接合并变成了token9。整个语句变成了
+
+	printf( "token""9"" = %d", token9 );
+
+	在C语言中字符串中的二个相连的双引号会被自动忽略，于是上句等同于
+
+	printf("token9 = %d", token9);。
+
+	即输出token9 = 100
+	```
 
 ### Rule 19.11(req) (by Weiren)
 * All macro identifiers in preprocessor directives shall be defined before use, except in #ifdef and #ifndef preprocessor directives and the defined() operator.
