@@ -1964,16 +1964,15 @@ information shall be tested.
 * 不過如果開發環境的主機操作系統需要，則允許在文件名路徑中使用 \ 字符。
 
 ### Rule 19.3 (req) (by Jackal)
-* The #include directive shall be followed by either a <filename> or "filename" sequence.
-* 中文說明："#include" 指令後面應該是 <filename> 或 "filename" 序列
+* The #include directive shall be followed by either a\<filename> or "filename" sequence.
+* 中文說明："#include" 指令後面應該是 \<filename> 或 "filename" 序列
 	```c
 	For example, the following are allowed.
 	#include "filename.h"
 	#include <filename.h>
 	#define FILE_A "filename.h"
 	#include FILE_A
-	​```c
-	```
+  	```
 
 ### Rule 19.4(req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
@@ -2090,6 +2089,22 @@ information shall be tested.
 
         }
     ```
+
+Rule 19.10 (req) (by Jackal) 
+* In the definition of a function-like macro each instance of a parameter shall be enclosed in parentheses unless it is used as the operand of # or ##.
+* 中文說明： 在類函數宏的定義中,參數應括在括號中,除非它被用作# 或## 的操作數。
+
+	```c
+	example define an abs function using:
+	#define abs(x) (((x) >= 0) ? (x) : -(x))
+	and not:
+	#define abs(x) ((x >= 0) ? x : -x)
+
+	Consider what happens if the second, incorrect, definition is substituted into the expression:
+	z = abs( a - b );
+	giving:
+	z = ((a - b >= 0) ? a - b : -a - b);
+	```
 
 ### Rule 19.11(req) (by Weiren)
 * All macro identifiers in preprocessor directives shall be defined before use, except in #ifdef and #ifndef preprocessor directives and the defined() operator.
