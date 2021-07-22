@@ -2090,7 +2090,7 @@ information shall be tested.
         }
     ```
 
-Rule 19.10 (req) (by Jackal) 
+### Rule 19.10 (req) (by Jackal) 
 * In the definition of a function-like macro each instance of a parameter shall be enclosed in parentheses unless it is used as the operand of # or ##.
 * 中文說明： 在類函數宏的定義中,參數應括在括號中,除非它被用作# 或## 的操作數。
 
@@ -2173,6 +2173,10 @@ Rule 19.10 (req) (by Jackal)
 * There shall be at most one occurrence of the # or ## operators in a single macro definition.
 * 中文說明：在一個巨集的定義中，應只能出現一個 # 或 ##。
 * 因 # 和 ## 預處理器運算符未指定求值順序，為避免此問題，在任何單個巨集定義中只應使用一次任一運算符。
+
+### Rule 19.13 (adv) (by Noah)
+* The # and ## operators should not be used.
+* 中文說明：#和##不應該使用，因為不同compiler可能會編譯出不同結果。
 
 ### Rule 19.14 (req) (by Ray)
 * The defined preprocessor operator shall only be used in one of the two standard forms.
