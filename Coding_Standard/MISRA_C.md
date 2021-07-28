@@ -2083,6 +2083,12 @@ information shall be tested.
         #endif
                                 0 );
 
+        #ifdef SW                               /* Compliant */
+           mc2_1909_s16a = SUM( 5, mc2_1909_s16b, 0);
+        #else
+           mc2_1909_s16a = SUM( 5, mc2_1909_s16c, 0);
+        #endif
+
            use_int16 ( mc2_1909_s16a );
            use_int16 ( mc2_1909_s16b );
            use_int16 ( mc2_1909_s16c );
@@ -2090,7 +2096,7 @@ information shall be tested.
         }
     ```
 
-### Rule 19.10 (req) (by Jackal) 
+### Rule 19.10 (req) (by Jackal)
 * In the definition of a function-like macro each instance of a parameter shall be enclosed in parentheses unless it is used as the operand of # or ##.
 * 中文說明： 在類函數宏的定義中,參數應括在括號中,除非它被用作# 或## 的操作數。
 
@@ -2123,7 +2129,7 @@ information shall be tested.
 
         char ch = makechar(b);与char ch = 'b';等价。
 
-	
+
 	再讲下##的功能，它可以拼接符号（Token-pasting operator）。
 
 	MSDN上有个例子：
@@ -2207,8 +2213,33 @@ information shall be tested.
 - 範例：
 
   ```c
-  #ifndef LCD_MODULE_H 
+  #ifndef LCD_MODULE_H
   #define LCD_MODULE_H
   ```
 
-  
+### Rule 19.16 (req) (by U.Chen)
+* Preprocessing directives shall be syntactically meaningful even when excluded by the preprocessor.
+* 中文說明：預處理指令在句法上應該是有意義的，即使是在被預處理器排除的情況下。
+* 當預處理器指令排除一段源代碼時，每個排除語句的內容將被忽略，直到遇到 #else、#elif 或 #endif 指令（取決於上下文）。
+* 如果這些被排除的指令之一的格式不正確，編譯器可能會在沒有警告的情況下忽略它，並帶來不幸的後果。
+* 此規則的要求是所有預處理器指令即使出現在排除的代碼塊中也應在語法上有效。
+* 特別是，確保#else 和#endif 指令後面沒有除空格之外的任何字符。 編譯器在執行此 ISO 要求方面並不總是一致。
+* 範例：
+    ```c
+      #define AAA 2
+      ...
+      int foo(void)
+      {
+         int x = 0;
+         ...
+      #ifndef AAA
+         x = 1;
+      #else1         /* Not compliant */
+         x = AAA;
+      #else          /* Compliant */
+         x = AAA;
+      #endif
+         ...
+         return x;
+      }
+    ```
