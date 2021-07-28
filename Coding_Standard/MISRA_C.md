@@ -2128,24 +2128,25 @@ information shall be tested.
 	#define makechar(x)  #@x
 
         char ch = makechar(b);与char ch = 'b';等价。
+  ```
 
 
 	再讲下##的功能，它可以拼接符号（Token-pasting operator）。
-
+	
 	MSDN上有个例子：
-
+	
 	#define paster( n ) printf( "token"#n" = %d\n", token##n )
-
+	
 	int token9 = 100;
-
+	
 	再调用  paster(9);宏展开后token##n直接合并变成了token9。整个语句变成了
-
+	
 	printf( "token""9"" = %d", token9 );
-
+	
 	在C语言中字符串中的二个相连的双引号会被自动忽略，于是上句等同于
-
+	
 	printf("token9 = %d", token9);。
-
+	
 	即输出token9 = 100
 	```
 
@@ -2243,3 +2244,11 @@ information shall be tested.
          return x;
       }
     ```
+
+### Rule 20.5(req) (by Liou)
+
+- The error indicator errno shall not be used.
+
+- 中文說明：不應使用錯誤指示符 errno。
+
+- 範例：無。
