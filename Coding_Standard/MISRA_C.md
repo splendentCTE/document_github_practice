@@ -2174,7 +2174,6 @@ information shall be tested.
         #if defined ( y ) && ( y > 0 )
         ...
         #endif
-    ```
 
 ### Rule 19.12(req) (by Mars)
 * There shall be at most one occurrence of the # or ## operators in a single macro definition.
@@ -2275,6 +2274,18 @@ information shall be tested.
 	... 
 	#endif               /* Not compliant */
     ```
+
+### Rule 20.3 (req) (by Noah)
+* The validity of values passed to library functions shall be checked.
+* 中文說明：傳入library function的參數值都應該被檢查其有效性。 
+* 例如像許多math.h裡的函式，負數不能傳入sqrt或log函式，fmod的第二個參數不能為0等等。
+* 有幾種應用方法可以滿足這條規則，包括:  
+	* 呼叫函式前先檢查參數值。  
+	* 在函式內做檢查處理，這適用在自製的library。  
+	* 做另一個函式把原函式包起來，然後在call原函式前先做檢查。  
+	* 透過靜態的確認傳入的參數永遠不會有無效值。  
+* 特別注意當檢查浮點數參數時，因為浮點數0是一個奇異點，所以建議要做等於0的檢查，雖然這違反了13.3的規定，  
+  不過這還是一個必要的檢查，避免function的運算結果趨近無限大，當參數值趨近於0時。
 
 ### Rule 20.4 (req) (by Ray)
 * Dynamic heap memory allocation shall not be used.
