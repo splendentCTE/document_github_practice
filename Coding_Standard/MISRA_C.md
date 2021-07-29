@@ -2245,6 +2245,37 @@ information shall be tested.
       }
     ```
 
+### Rule 19.17 (req) (by Jackal)
+* All #else, #elif and #endif preprocessor directives shall reside in the same file as the #if or #ifdef directive   to which they are related.
+* 中文說明：所有#else、#elif 和 #endif 預處理器指令應駐留在與它們所在的 #if 或 #ifdef 指令相同的文件中
+  有關的。
+* 範例：
+    ```c
+	file.c
+	#define A 
+	... 
+	#ifdef A 
+	... 
+	#include "file1.h" 
+	# 
+	#endif 
+	... 
+	#if 1 
+	#include "file2.h" 
+	... 
+	EOF
+
+	file1.h
+	#if 1 
+	... 
+	#endif               /* Compliant     */ 
+	EOF
+
+	file2.h
+	... 
+	#endif               /* Not compliant */
+    ```
+
 ### Rule 20.4 (req) (by Ray)
 * Dynamic heap memory allocation shall not be used.
 * 中文說明：不得使用動態堆內存分配。
