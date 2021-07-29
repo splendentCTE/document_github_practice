@@ -2132,21 +2132,21 @@ information shall be tested.
 
 
 	再讲下##的功能，它可以拼接符号（Token-pasting operator）。
-	
+
 	MSDN上有个例子：
-	
+
 	#define paster( n ) printf( "token"#n" = %d\n", token##n )
-	
+
 	int token9 = 100;
-	
+
 	再调用  paster(9);宏展开后token##n直接合并变成了token9。整个语句变成了
-	
+
 	printf( "token""9"" = %d", token9 );
-	
+
 	在C语言中字符串中的二个相连的双引号会被自动忽略，于是上句等同于
-	
+
 	printf("token9 = %d", token9);。
-	
+
 	即输出token9 = 100
 	```
 
@@ -2243,6 +2243,30 @@ information shall be tested.
          ...
          return x;
       }
+    ```
+
+### Rule 20.4 (req) (by Ray)
+* Dynamic heap memory allocation shall not be used.
+* 中文說明：不得使用動態堆內存分配。
+* 這排除了函數 calloc、malloc、realloc 和 free 的使用。
+* 存在與動態內存分配相關的一系列未指定、未定義和實現定義的行為，以及許多其他潛在的陷阱。
+* 動態堆內存分配可能會導致內存洩漏、數據不一致、內存耗盡、非確定性行為。
+* 請注意，某些實現可能使用動態堆內存分配來實現其他功能（例如庫 string.h 中的功能）。 如果是這種情況，則也應避免使用這些功能。
+* 範例()：
+    ```c
+    /* Noncompliant */
+    int *b;
+    void initialize()
+    {
+        b = (int*) malloc(1024 * sizeof(int)); // Noncompliant, could lead to an out-of-storage run-time failure.
+        if (b == 0)
+        {
+            // handle case when dynamic allocation failed.
+        }
+    }
+
+    /* Compliant */
+    int b[1024]; // Compliant solution.
     ```
 
 ### Rule 20.5(req) (by Liou)
