@@ -2274,8 +2274,16 @@ information shall be tested.
 	... 
 	#endif               /* Not compliant */
     ```
+    
+### Rule 20.1 (req)
 
-### Rule 20.3 (req) (by Noah)
+### Rule 20.2 (req) (by Mars)
+* The names of standard library macros, objects and functions shall not be reused.
+* 中文說明：標準函式庫中的巨集、物件以及函式的名稱，不應重複使用。
+* 當程序員使用了新版的標準函式庫中的巨集、物件以及函式的名稱（例如：增強行的功能或輸入數值檢查），被修改的巨集、物件以及函式的名稱都應該要有新的名字，這是為了避免混淆是否正在使用修改版本。
+* 所以，舉例來說，如果寫了新版本的 “sqrt” 函式來檢查輸入是否為負，則新函式不應命名為 “sqrt”，應給予新的名稱。
+
+### Rule 20.3 (req)
 * The validity of values passed to library functions shall be checked.
 * 中文說明：傳入library function的參數值都應該被檢查其有效性。 
 * 例如像許多math.h裡的函式，負數不能傳入sqrt或log函式，fmod的第二個參數不能為0等等。
