@@ -1930,6 +1930,8 @@ information shall be tested.
 	}
 	```
 
+## Preprocessing directives
+
 ### Rule 19.1(adv) (by Liou)
 
 - #include statements in a file should only be preceded by other preprocessor directives or comments.
@@ -1974,7 +1976,7 @@ information shall be tested.
 	#include FILE_A
   ```
 
-### Rule 19.4(req) (by Weiren)
+### Rule 19.4 (req) (by Weiren)
 * C macros shall only expand to a braced initialiser, a constant,a string literal, a parenthesised expression, a type qualifier, a storage class specifier, or a do-while-zero construct.
 中文說明：C 的macros 應只能擴展 括弧初始化程序，常數，字符串文字，帶括號的表達式，類型修飾符，存儲類別說明符，或 do-while-zero 構造。
 * Macros 只能允許這些用途。存儲類別說明符 和 類型修飾符 包括關鍵字，例如 extern、static 和 const。
@@ -2150,7 +2152,7 @@ information shall be tested.
 	即输出token9 = 100
 	```
 
-### Rule 19.11(req) (by Weiren)
+### Rule 19.11 (req) (by Weiren)
 * All macro identifiers in preprocessor directives shall be defined before use, except in #ifdef and #ifndef preprocessor directives and the defined() operator.
 * 中文說明： 預處理器指令中的所有 macro 標識符都應在使用前定義，#ifdef 和 #ifndef 預處理器指令和 defined() 運算符除外。
 * 如果嘗試在預處理器指令中使用標識符，而該標識符尚未定義，則預處理器有時不會發出任何警告，但會假定值為零。
@@ -2175,7 +2177,7 @@ information shall be tested.
         ...
         #endif
 
-### Rule 19.12(req) (by Mars)
+### Rule 19.12 (req) (by Mars)
 * There shall be at most one occurrence of the # or ## operators in a single macro definition.
 * 中文說明：在一個巨集的定義中，應只能出現一個 # 或 ##。
 * 因 # 和 ## 預處理器運算符未指定求值順序，為避免此問題，在任何單個巨集定義中只應使用一次任一運算符。
@@ -2204,7 +2206,7 @@ information shall be tested.
     #if DEFINED(X) /* not compliant - undefined behaviour */
     ```
 
-### Rule 19.15(req) (by Liou)
+### Rule 19.15 (req) (by Liou)
 
 - Precautions shall be taken in order to prevent the contents of a header file being included twice.
 
@@ -2251,31 +2253,45 @@ information shall be tested.
 * 範例：
     ```c
 	file.c
-	#define A 
-	... 
-	#ifdef A 
-	... 
-	#include "file1.h" 
-	# 
-	#endif 
-	... 
-	#if 1 
-	#include "file2.h" 
-	... 
+	#define A
+	...
+	#ifdef A
+	...
+	#include "file1.h"
+	#
+	#endif
+	...
+	#if 1
+	#include "file2.h"
+	...
 	EOF
 
 	file1.h
-	#if 1 
-	... 
-	#endif               /* Compliant     */ 
+	#if 1
+	...
+	#endif               /* Compliant     */
 	EOF
 
 	file2.h
-	... 
+	...
 	#endif               /* Not compliant */
     ```
-    
-### Rule 20.1 (req)
+
+## Standard libraries
+
+### Rule 20.1 (req) (by Weiren)
+* Reserved identifiers, macros and functions in the standard library, shall not be defined, redefined or undefined.
+* 中文說明： 標準庫中保留的標識符、macros 和 函數 不應被定義、重新定義或未定義。
+* #undef 定義在標準庫中的 macro 通常是不好的做法。
+* #define macro 名稱是 C 保留標識符、C 關鍵字或標準庫中任何 macro、對像或函數的名稱也是不好的做法。
+* 例如，如果某些特定的保留字和函數名被重新定義或未定義，則它們會導致未定義的行為，包括 defined， _ _LINE_ _， _ _FILE_ _， _ _DATE_ _， _ _TIME_ _，_ _STDC_ _， errno and assert。
+* 另見規則 19.6 關於#undef 的使用。
+* 保留標識符由 ISO/IEC 9899:1990 [2] 第 7.1.3 節"Reserved identifiers"和第 6.8.8 節"Predefined macro names"定義。
+* 標準庫中的 macro 是保留標識符的範例。
+* 標準庫中的函數是保留標識符的範例。
+* 標準庫中的任何標識符在任何情況（即在任何範圍或無論標題檔如何）中都被視為保留標識符。
+* 7.13 "Future library directions" 中定義的保留識別字的定義、重新定義或取消定義是建議性的。
+* 規則20.1適用於任何標頭檔。
 
 ### Rule 20.2 (req) (by Mars)
 * The names of standard library macros, objects and functions shall not be reused.
@@ -2283,16 +2299,16 @@ information shall be tested.
 * 當程序員使用了新版的標準函式庫中的巨集、物件以及函式的名稱（例如：增強行的功能或輸入數值檢查），被修改的巨集、物件以及函式的名稱都應該要有新的名字，這是為了避免混淆是否正在使用修改版本。
 * 所以，舉例來說，如果寫了新版本的 “sqrt” 函式來檢查輸入是否為負，則新函式不應命名為 “sqrt”，應給予新的名稱。
 
-### Rule 20.3 (req)
+### Rule 20.3 (req) (by Noah)
 * The validity of values passed to library functions shall be checked.
-* 中文說明：傳入library function的參數值都應該被檢查其有效性。 
+* 中文說明：傳入library function的參數值都應該被檢查其有效性。
 * 例如像許多math.h裡的函式，負數不能傳入sqrt或log函式，fmod的第二個參數不能為0等等。
-* 有幾種應用方法可以滿足這條規則，包括:  
-	* 呼叫函式前先檢查參數值。  
-	* 在函式內做檢查處理，這適用在自製的library。  
-	* 做另一個函式把原函式包起來，然後在call原函式前先做檢查。  
-	* 透過靜態的確認傳入的參數永遠不會有無效值。  
-* 特別注意當檢查浮點數參數時，因為浮點數0是一個奇異點，所以建議要做等於0的檢查，雖然這違反了13.3的規定，  
+* 有幾種應用方法可以滿足這條規則，包括:
+	* 呼叫函式前先檢查參數值。
+	* 在函式內做檢查處理，這適用在自製的library。
+	* 做另一個函式把原函式包起來，然後在call原函式前先做檢查。
+	* 透過靜態的確認傳入的參數永遠不會有無效值。
+* 特別注意當檢查浮點數參數時，因為浮點數0是一個奇異點，所以建議要做等於0的檢查，雖然這違反了13.3的規定，
   不過這還是一個必要的檢查，避免function的運算結果趨近無限大，當參數值趨近於0時。
 
 ### Rule 20.4 (req) (by Ray)
@@ -2319,7 +2335,7 @@ information shall be tested.
     int b[1024]; // Compliant solution.
     ```
 
-### Rule 20.5(req) (by Liou)
+### Rule 20.5 (req) (by Liou)
 
 - The error indicator errno shall not be used.
 
