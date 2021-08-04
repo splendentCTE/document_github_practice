@@ -18,32 +18,31 @@
   * [ISO/IEC 9899/COR1](https://www.iso.org/standard/24271.html) : 勘誤 1
   * [ISO/IEC 9899/AMD1](https://www.iso.org/standard/23909.html) : 修訂 1
   * [ISO/IEC 9899/COR2](https://www.iso.org/standard/27110.html) : 勘誤 2
-* 範例 : 無
 
 ### Rule 1.2 (req) (by U.Chen)
 
 * No reliance shall be placed on undefined or unspecified behaviour.
 * 中文說明 : 不得依賴[未定義或未指定的行為](https://en.cppreference.com/w/c/language/behavior)
-* 該規則要求避免依賴於未定義和未指定的行為，而其他規則未專門解決該行為。 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
+* 避免依賴於那些未被規則所規範的未定義與未指定行為 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。
 
 ### Rule 1.3 (req) (by Jackal)
 
 * Multiple compilers and/or languages shall only be used if there is a common defined interface standard for object code to which the languages/compilers/assemblers conform.
-* 中文說明 : 僅當存在針對語言/編譯器/彙編器所遵循的目標代碼的通用定義接口標準時，才應使用多種編譯器和/或語言。
-* 如果要使用C以外的語言來實現模塊或使用其他C編譯器進行編譯，則必須確保該模塊將與其他模塊正確集成。C語言行為的某些方面取決於編譯器，因此，對於所使用的編譯器，必須理解這些方面。
-* stack使用情況，參數傳遞以及數據值的存儲方式（長度，對齊方式，鋸齒，重疊等）
+* 中文說明 : 僅當存在針對語言/編譯器/彙編器所遵循的目標代碼的通用定義接口標準時，才可使用多種編譯器和/或語言。
+* 如果要使用C以外的語言來實現模塊或使用其他C編譯器進行編譯，則必須確保該模塊將與其他模塊正確集成。C語言行為的某些方面取決於編譯器，因此，對於所使用的編譯器，必須理解這些方面。以下是需要了解到的問題:stack使用情況、參數傳遞以及數據值的存儲方式（長度，對齊方式，鋸齒，重疊等）
 
 ### Rule 1.4 (req) (by Weiren)
 
 * The compiler/linker shall be checked to ensure that 31 character significance and case sensitivity are supported for external identifiers.
-* 中文說明 : 應當檢查編譯器/鏈接器，以確保外部標識符支持31個字符的重要性和區分大小寫。
+* 中文說明 : 應當檢查編譯器/鏈接器，以確保外部標識符支持31個字符有效和區分大小寫。
 * [未定義7; 實施5、6]
-* ISO標準要求外部標識符的前6個字符必須不同。但是，由於大多數編譯器/鏈接器至少允許31個字符有效（對於內部標識符而言），因此遵守此嚴格且無用的限制被認為是不必要的限制。必須檢查編譯器/鏈接器以確定此行為。如果編譯器/鏈接器不能夠滿足此限制，則使用編譯器的限制。
+* ISO標準要求外部標識符的前6個字符必須不同。但是，由於大多數編譯器/鏈接器至少允許31個字符有效（對於內部標識符而言），因此遵守此平凡且無用的限制被認為是不必要的限制。
+* 必須檢查編譯器/鏈接器是否符合上述標準。如果編譯器/鏈接器不能夠滿足此限制，則使用編譯器的限制。
 
 ### Rule 1.5 (adv) (by Mars)
 
 * Floating-point implementations should comply with a defined floating-point standard.
-* 中文說明 : 浮點數的實作應該要遵守浮點數定義標準
+* 中文說明 : 浮點數的應用需遵守浮點數定義標準
 * 浮點運算會帶來許多問題，其中有一些問題可以透過公認的標準來克服，ANSI/IEEE Std 754 [21] 就是一個合適的標準，規則 6.3 關於浮點數類型的定義提供了一個正在用的例子，如：
 
     ```c
@@ -73,25 +72,26 @@
 
   (a) assembler function:
 
-  ```asm
-  .global
-  _Delay:
-      nop
-   jmp
-  ```
+    ```asm
+        .global
+        _Delay:
+            nop
+        jmp
+    ```
 
-  ```c
-    void fn ( void )
-        {
-            DoSomething ( );
-            Delay ( ); // Compliant, Assembler is encapsulated
-            DoSomething ( );
-        }
-      ```
+    ```c
+        void fn ( void )
+            {
+                DoSomething ( );
+                Delay ( ); // Compliant, Assembler is encapsulated
+                DoSomething ( );
+            }
+
+    ```
 
   (b) C function:
 
-        ```c
+    ```c
         void Delay ( void )
         {
             asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
@@ -103,10 +103,11 @@
             Delay ( ); // Compliant, Assembler is encapsulated
             DoSomething ( );
         }
-        ```
+    ```
 
   (c) Macro:
-  ```c
+
+    ```c
         #define Delay asm ( "NOP" );
 
         void fn ( void )
@@ -115,13 +116,14 @@
             Delay;
             DoSomething ( );
         }
-      ```
+    ```
 
 ### Rule 2.2 (req) (by Ray)
 
-* Source code shall only use /\* … \*/ style comments.
-* 中文說明：源代碼只能使用/\* … \*/樣式註釋。
-* 在C90中不允許"//"的註釋樣式，甚至在C99之前不同的編譯器的行為可能有所不同。
+* Source code shall only use `/*... */` style comments.
+* 中文說明：源代碼只能使用 `/* … */` 樣式註釋。
+* 在C90中不允許"//"的註釋樣式 (雖然有許多編譯器以插件的方式支援這樣的寫法)。在編譯程式定向 (preprocessor directives ex: #define) 的觀點看來， `//` 在不同情況下也會有不同效果。此外，混用 `/* ....*/` 和 `//` 並不統一。
+* 最重要的是，這已經不僅僅是風格問題了，因為在c99前的編譯器對於 `//` 的定義與處理可能都不太相同。
 * 範例：
   * 不合規定的寫法：
 
@@ -139,8 +141,8 @@
 
 ### Rule 2.3 (req) (by Liou)
 
-* The character sequence /\* shall not be used within a comment.
-* 中文說明 :字符序列 /\* 不得在註釋中使用。
+* The character sequence `/*` shall not be used within a comment.
+* 中文說明 :字符序列 `/*` 不得在註釋中使用。
 
     ```c
     /* some comment, end comment marker accidentally omitted
@@ -149,52 +151,52 @@
     /* this comment is not compliant */
     ```
 
-可能會省略掉註釋的結束標記，因此對安全性很高的功能將不被執行。
+以上述例子為例，由於不小心省略了末端的注釋符號，`Perform_Critical_Safety_Function`將不會被執行
 
 ### Rule 2.4 (adv) (by U.Chen)
 
 * Sections of code should not be “commented out”.
 * 中文說明 : 程式碼區段不應該被"註釋掉"
-* 當程式碼不需要被編譯執行時，應該用條件編譯來完成 ( 如：#if 或 #ifdef 加上註釋 )，用 /\* 跟 \*/ 使程式碼不執行是危險的，因為C語言的編譯器不支援這樣的方式進行巢狀註釋(nested comments)，註釋失效後，程式碼中的原註釋內容可能會影響執行結果。
+* 當程式碼不需要被編譯執行時，應該用條件編譯來完成"注釋"的目的 ( 如：#if 或 #ifdef 加上註釋 )，用 `/*` 跟 `*/` 使程式碼不執行是危險的，因為C語言的編譯器不支援這樣的方式進行巢狀註釋(nested comments)，任何程式碼中的原註釋內容可能會影響執行結果。
 
 ## Documentation
 
 ### Rule 3.1 (req) (by Jackal)
 
 * All usage of implementation-defined behaviour shall be documented.
-* 中文說明 : 實現定義的行為的所有用法應記錄下來。
-* 該規則要求任何依賴於實現定義的行為（未由其他規則明確解決）都應記錄在案，例如，參考編譯器文檔。
+* 中文說明 : 實作定義行為的所有用法都應記錄下來。
+* 任何依賴於未被其他規則明確處理的實作定義行為都應記錄在案，例如，記錄在編譯器的文檔中。
 * 如果另一條規則明確涵蓋了特定行為，則僅在需要時才需要偏離該特定規則。 有關這些問題的完整列表，請參見ISO / IEC 9899：1990附錄G [2]。
 
 ### Rule 3.2 (req) (by Weiren)
 
 * The character set and the corresponding encoding shall be documented.
 * 中文說明 : 字符集和相應的編碼應該文檔化。
-* 例如，ISO 10646 [22]定義了字符集映射到數字值的國際標準。出於可移植性的考慮，字符常數和字串只能包含映射到已經文檔化的子集中的字符。源代碼以一個或多個字符集編寫。可選地，程序可以在第二個或多個字符集中執行。所有的源代碼和執行字符集都應映射到已經文檔化的子集中的字符
+* 例如，ISO 10646 [22]定義了字符集映射到數字值的國際標準。出於可移植性的考慮，字符常數和字串只能包含映射到已經文檔化的子集中的字符。源代碼以一個或多個字符集編寫。程序可彈性在第二個或多個字符集中執行。所有的源代碼和執行字符集都應當被記錄下來。
 
 ### Rule 3.3 (adv) (by Mars)
 
 * The implementation of integer division in the chosen compiler should be determined, documented and taken into account.
-* 中文說明：整數除法的實現在選擇的編譯器中，應該要被確認、記錄以及考慮到。
+* 中文說明：在選擇的編譯器時，整數除法的實現應該要被確認、記錄以及考慮到。
 * 當兩個帶符號的整數做除法時，ISO相容的編譯器有潛在的可能產出兩個不同結果，
     1. 編譯器可能會四捨五入(進位)並帶來負餘數或 (e.g. -5/3 = -1 remainder -2)
     2. 也可能會四捨五入(捨去)並帶來正餘數 (e.g. -5/3 = -2 remainder +1)
-* 重要的是，要確認後記錄下來並告訴程序員，編譯器在這兩種運算中屬於哪一種，尤其是第二種情況(比較少見)。
+* 重要的是，這些編譯的結果須確認後並記錄下來轉告程序員，尤其是第二種情況(比較少見)。
 
 ### Rule 3.4 (req) (by Noah)
 
 * All uses of the #pragma directive shall be documented and explained.
-* 中文說明：所有pragma的使用都需有文件來說明他的含意
-* 範例：無
+* 中文說明：所有 pragma 的使用都需有文件來說明他的含意
 
 ### Rule 3.5 (req) (by Ray)
 
 * If it is being relied upon, the implementation defined behaviour and packing of bitfields shall be documented.
-* 中文說明：實現定義(implementation defined)的行為和位域打包(packing of bitfields)都應該被記錄。
+* 中文說明：當使用實作定義的行為(implementation defined behavior)和位域打包(packing of bitfields)時，請記得都要記錄下來。
 * 位域用於兩個主要用途：
-    1. 以較大的數據類型（結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
+    1. 以較大的數據類型（`union` 結合併集）訪問單個位或一組位。 不允許這種使用（請參見規則18.4）。
     2. 允許打包旗標或其他短長度數據以節省存儲空間。
-* 建議特別聲明結構以保留位字段集，並且不要在同一結構內包含任何其他數據。
+* 在這份文件中，位域的使用僅在打包短長度數據時被接受。由於 `structure` 中的元素僅可透過其名字來溝通，開發者不應該去考慮位域在 `sturcture` 中的儲存方式。
+* 建議特別宣告 `structure` 來保留位域段集，並且不要在同一 `structure` 內包含任何其他數據。
 * 如果編譯器有一個開關來強制位字段遵循特定的佈局，那麼這可能會有助於這種證明。
 * 範例：
   * 合規定的寫法：
@@ -208,15 +210,14 @@
     } message_chunk;
     ```
 
-* 如果使用位字段，請注意潛在的陷阱和實現定義的行為（即非便攜式）。 尤其應該注意以下幾點：
-  * 存儲單元中的位字段的對齊方式是實現定義的，即它們是從存儲單元的高端還是低端（通常是一個字節）分配的。
-  * 位字段是否可以與存儲單元邊界重疊也由實現定義(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
+* 使用位域時，請注意潛在的陷阱和實作定義行為（即非便攜式）。 尤其應該注意以下幾點：
+  * 存儲單元中位域的對齊方式是實作定義的，即它們是從單元的高端還是低端開始儲存（通常是一個字節）。
+  * 位域是否可以與存儲單元邊界重疊也是實作定義的範疇(例如：如果順序儲存一個6位字段和一個4位字段，那麼4位字段是全部從新的字節開始，還是其中2位佔據一個字節的剩餘2位，而其他2位開始於下個字節)。
 
 ### Rule 3.6 (req) (by Liou)
 
-* All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject to appropriate validation. IEC 61508 Part 3
-* 中文說明：生產代碼中使用的所有庫均應編寫為符合符合本文件的規定，並且應遵守進行適當的驗證。
-* 範例:無
+* All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject to appropriate validation.
+* 中文說明：生產代碼中使用的所有函式庫均應符合本文件的規定，並且經過適當的驗證。
 
 ## Character sets
 
@@ -224,32 +225,31 @@
 
 * Only those escape sequences that are defined in the ISO C standard shall be used.
 * 中文說明 : 只能使用 ISO C標準中定義的跳脫序列
-* 僅允許使用ISO / IEC 9899：1990 [3-6]第6.1.3.4節和\0中的“簡單跳脫序列”。
+* 僅允許使用ISO / IEC 9899：1990 [3-6]第6.1.3.4節中的“簡單跳脫序列”和 `\0`。
 禁止所有“十六進制跳脫序列”。
-規則7.1也禁止使用\0以外的“八進制跳脫序列”。
+規則7.1也禁止使用 `\0` 以外的“八進制跳脫序列”。
 * 簡單跳脫序列
-  * \a 警報聲
-  * \b Backspace
-  * \f 換頁
-  * \n 換行
-  * \r 回車
-  * \t 水平Tab
-  * \v 垂直Tab
-  * \\\ 反斜槓
-  * \\' 單引號
-  * \\" 雙引號
-  * \\? 問號
-  * \0 Null,什麼都不做
+  * `\a` 警報聲
+  * `\b` Backspace
+  * `\f` 換頁
+  * `\n` 換行
+  * `\r` 回車
+  * `\t` 水平Tab
+  * `\v` 垂直Tab
+  * `\\` 反斜槓
+  * `\'` 單引號
+  * `\"` 雙引號
+  * `\?` 問號
+  * `\0` Null
 
 ### Rule 4.2 (req) (by Jackal)
 
 * Trigraphs shall not be used.
-* 中文說明：不應使用三字母組合。
+* 中文說明：不應使用三字符組。
+* 三字符組由兩個問號加上一個特殊的第三字元表示而成 ( `??-` 表示 `~`   `??)` 表示 `]` )，在某些情況，這可能會意外的造成混淆 (見範例)
 * 範例:
 
     ```c
-    ??- represents a “~” (tilde) , ??) represents a “]”
-    They can cause accidental confusion with other uses of two question marks.
     /* For example the string */
     "(Date should be in the form ??-??-??)"
     /* would not behave as expected, actually being interpreted by the compiler as */
@@ -261,12 +261,12 @@
 ### Rule 5.1 (req) (by Weiren)
 
 * Identifiers (internal and external) shall not rely on the significance of more than 31 characters.
-* 中文說明：識別項（內部和外部）不得依賴於超過31個有效字符。
-* ISO標準要求內部識別項的前31個字符必須不同，以確保代碼的可移植性。即使編譯器支持，也不應超過此限制。
+* 中文說明：標識符（內部和外部）不得依賴於超過31個有效字符。
+* ISO標準要求內部標識符的前31個字符必須不同，以確保代碼的可移植性。即使編譯器支持，也不應超過此限制。
 * 這條規則應適用於所有名稱空間。
-* 宏名稱也包括在內，且限制為31個字符適用於替換前後。
-* ISO標準要求外部識別項的前6個字符必須不同，以確保最佳的可移植性。但是，此限制相當嚴格並且被認為是不必要的。該規則的目的是意圖放寬ISO要求達到與現代環境相對應的程度，並應確認支持實施31個字符/大小寫的有效性。
-* 使用識別項名稱要注意的一个相關問題是發生在名稱之間只有一個字符或少數字符不同的情況，尤其是在名稱較長的情況。當名稱之間的區別是容易誤讀的字符，問題就比較明顯。比如 1(數字1)和(L的小寫)、0 和 O、2 和 Z、5 和 S，或者 n 和 h。
+* 宏名稱 (macro names) 也包括在內，且限制為31個字符適用於替換前後。
+* ISO標準要求外部標識符的前6個字符必須不同，以確保最佳的可移植性。但是，此限制相當平凡並且被認為是不必要的。該規則的目的是意圖放寬ISO要求達到與現代環境相對應的程度，並應確認支持實施31個字符/大小寫的有效性。
+* 使用標識符名稱要注意的一个相關問題是發生在名稱之間只有一個字符或少數字符不同的情況，尤其是在名稱較長的情況。當名稱之間的區別是容易誤讀的字符，問題就比較明顯。比如 1(數字1)和(L的小寫)、0 和 O、2 和 Z、5 和 S，或者 n 和 h。
 * 建議名稱的區別要顯而易見
 * 在這個問題上的具體指導方針可以放在風格指南（參見4.2.2節）。
 
