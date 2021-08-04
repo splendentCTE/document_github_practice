@@ -70,53 +70,53 @@
 
   * 合規定的寫法：
 
-  (a) assembler function:
+        (a) assembler function:
 
-    ```asm
-        .global
-        _Delay:
-            nop
-        jmp
-    ```
+            ```asm
+                .global
+                _Delay:
+                    nop
+                jmp
+            ```
 
-    ```c
-        void fn ( void )
-            {
-                DoSomething ( );
-                Delay ( ); // Compliant, Assembler is encapsulated
-                DoSomething ( );
-            }
+            ```c
+                void fn ( void )
+                    {
+                        DoSomething ( );
+                        Delay ( ); // Compliant, Assembler is encapsulated
+                        DoSomething ( );
+                    }
 
-    ```
+            ```
 
-  (b) C function:
+        (b) C function:
 
-    ```c
-        void Delay ( void )
-        {
-            asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
-        }
+            ```c
+                void Delay ( void )
+                {
+                    asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
+                }
 
-        void fn ( void )
-        {
-            DoSomething ( );
-            Delay ( ); // Compliant, Assembler is encapsulated
-            DoSomething ( );
-        }
-    ```
+                void fn ( void )
+                {
+                    DoSomething ( );
+                    Delay ( ); // Compliant, Assembler is encapsulated
+                    DoSomething ( );
+                }
+            ```
 
-  (c) Macro:
+        (c) Macro:
 
-    ```c
-        #define Delay asm ( "NOP" );
+            ```c
+                #define Delay asm ( "NOP" );
 
-        void fn ( void )
-        {
-            DoSomething ( );
-            Delay;
-            DoSomething ( );
-        }
-    ```
+                void fn ( void )
+                {
+                    DoSomething ( );
+                    Delay;
+                    DoSomething ( );
+                }
+            ```
 
 ### Rule 2.2 (req) (by Ray)
 
