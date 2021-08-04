@@ -2342,3 +2342,8 @@ information shall be tested.
 - 中文說明：不應使用錯誤指示符 errno。
 
 - 範例：無。
+
+### Rule 20.6 (req) (by U.Chen)
+* The macro offsetof, in library <stddef.h>, shall not be used.
+* 中文說明：不應使用<stddef.h>中的巨集 offsetof。
+* 當這個巨集的操作數的類型不兼容或使用了位域時，它的使用會導致未定義的行為。
