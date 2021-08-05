@@ -70,53 +70,53 @@
 
   * 合規定的寫法：
 
-        (a) assembler function:
+      (a) assembler function:
 
-            ```asm
-                .global
-                _Delay:
-                    nop
-                jmp
-            ```
+      ```asm
+          .global
+          _Delay:
+              nop
+          jmp
+      ```
 
-            ```c
-                void fn ( void )
-                    {
-                        DoSomething ( );
-                        Delay ( ); // Compliant, Assembler is encapsulated
-                        DoSomething ( );
-                    }
+      ```c
+          void fn ( void )
+              {
+                  DoSomething ( );
+                  Delay ( ); // Compliant, Assembler is encapsulated
+                  DoSomething ( );
+              }
 
-            ```
+      ```
 
-        (b) C function:
+      (b) C function:
 
-            ```c
-                void Delay ( void )
-                {
-                    asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
-                }
+      ```c
+          void Delay ( void )
+          {
+              asm ( "NOP" ); // Compliant, asm not mixed with C/C++ statements
+          }
 
-                void fn ( void )
-                {
-                    DoSomething ( );
-                    Delay ( ); // Compliant, Assembler is encapsulated
-                    DoSomething ( );
-                }
-            ```
+          void fn ( void )
+          {
+              DoSomething ( );
+              Delay ( ); // Compliant, Assembler is encapsulated
+              DoSomething ( );
+          }
+      ```
 
-        (c) Macro:
+      (c) Macro:
 
-            ```c
-                #define Delay asm ( "NOP" );
+      ```c
+          #define Delay asm ( "NOP" );
 
-                void fn ( void )
-                {
-                    DoSomething ( );
-                    Delay;
-                    DoSomething ( );
-                }
-            ```
+          void fn ( void )
+          {
+              DoSomething ( );
+              Delay;
+              DoSomething ( );
+          }
+      ```
 
 ### Rule 2.2 (req) (by Ray)
 
@@ -143,6 +143,7 @@
 
 * The character sequence `/*` shall not be used within a comment.
 * 中文說明 :字符序列 `/*` 不得在註釋中使用。
+* 範例:
 
     ```c
     /* some comment, end comment marker accidentally omitted
@@ -217,7 +218,7 @@
 ### Rule 3.6 (req) (by Liou)
 
 * All libraries used in production code shall be written to comply with the provisions of this document, and shall have been subject to appropriate validation.
-* 中文說明：生產代碼中使用的所有函式庫均應符合本文件的規定，並且經過適當的驗證。
+* 中文說明：生產代碼中使用的所有函數庫均應符合本文件的規定，並且經過適當的驗證。
 
 ## Character sets
 
@@ -273,10 +274,11 @@
 ### Rule 5.2 (req) (by Noah)
 
 * Identifiers in an inner scope shall not use the same name as an identifier in an outer scope, and therefore hide that identifier.
-* 中文說明：內作用範圍(inner scope)和外作用範圍(outer scope)的定義如下所述，一個識別字(identifier)的作用範圍如果是整個檔案的話(file scope)，
-  那就可以叫做是外作用範圍，如果一個識別字作用範圍是在一個區塊內的話(block scope)，就叫做是內作用範圍。
-  此項目規定內作用範圍的識別字不可和外作用範圍的識別字使用相同名稱，因為第二次的內作用範圍識別字定義會把第一次的識別字定義隱藏起來，容易造成混淆。
-  但如果第二次的識別字定義不會隱藏第一次的識別字定義，就不算違反此項規定。
+* 中文說明：在內作用範圍 (inner scope) 裡的標識符 (identifier) 不應與外部作用範圍 (outer scope) 的標識符有相同的名字，否則內作用範圍的標識符將覆蓋掉外作用範圍的。
+
+* 內作用範圍 (inner scope) 和外作用範圍 (outer scope) 的定義如下所述，一個標識符 (identifier) 的作用範圍如果是整個檔案的話(file scope)，那就可以叫做是最外作用範圍 (outermost scope) ，如果一個標識符作用範圍是在一個區塊內的話(block scope)，就叫做是相對內作用範圍 (more inner scope) 。
+
+* 此規定意在防範內作用範圍標識符定義覆蓋掉外部作用範圍標識符定義的情況發生。但凡第二次的標識符定義不會隱藏第一次的標識符定義，就不算違反此項規定。
 * 範例：
   * 不合規定的寫法：
 
@@ -292,8 +294,9 @@
 ### Rule 5.3 (req) (by Mars)
 
 * A typedef name shall be a unique identifier.
-* 中文說明：類型定義(typedef)的命名應是獨特的。
-* 不管是什麼目的，typedef 都不應該重複定義相同的命名。
+* 中文說明：`typedef` 的命名應是獨特的。
+* 無論如何，一個 `typedef` 的名字都不應被重複使用為另一個類型定義的名字或用作其他目的。
+* 範例:
 
     ```c
     {
@@ -311,16 +314,16 @@
     }
     ```
 
-* 除了把 typedef 放在標頭檔，被多個源碼呼叫的情況外，在程式中的任何地方 (即使是完全相同的宣告)，都不應該重複使用 typedef 的命名。
+* 除了把 `typedef` 放在標頭檔 (header file) ，被多個源碼呼叫的情況外，在程式中的任何地方 (即使是完全相同的宣告) ，都不應該重複使用 `typedef` 的命名。
 
 ### Rule 5.4 (req) (by Ray)
 
 * A tag name shall be a unique identifier.
-* 中文說明：Tag名稱應是唯一的標示符。
-* tag名稱不得再用於定義其他tag或在程序內用於任何其他目的。
-* ISO / IEC 9899：1990 [2]沒有定義當聚合聲明使用不同形式的類型說明符(struct或union)的tag時的行為。
-* tag的所有用途都應該在struct類型說明符中，或者所有用途都應在union類型說明符中。
-* 例如：
+* 中文說明：`tag` 名稱應是特別的標識符。
+* `tag` 名稱不得再用於定義其他 `tag` 或是任何其他目的。
+* ISO / IEC 9899：1990 [2]沒有定義在不同形式的類型說明符(`struct` 或 `union`)下，聚合聲明 (aggregate declaration) 使用一個一樣 `tag` 時的行為。
+* `tag` 的所有用途都應該在 `struct` 類型說明符中，或者都在 `union` 類型說明符中。
+* 範例：
 
     ```c
     struct stag { uint16_t a; uint16_t b; };
@@ -332,30 +335,24 @@
     }
     ```
 
-* 即使定義相同，也不得在源代碼文件中的任何地方重複相同的tag定義。
-* 如果在頭文件中進行tag定義，並且該頭文件包含在多個源文件中，則不會違反此規則。
+* 即使定義完全相同，也不得在源代碼文件中的任何地方重複相同的 `tag` 定義。
+* 如果在標頭檔 (header file) 中進行 `tag` 定義，並且該標頭檔包含在多個源文件中，則不會違反此規則。
 
 ### Rule 5.5 (adv) (by Liou)
 
 * No object or function identifier with static storage duration should be reused.
 
-* 中文說明：具有靜態存儲期的對像或函數標識符不能重複使用。
+* 中文說明：具有靜態存儲期 (static storage duration) 的 `object` 或 `function` 標識符不能被重複使用。
 
-* 範例：無。
-
-* 補充說明：外部連結External,對應的關鍵字為extern 內部連結Internal，對應的關鍵字為static。
-
-  ​       用static修飾的變量或者函數的連結屬性為其作用領域只能僅限在本文件中 ，在其他文件中就不能            進行調用,不同文件中的內部函數是不會相互干擾的。
-
-  ​       Extern具有外部連結的識別項名稱所指定的函式或資料物件，會與任何其他具有外部連結的相同名            稱宣告所指定的函式或資料物件相同。
+* 無論範圍 (scope) ，具有靜態存儲期 (static storage duration) 的變量或者函數 (包含具有外部連結的 `object` 與 `function` 以及以 `static` 宣告的 `object` 與 `function`)，都不應在任何源文件中被重複使用。即便編譯器能夠理解，使用者仍可能有機會誤用。此情形的一個例子便是一個擁有內部連結 (internal linkage) 的標識符與在另一個檔案擁有相同名稱但外部連結 (external linkage) 的標識符。
 
 ### Rule 5.6 (adv) (by U.Chen)
 
 * No identifier in one name space should have the same spelling as an identifier in another name space, with the exception of structure member and union member names.
-* 中文說明：一個命名空間中不應存在與另外一个命名空間中的標識符拼寫一樣的標示符，除了結構和聯合中的成員名字。
-* ISO C 定義了許多不同的命名空間。技術上，在彼此獨立的命名空間中使用相同的名字以代表完全不同的項目是可能的，然而由於會引起混淆，通常不贊成這種做法，因此即使是在獨立的命名空間中名字也不能重複使用。
-* 範例
-    不建議的用法，其中 value 在不经意中代替了 record.value：
+* 中文說明：一個命名空間 (name space) 中不應存在與另外一个命名空間中的標識符拼寫一樣的標識符 (identifier) ，除了 `structure` 和 `union` 中的成員名字。
+* ISO C 定義了許多不同的命名空間 (詳見 ISO/IEC 9899: 1990 6.1.2.3[2]) 。技術上，在彼此獨立的命名空間中使用相同的名字以代表完全不同的項目是可能的，然而由於會引起混淆，通常不贊成這種做法，因此即使是在獨立的命名空間中名字也不能重複使用。
+* 範例:
+  * 不建議的用法，其中 value 在不经意中代替了 record.value：
 
     ```c
     struct { int16_t key ; int16_t value ; } record ;
@@ -364,7 +361,7 @@
     value = 0; /* should have been record.value */
     ```
 
-    相比之下，下面的例子没有違背此規則，因為兩個成員名字不會引起混淆：
+  * 相比之下，下面的例子没有違背此規則，因為兩個成員名字不會引起混淆：
 
     ```c
     struct device_q { struct device_q *next ; /* ... */ }
@@ -399,23 +396,22 @@
 ### Rule 6.1 (req) (by Weiren)
 
 * The plain char type shall be used only for the storage and use of character values.
-* 中文說明：單純的char類型應僅用於字符值的存儲和使用。
+* 中文說明：單純的 `char` 類型應僅用於字符值的存儲和使用。
 
 ### Rule 6.2 (req) (by Noah)
 
 * signed and unsigned char type shall be used only for the storage and use of numeric values.
-* 中文說明：signed和unsigned char只能拿來做數值資料存儲使用。
-  char types有三種，char、signed char和unsigned char。char只能拿來做字符或字串存儲使用，因為不同的compiler可能會把char當做signed char或unsinged char，
-  所以不建議拿來儲存數值，要儲存數值的話需使用signed或unsigned char。
+* 中文說明：`signed char` 和 `unsigned char`只能拿來做數值資料存儲使用。
+
+* char types有三種， `char` 、 `signed char` 和  `unsigned char` 。 `char` 只能拿來做字符或字串存儲使用，因為不同的編譯器可能會把 `char` 當做 `signed char` 或   `unsinged char`，所以不建議拿來儲存數值，要儲存數值的話需使用 `signed char` 或 `unsigned char` 。
 
 ### Rule 6.3 (adv) (by Mars)
 
 * typedefs that indicate size and signedness should be used in place of the basic numerical types.
-* 中文說明：應使用標示了大小和符號的 typedefs 來取代基本的數值類型。
-* 除了使用特定長度的 typedefs 外，不應使用的基礎數值類型包含　char, int, short, long, float, double 及其變化 signed, unsigned，
-規則 6.3 幫助了我們了解儲存的大小，但因為不對稱行為的整型提升，這些定義無法保證可攜性 ( 6.10 章節 )，了解整數大小的實作方式仍然是一件重要的事情。
-* 程序員需要注意到 typedefs 在這些定義下的實作方式。
-* 舉例來說：下列是符合32bits的整數晶片並建議使用的範例，ISO (POSIX) typedefs 已被使用在這份文件的所有基本數值與字符型態：
+* 中文說明：應使用標示了大小和符號的 `typedef` 來取代基本的數值類型。
+* 除了使用特定長度的 `typedef` 外，不應使用基礎數值的類型包含　`char` 、 `int` 、 `short` 、 `long` 、 `float` 、 `double` 的 `signed` 與 `unsigned` 變化。規則 6.3 幫助了我們區分儲存的大小，但因為整型提升 (integral promotion) 的不對稱行為，這些定義無法保證可攜性 ( 6.10 章節 )，了解整數大小的實作方式仍然是一件重要的事情。
+* 程序員需要注意到 `typedef` 在這些定義下的實作方式。
+* 舉例來說：下列是符合32bits的整數晶片並建議使用的範例，下述的 ISO (POSIX) `typedefs` 已被使用於這份文件的所有基本數值與字符型態：
 
     ```c
     typedef char char_t;
@@ -432,18 +428,18 @@
     typedef long double float128_t;
     ```
 
-* typedefs 不考慮長度是 bit 的型態。
+* 在位域的規範 (specification) 方面， `typedefs` 並不被視為是必要的。
 
 ### Rule 6.4 (req) (by Ray)
 
 * Bit fields shall only be defined to be of type unsigned int or signed int.
-* 中文說明：位域只能被定義為unsigned int或signed int類型。
-* 某些類型不太適合在位域中使用，因為它們的行為是實現定義(implementation defined)。
+* 中文說明：位域只應被定義為 `unsigned int`或 `signed int` 類型。
+* 某些類型不太適合在位域中使用，因為它們的行為是實作定義(implementation defined)。
 * 範例：
   * 不合規定的寫法：
 
     ```c
-    int b:3; /* 取值的範圍可能是0..7或-4..3。 */
+    int b:3; /* 取值的範圍可能是 0到7 或 -4到3。 */
     ```
 
   * 合規定的寫法：
@@ -456,16 +452,15 @@
 
 * Bit fields of signed type shall be at least 2 bits long.
 
-* 中文說明：1 bit長度的有符號位域是無用的。
-* 範例：無。
+* 中文說明：1 bit 長度的有符號位域是無用的。
 
 ## Constants
 
 ### Rule 7.1 (req) (by U.Chen)
 
 * Octal constants (other than zero) and octal escape sequences shall not be used.
-* 中文說明：不得使用八進制常數（非零）和八進制跳脫序列。
-* 任何以“ 0”（零）開頭的整數常量都被視為八進制。 因此，存在編寫固定長度常量的危險。
+* 中文說明：不得使用八進制常數（零除外）和八進制跳脫序列。
+* 任何以 `0` （零）開頭的整數常量都被視為八進制。 因此，存在編寫固定長度常量的危險。
 * 八進制跳脫序列可能會出現問題，因為無意間引入了十進制數字會終止八進制跳脫並引入另一個字符。
 * 範例：
   * 以下用於三位數總線消息的數組初始化將無法按預期方式進行：
@@ -477,21 +472,20 @@
     code[4] = 071;   /* equivalent to decimal 57  */
     ```
 
-  * 第一個表達式的值是實現定義的，因為字符常量由兩個字符“\10”和“9”組成。第二個字符常量表達式包含單個字符“\100”。如果基本執行字符集中未表示字符64，則其值將由實現定義。
+  * 第一個表達式的值是實作定義的，因為字符常量由兩個字符“\10”和“9”組成。第二個字符常量表達式包含單個字符“\100”。如果基本執行字符集中未表示字符64，則其值將由實作定義決定。
 
     ```c
     code[5] = '\109';   /* implementation-defined, two character constant */
     code[6] = '\100';   /* set to 64, or implementation-defined           */
     ```
 
-* 最好不要使用八進制常量或跳脫序列，並且要檢查是否出現任何情況。整數常數零（寫為一個數字）嚴格來說是一個八進制常數，但這是該規則的允許例外。另外，“\0”是唯一允許的八進制跳脫序列。
+* 最好不要使用八進制常量或跳脫序列，並且要檢查是否出現任何情況。整數常數零（寫為一個數字）嚴格來說是一個八進制常數，但這是該規則的允許例外。另外，`\0` 是唯一允許的八進制跳脫序列。
 
 ## Declarations and definitions
 
 ### Rule 8.1 (req) (by Jackal)
 
-* Functions shall have prototype declarations and the prototype
-shall be visible at both the function definition and call.
+* Functions shall have prototype declarations and the prototype shall be visible at both the function definition and call.
 * 中文說明：函數應具有原型聲明，並且原型在函數定義和調用處均需可見。
 
 ```c
@@ -531,6 +525,7 @@ shall be visible at both the function definition and call.
 
 * Whenever an object or function is declared or defined, its type shall be explicitly stated.
 * 中文說明：每當宣告或定義一個物件或函數時，都應該明確表示其類型。
+* 範例:
   * 不合規定的寫法：
 
     ```c
@@ -550,33 +545,31 @@ shall be visible at both the function definition and call.
 ### Rule 8.3 (req) (by Mars)
 
 * For each function parameter the type given in the declaration and definition shall be identical, and the return types shall also be identical.
-* 中文說明：在宣告與定義中的每一個函式參數類型應該要相同，函式回傳的類型也要相同。
-* 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 typedef names 跟 qualifiers(const, volatile...)。
+* 中文說明：在宣告與定義中的每一個函數參數類型應該要相同，函數回傳的類型也要相同。
+* 參數的型態跟回傳值在原型與定義上必須吻合，這要求不只是基本的型態，還包含了 `typedef` 名稱跟類型限定詞(const, volatile...)。
 
 ### Rule 8.4 (req) (by Noah)
 
 * If objects or functions are declared more than once their types shall be compatible.
-* 中文說明：如果一個物件或函式被重覆宣告，他們的形態必需是相容的。**但實際應用上應避免重覆宣告發生**。
+* 中文說明：如果一個物件或函數被重覆宣告，他們的形態必需是相容的。**但實際應用上應避免重覆宣告發生**。
 
 ### Rule 8.5 (req) (by Ray)
 
 * There shall be no definitions of objects or functions in a header file.
 
-* 中文說明：標頭檔中不應有Objects或functions的定義。
+* 中文說明：標頭檔中不應有物件或函數的定義。
 
-* 標頭檔應用於聲明objects, functions, typedefs, and macros。
+* 標頭檔應用於聲明 `objects` 、 `functions` 、 `typedef` 與 `macros`。
 
-* 標頭檔不得包含或產生佔用存儲空間的objects或functions(或fragment of functions or objects)的定義，這清楚表明只有C文件包含可執行源代碼，而標頭檔僅包含聲明。
+* 標頭檔不得包含或產生佔用存儲空間的物件或函數定義，這清楚表明只有 C 文件包含可執行源代碼，而標頭檔僅包含聲明。
 
 ### Rule 8.6 (req) (by Liou)
 
 * Functions shall be declared at file scope.
 
-* 中文說明：函數應在文件範圍內聲明。
+* 中文說明：函數應在文件範圍 (file scope) 內聲明。
 
-* 範例：無。
-
-* 補充範例：
+* 範例：
 
   ```c
   class A {
@@ -592,42 +585,42 @@ shall be visible at both the function definition and call.
 ### Rule 8.7 (req) (by U.Chen)
 
 * Objects shall be defined at block scope if they are only accessed from within a single function.
-* 中文說明：如果僅從單個函數中訪問物件，則應在區塊範圍內定義。
-* 在可能的情況下，物件的範圍應限於函數。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
+* 中文說明：如果僅從單個函數中訪問該 `object` ，則該 `object` 應在區塊範圍內定義。
+* 在可能的情況下， 物件的範圍應限於函數 。文件範圍僅在物件需要具有內部或外部鏈接的情況下使用。在文件範圍內聲明物件的地方，適用規則8.10。除非必要，否則避免將標識符設置為全局是一種良好的做法。是否在最外層或最內層聲明物件在很大程度上取決於樣式。
 
 ### Rule 8.8 (req) (by Jackal)
 
-* An external object or function shall be declared in one and only
-one file.
-* 中文說明：外部對像或函數應在一個文件中聲明，並且只能在一個文件中聲明。
+* An external object or function shall be declared in one and only one file.
+* 中文說明：外部物件或函數應在一個文件中聲明，並且只能在一個文件中聲明。
 
-```c
- Example:
- extern int16_t a;
- 在featureX.h中，然後定義：
+* 範例:
 
- #include <featureX.h>
- int16_t a = 0;
- 一個項目中可能有一個頭文件，也可能有很多頭文件，但是每個外部對像或函  數只能在一個頭文件中聲明。
-```
+  ```c
+  extern int16_t a;
+  在featureX.h中，然後定義：
+
+  #include <featureX.h>
+  int16_t a = 0;
+  一個項目中可能有一個標頭檔，也可能有很多標頭檔，但是每個外部對像或函數只能在一個標頭檔中聲明。
+  ```
 
 ### Rule 8.9 (req)  (by Weiren)
 
 * An identifier with external linkage shall have exactly one external definition.
-* 中文說明：一個具有外部連結的識別項，應該具有精確的外部定義。
-* 如果使用存在多個定義的識別項（在不同的檔案），或者使用根本不存在任何定義的識別項，這屬於Undefined行為。
-* 不同文件中的多個定義是不允許的，即使它們定義是相同的。如果它們定義是不同的，或者將識別項初始化為不同的值，這顯然是很嚴重的。
+* 中文說明：一個具有外部連結的標識符，應該具有精確的外部定義。
+* 如果使用存在多個定義的標識符（在不同的檔案），或者使用根本不存在任何定義的標識符，這屬於 Undefined 行為。
+* 不同文件中的多個定義是不允許的，即使它們定義是相同的。如果它們定義是不同的，或者將標識符初始化為不同的值，這顯然是很嚴重的。
 
 ### Rule 8.10 (req) (by Mars)
 
 * All declarations and definitions of objects or functions at file scope shall have internal linkage unless external linkage is required.
-* 中文說明：在文件的範圍內，除了有外部連結外，所有的物件與函式的宣告與定義都應有內部連結。
-* 如果變數僅使用在同一個文件內的函式，就使用 static。相同的，如果函式僅在同一個文件內被呼叫，就使用 static。使用 static 儲存標示將確保僅在宣告的文件可以被識別，且可以避免在其他文件或函示庫中相同的標示符號混淆。
+* 中文說明：除了有外部連結外，所有在文件的範圍內的物件與函數的宣告與定義都應有內部連結。
+* 如果變數僅使用在同一個文件內的函數，就使用 `static` 。同樣道理，如果函數僅在同一個文件內被呼叫，就使用 `static`。使用 `static` 儲存標示將確保僅在宣告的文件可以被識別，且可以避免與在其他文件或函數庫中相同的標識符 (identifiter) 相混淆。
 
 ### Rule 8.11 (req) (by Noah)
 
 * The static storage class specifier shall be used in definitions and declarations of objects and functions that have internal linkage.
-* 中文說明：在宣告任何內部連結的物件或函式時，應加上static這個關鍵字。
+* 中文說明：在宣告任何內部連結的物件或函數時，應加上 `static` 這個關鍵字。
 
 ### Rule 8.12 (req) (by Ray)
 
@@ -635,11 +628,11 @@ one file.
 * 中文說明：當使用外部鏈接聲明陣列時，其大小應明確聲明或通過初始化隱式定義。
 * 範例：
 
- ```C
-  int array1[10] ;                /* Compliant */
-  extern int array2[] ;           /* Not compliant */
-  int array2[] = { 0, 10, 15 };   /* Compliant */
- ```
+  ```C
+    int array1[10] ;                /* Compliant */
+    extern int array2[] ;           /* Not compliant */
+    int array2[] = { 0, 10, 15 };   /* Compliant */
+  ```
 
 * 儘管可以聲明不完整類型的陣列並訪問其元素，但是當可以顯式確定數組的大小時，這樣做更安全。
 
@@ -648,41 +641,39 @@ one file.
 ### Rule 9.1 (req) (by Liou)
 
 * All automatic variables shall have been assigned a value before being used.
-* 中文說明：變量應在使用前進行初始化，以避免由於垃圾值引起的意外行為。
-* 範例：無。
+* 中文說明：所有屬於自動儲存期的變量應在使用前進行初始化，以避免由於垃圾值引起的意外行為。
 
-* 補充範例：
+* 範例：
+  * 不合規定的寫法：
 
-Noncompliant Code Example
+    ```c
+    int function(int flag, int b) {
+      int a;
+      if (flag) {
+        a = b;
+      }
+      return a; // Noncompliant - "a" has not been initialized in all paths
+    }
+    ```
 
-```c
-int function(int flag, int b) {
-  int a;
-  if (flag) {
-    a = b;
-  }
-  return a; // Noncompliant - "a" has not been initialized in all paths
-}
-```
+  * 合規定的寫法：
 
-Compliant Solution
-
-```c
-int function(int flag, int b) {
-  int a = 0;
-  if (flag) {
-    a = b;
-  }
-  return a;
-}
-```
+    ```c
+    int function(int flag, int b) {
+      int a = 0;
+      if (flag) {
+        a = b;
+      }
+      return a;
+    }
+    ```
 
 ### Rule 9.2 (req) (by U.Chen)
 
 * Braces shall be used to indicate and match the structure in the non-zero initialisation of arrays and structures.
-* 中文說明：應該使用大括號以指示和匹配陣列和結構的非零初始化構造。
-* ISO C 要求陣列、結構和聯合的初始化列表要以一對大括號括起来（盡管不這樣做的行為
-是未定義的）。本規則更進一步地要求，使用附加的大括號来指示嵌套的结构。
+* 中文說明：應該使用大括號以指示和匹配陣列和 `structure` 的非零初始化構造。
+* ISO C 要求 陣列、 `structure` 和 `union` 的初始化列表要以一對大括號括起来（盡管不這樣做的行為
+是未定義的）。本規則更進一步地要求，使用附加的大括號来指示嵌套的 `structure`。
 * 範例：
     二维陣列初始化的有效（在 ISO C 中）形式，但第一個與本規則相違背：
 
@@ -691,15 +682,15 @@ int function(int flag, int b) {
     int16_t y[3][2] = { { 1, 2 }, { 3, 4 }, { 5, 6 } } ; /* compliant */
     ```
 
-* 在結構中以及在結構、陣列及其他類型的嵌套组合中，規則類似。
-* 還要注意的是，陣列或結構的元素可以通過只初始化其首元素的方式初始化（为 0 或
-NULL）。如果選擇了這樣的初始化方法，那麼首元素應该被初始化為 0（或 NULL），此時不
-需要使用嵌套的大括號。
+* 此規則適用於
+  * `structure`
+  * `structure`、陣列及其他類型的嵌套组合中。
+* 還要注意的是，陣列或 `structure` 的元素可以通過只初始化其首元素的方式初始化（為 `0` 或 `NULL`）。如果選擇了這樣的初始化方法，那麼首元素應该被初始化為 `0`（或 `NULL`），此時不需要使用嵌套的大括號。
 
 ### Rule 9.3 (req) (by Jackal)
 
-* In an enumerator list, the “=” construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
-* 中文說明：在枚舉數列表中，除非所有項目均已明確初始化，否則不得使用“ =”結構來明確初始化除第一個成員以外的成員。
+* In an enumerator list, the `=` construct shall not be used to explicitly initialise members other than the first, unless all items are explicitly initialised.
+* 中文說明：在枚舉數列表中，除非所有項目均已明確初始化，否則不得使用 `=` 來明確初始化除第一個成員以外的成員。
 
 ```c
 enum colour { red=3, blue, green, yellow=5 };        /* non compliant */
@@ -755,7 +746,7 @@ enum colour { red=3, blue=4, green=5, yellow=5 };        /* compliant */
 * 中文說明：下列狀況中，浮點數的表達不應有隱式轉換 ( 不同類型的數據混在一起，編譯器會自動換型態 ) 到其他型態的情況。
     1. 轉換不是向更大的浮點數型態轉換，或
     2. 表達式是複雜的，或
-    3. 表達式是函式參數 ，或
+    3. 表達式是函數參數 ，或
     4. 表達式有回傳通知
 
 ### Explicit conversions (casts)明確類型轉換
@@ -1010,7 +1001,7 @@ if ( (a = f(b,c)) == true) { ... }
 
     根據函數的兩個參數的運算次序不同，表達式會给出不同的结果。
   * 函數指针\
-    如果函數是通過函數指針調用的，那麼函數標示符和函數參數運算次序是不可信任的。
+    如果函數是通過函數指針調用的，那麼函數標識符 (identifier )和函數參數運算次序是不可信任的。
 
       ```c
       p->task_start_fn (p++);
@@ -1112,7 +1103,7 @@ if ( (a = f(b,c)) == true) { ... }
 
 * The operands of a logical && or || shall be primary-expressions.
 * 中文說明：邏輯運算符號 && 跟 || 應是主要運算式。
-* 主要運算式 ( Primary expressions ) 定義在 ISO/IEC 9899:1990 [2] 的 6.3.1 節。本質上，他們可以是單一的識別字、常數或括起來的表達式。這個規則主要是用在，當不只一個識別字或常數被運算，就必須要括起來。括號在這種情況下，對於可讀性以及確保程式的預期行為來說非常重要。如果表達式只有使用邏輯 && 或 || 其中一種，就不需要使用括號。
+* 主要運算式 ( Primary expressions ) 定義在 ISO/IEC 9899:1990 [2] 的 6.3.1 節。本質上，他們可以是單一的標識符、常數或括起來的表達式。這個規則主要是用在，當不只一個標識符或常數被運算，就必須要括起來。括號在這種情況下，對於可讀性以及確保程式的預期行為來說非常重要。如果表達式只有使用邏輯 && 或 || 其中一種，就不需要使用括號。
 * 示例：
 
     ```C
@@ -1237,7 +1228,7 @@ if ( (a = f(b,c)) == true) { ... }
 
 * 中文說明：浮點數不應使用的基本位元表示。
 * 不應進行任何直接依賴於存儲方式的浮點操作，因為浮點數的存儲方式在不同的編譯器有可能不一樣。
-* 應使用內建的運算元或函式進行浮點操作，因為這兩個方式的存儲細節都隱藏了存儲細節。
+* 應使用內建的運算元或函數進行浮點操作，因為這兩個方式的存儲細節都隱藏了存儲細節。
 
 ### Rule 12.13(adv) (by Noah)
 
@@ -1775,7 +1766,7 @@ prototype declaration.
 ### Rule 16.4 (req) (by Mars)
 
 * The identifiers used in the declaration and definition of a function shall be identical.
-* 中文說明：函式中，識別字用於宣告與定義，都應該一致。
+* 中文說明：函數中，標識符用於宣告與定義，都應該一致。
 * 範例：
 
     ```C
@@ -2465,7 +2456,7 @@ information shall be tested.
 
 * Precautions shall be taken in order to prevent the contents of a header file being included twice.
 
-* 中文說明：應採取預防措施以防止頭文件的內容被包含兩次。
+* 中文說明：應採取預防措施以防止標頭檔的內容被包含兩次。
 
 * 範例：
 
@@ -2553,25 +2544,25 @@ information shall be tested.
 * 標準庫中的 macro 是保留標識符的範例。
 * 標準庫中的函數是保留標識符的範例。
 * 標準庫中的任何標識符在任何情況（即在任何範圍或無論標題檔如何）中都被視為保留標識符。
-* 7.13 "Future library directions" 中定義的保留識別字的定義、重新定義或取消定義是建議性的。
+* 7.13 "Future library directions" 中定義的保留標識符的定義、重新定義或取消定義是建議性的。
 * 規則20.1適用於任何標頭檔。
 
 ### Rule 20.2 (req) (by Mars)
 
 * The names of standard library macros, objects and functions shall not be reused.
-* 中文說明：標準函式庫中的巨集、物件以及函式的名稱，不應重複使用。
-* 當程序員使用了新版的標準函式庫中的巨集、物件以及函式的名稱（例如：增強行的功能或輸入數值檢查），被修改的巨集、物件以及函式的名稱都應該要有新的名字，這是為了避免混淆是否正在使用修改版本。
-* 所以，舉例來說，如果寫了新版本的 “sqrt” 函式來檢查輸入是否為負，則新函式不應命名為 “sqrt”，應給予新的名稱。
+* 中文說明：標準函數庫中的巨集、物件以及函數的名稱，不應重複使用。
+* 當程序員使用了新版的標準函數庫中的巨集、物件以及函數的名稱（例如：增強行的功能或輸入數值檢查），被修改的巨集、物件以及函數的名稱都應該要有新的名字，這是為了避免混淆是否正在使用修改版本。
+* 所以，舉例來說，如果寫了新版本的 “sqrt” 函數來檢查輸入是否為負，則新函數不應命名為 “sqrt”，應給予新的名稱。
 
 ### Rule 20.3 (req) (by Noah)
 
 * The validity of values passed to library functions shall be checked.
 * 中文說明：傳入library function的參數值都應該被檢查其有效性。
-* 例如像許多math.h裡的函式，負數不能傳入sqrt或log函式，fmod的第二個參數不能為0等等。
+* 例如像許多math.h裡的函數，負數不能傳入sqrt或log函數，fmod的第二個參數不能為0等等。
 * 有幾種應用方法可以滿足這條規則，包括:
-  * 呼叫函式前先檢查參數值。
-  * 在函式內做檢查處理，這適用在自製的library。
-  * 做另一個函式把原函式包起來，然後在call原函式前先做檢查。
+  * 呼叫函數前先檢查參數值。
+  * 在函數內做檢查處理，這適用在自製的library。
+  * 做另一個函數把原函數包起來，然後在call原函數前先做檢查。
   * 透過靜態的確認傳入的參數永遠不會有無效值。
 * 特別注意當檢查浮點數參數時，因為浮點數0是一個奇異點，所以建議要做等於0的檢查，雖然這違反了13.3的規定，
   不過這還是一個必要的檢查，避免function的運算結果趨近無限大，當參數值趨近於0時。
